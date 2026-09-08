@@ -1,29 +1,16 @@
 <?php
-define('IN_PHPBB', true);
-$phpbb_root_path = '../phpBB3/';
-$phpEx = "php";
-$returnAddress ='../view_registration_info.php';
-   //including phpBB3 stuff   
-  // define('IN_PHPBB', true);
-   include('../phpBB3/common.php');
-   include('../phpBB3/includes/functions_display.php');
-
-// Start phpbb3 session management
-   $user->session_begin();
-   $auth->acl($user->data);
-session_start();
-
+require '../includes/auth_check.inc.php';
 include '../includes/dbconnect.inc.php';
 $link = mysqli_connect($Host,$User,$Password,$DBName) or
     die("Connection Unsuccessfull");
-if ($user->data['is_registered'] ?? false) 
+if ($is_logged_in ?? false) 
 {
 # LOGIN OK
 //$loginvar = '<form align="center">
 //<input type=button value="Add a New Serial Number Entry" onClick="goToadd_link()">
 # $logged_in_var = "yes";
 }
-if (!$user->data['is_registered'] ?? false) 
+if (!$is_logged_in ?? false) 
 {
 
 $target_url_in = '/pages/view_registration_info.php';
@@ -177,7 +164,7 @@ $file_name = $Row[16] ?? null;
 
 echo "<TR bgcolor=$bgcolor>";
 
-//if ($user_tab == ($user->data['username']))
+//if ($user_tab == ($session_username))
 //{
 
 //$name = ("<a href=edit_serial_number.php?edit_row=$row_id_tab>Edit</a>");

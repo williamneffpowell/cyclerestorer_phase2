@@ -1,24 +1,11 @@
  <?php
-define('IN_PHPBB', true);
-$phpbb_root_path = '../phpBB3/';
-$phpEx = "php";
-$returnAddress ='../restoration_pics.php';
-   //including phpBB3 stuff   
-  // define('IN_PHPBB', true);
-   include('../phpBB3/common.php');
-   include('../phpBB3/includes/functions_display.php');
-
-// Start phpbb3 session management
-   $user->session_begin();
-   $auth->acl($user->data);
-   
-session_start();
+require '../includes/auth_check.inc.php';
 include '../includes/dbconnect.inc.php';
 	mysql_connect("$Host","$User","$Password");
-$session_username = $user->data['username'];
+$session_username = $session_username;
 
 
-if ($user->data['is_registered']){
+if ($is_logged_in){
 
 include '../includes/dbconnect.inc.php';
 
@@ -30,7 +17,7 @@ $logged_in = "yes";
 $login_var = "";
 
 }
-if (!$user->data['is_registered'])
+if (!$is_logged_in)
 {
 $target_url_in = '/pages/restoration_pics_view.php';
 $_SESSION['target_url'] = "$target_url_in";
@@ -220,7 +207,7 @@ print '<form align="center"><input type=button value="Add a Picture" onClick="go
 print '<form align="center"><input type=button value="Edit Picture Layout" onClick="goToEditPicURL()"></form>';
 echo '</td><td>';
 }
-if (!$user->data['is_registered'])
+if (!$is_logged_in)
 {
 echo '<td>';
 $target_url_in = '/pages/before_after.php';

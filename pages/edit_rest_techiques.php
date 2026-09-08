@@ -1,24 +1,11 @@
 <?PHP
-define('IN_PHPBB', true);
-$phpbb_root_path = '../phpBB3/';
-$phpEx = "php";
-$returnAddress ='../edit_rest_techniques.php';
-   //including phpBB3 stuff   
-  // define('IN_PHPBB', true);
-   include('../phpBB3/common.php');
-   include('../phpBB3/includes/functions_display.php');
-
-// Start phpbb3 session management
-   $user->session_begin();
-   $auth->acl($user->data);
-   
-session_start();
+require '../includes/auth_check.inc.php';
 $failed = 0;
 $session_temp_var=$_SESSION['sessionID'];
 
 include '../includes/dbconnect.inc.php';
 
-if (!$user->data['is_registered'])
+if (!$is_logged_in)
 {
 $logged_on = "no";
 
@@ -37,7 +24,7 @@ $failed = 1;
 ##########################################################################################################################################
 ####################################  Done Login Test    #################################################################################
 ##########################################################################################################################################
-$session_username = $user->data['username'];	
+$session_username = $session_username;	
 $id_temp_var = $_REQUEST['edit_row'];
 mysql_connect("$Host","$User","$Password");
 mysql_select_db("$DBName") or die(mysql_error());
@@ -195,7 +182,7 @@ tinyMCE_GZ.init({
 
 
 <?PHP
-$session_username = $user->data['username'];	
+$session_username = $session_username;	
 
  if ($_REQUEST['submit']) { 
                                                                                                                                                      

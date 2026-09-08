@@ -1,29 +1,13 @@
 <?php
 //image_library_manufacturer.php
-define('IN_PHPBB', true);
-$phpbb_root_path = '../phpBB3/';
-$phpEx = "php";
-
-$sort_field_in = "";
-$Link = "";
-$login_var = "";
-$returnAddress ='../image_library_manufacturer.php';
-   //including phpBB3 stuff   
-  // define('IN_PHPBB', true);
-   include('../phpBB3/common.php');
-   include('../phpBB3/includes/functions_display.php');
-$request->enable_super_globals();
-// Start phpbb3 session management
-   $user->session_begin();
-   $auth->acl($user->data);
-	session_start();
+require '../includes/auth_check.inc.php';
 	include '../includes/dbconnect.inc.php';
  
 //CHECK LOGIN - PUT THIS CODE ON ALL PROTECTED PAGES
 $failed = 0;
 //$session_temp_var=$_SESSION['sessionID'];
-$session_username = $user->data['username'] ?? '0';
-if ($user->data['is_registered']) {
+$session_username = $session_username ?? '0';
+if ($is_logged_in) {
 	$Link = mysqli_connect($Host, $User, $Password, $DBName) or die("Database connection failed");
 
 //Session doesn't exist
@@ -33,7 +17,7 @@ if ($user->data['is_registered']) {
 $logged_in_var = "yes";
 }
 
-if (!$user->data['is_registered'])
+if (!$is_logged_in)
 {
 $logged_on = "no";
 //No Session Variable

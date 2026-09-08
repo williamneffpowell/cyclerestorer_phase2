@@ -1,42 +1,18 @@
 <?PHP
-define('IN_PHPBB', true);
-$phpbb_root_path = '../phpBB3/';
-$phpEx = "php";
-$returnAddress ='../update_profile_pic.php';
-   //including phpBB3 stuff   
- //  define('IN_PHPBB', true);
-   include('../phpBB3/common.php');
-   include('../phpBB3/includes/functions_display.php');
-
-# Old Code $sessionID = $_SESSION['sessionID'];
-# Old Code $session_username = $_SESSION['user_name'];
-session_start();
-
-$session_username = $user->data['username'];
-$session_userid= $user->data['user_id'];
-
-include '../includes/dbconnect.inc.php';
-
-$Link = mysql_connect ($Host, $User, $Password); 
-#********
-// Start phpbb3 session management
-   $user->session_begin();
-   $auth->acl($user->data);
-session_start();
-
-$session_username = $user->data['username'];
+require '../includes/auth_check.inc.php';
+$session_username = $session_username;
 
 
 include '../includes/dbconnect.inc.php';
 
 $Link = mysql_connect ($Host, $User, $Password); 
-if ($user->data['is_registered'])
+if ($is_logged_in)
 {
 $logged_in = "yes";
 $login_var = "";
 
 }
-if (!$user->data['is_registered'])
+if (!$is_logged_in)
 {
 $target_url_in = '/pages/update_profile_pic.php';
 $_SESSION['target_url'] = "$target_url_in";
@@ -109,7 +85,7 @@ $picID = $Row[0];
 
 // UPDATE USER
 
-$session_username = $user->data['username'];
+$session_username = $session_username;
 
 
 $Query3 = "UPDATE auth_user SET picID='$picID' WHERE (username='$session_username')";

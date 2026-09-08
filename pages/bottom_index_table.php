@@ -8,7 +8,7 @@
   </tr>
   <tr>
     <td height="23" align="center" class="cat"><a href="before_after.php">Restoration Projects</a></span></td>
-    <td class="cat"><a href="../phpBB3/">Forum </a></td>
+    <td class="cat">&nbsp;</td>
     <td class="cat"><a href="serial_number_reference.php">Serial Number Reference </a></td>
 	<td class="cat"><a href="messages.php">Messages</a></td>
   </tr>
@@ -20,7 +20,7 @@
   </tr>
   <tr>
   <td height="23" class="cat"><a href="restoration_techniques.php">Restoration Techniques</a></td>
-    <td class="cat"><a href="../phpBB3/memberlist.php">Member List</a></td>
+    <td class="cat">&nbsp;</td>
     <td class="cat">&nbsp;</td>
 		<td class="cat">&nbsp;</td>
     </tr>

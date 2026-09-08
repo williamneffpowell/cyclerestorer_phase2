@@ -1,39 +1,22 @@
 
 <?php
-define('IN_PHPBB', true);
-$phpbb_root_path = '../phpBB3/';
-$phpEx = "php";
-$returnAddress ='../formhandler.php';
-   //including phpBB3 stuff   
-  // define('IN_PHPBB', true);
- //  include('../phpBB3/common.php');
-   include('../phpBB3/includes/functions_display.php');
-  // $phpbb_root_path = (defined('PHPBB_ROOT_PATH')) ? PHPBB_ROOT_PATH : '../phpBB3/';
-$phpEx = substr(strrchr(__FILE__, '.'), 1);
-include($phpbb_root_path . 'common.' . $phpEx);
-include ($phpbb_root_path . 'includes/functions_privmsgs.' . $phpEx);
-
-// Start phpbb3 session management
-   $user->session_begin();
-   $auth->acl($user->data);
-
-session_start();
+require '../includes/auth_check.inc.php';
 $random = trim($random);
 
-$session_username = $user->data['username'];
-$session_userid= $user->data['user_id'];	
+$session_username = $session_username;
+$session_userid= $_SESSION['user_id'];	
 
 
 include '../includes/dbconnect.inc.php';
 $Link = mysql_connect ($Host, $User, $Password); 
 
 
-if ($user->data['is_registered'])
+if ($is_logged_in)
 {
 # LOGIN OK
 $logged_in_var = "yes";
 }
-if (!$user->data['is_registered'])
+if (!$is_logged_in)
 {
 $logged_on = "no";
 $target_url_in = '/pages/formhandler.php';
@@ -64,8 +47,8 @@ if ($new_string == $random){
 $temp_var_holder = 'yes';
 
 #http://www.cyclerestorer.com/pages/add_classified_ad_pics.php?edit_row=<?php print "$id_temp_var">?
-$session_username = $user->data['username'];
-$session_userid= $user->data['user_id'];
+$session_username = $session_username;
+$session_userid= $_SESSION['user_id'];
 
 $_SESSION['email_id_authenticated'] = $temp_var_holder;
 

@@ -1,19 +1,6 @@
 <?php
-define('IN_PHPBB', true);
-$phpbb_root_path = '../phpBB3/';
-$phpEx = "php";
-$returnAddress ='../library.php';
-   //including phpBB3 stuff   
- //  define('IN_PHPBB', true);
-   include('../phpBB3/common.php');
-   include('../phpBB3/includes/functions_display.php');
-$request->enable_super_globals();
-// Start phpbb3 session management
-   $user->session_begin();
-   $auth->acl($user->data);
-session_start();
-
-$session_username = $user->data['username'];
+require '../includes/auth_check.inc.php';
+$session_username = $session_username;
 
 
 include '../includes/dbconnect.inc.php';
@@ -22,13 +9,13 @@ $link = mysqli_connect($Host, $User, $Password, $DBName) or die("Database connec
 $sort_field="";
 $logged_in ="";
 $login_var = "";
-if ($user->data['is_registered'])
+if ($is_logged_in)
 {
 $logged_in = "yes";
 $login_var = "";
 
 }
-if (!$user->data['is_registered'])
+if (!$is_logged_in)
 {
 $target_url_in = '/pages/library.php';
 $_SESSION['target_url'] = "$target_url_in";

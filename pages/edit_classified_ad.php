@@ -1,15 +1,5 @@
 <?php
-define('IN_PHPBB', true);
-$phpbb_root_path = '../phpBB3/';
-$phpEx = "php";
-$returnAddress ='../edit_classified_ad.php';
-   //including phpBB3 stuff   
-   include('../phpBB3/common.php');
-   include('../phpBB3/includes/functions_display.php');
-
-// Start phpbb3 session management
-   $user->session_begin();
-   $auth->acl($user->data);
+require '../includes/auth_check.inc.php';
 //CHECK LOGIN - PUT THIS CODE ON ALL PROTECTED PAGES
 session_start();
 $failed = 0;
@@ -24,13 +14,13 @@ $Result = mysql_db_query ($DBName, $Query, $Link);
 $Row = mysql_fetch_array ($Result);
 $username = $Row[0];
 //Session doesn't exist
-if ($user->data['is_registered'])
+if ($is_logged_in)
 {
 #print_edit_add();
 #print "logged in ";
 
 }
-if (!$user->data['is_registered'])
+if (!$is_logged_in)
 {
 $logged_on = "no";
 //No Session Variable
@@ -307,7 +297,7 @@ tinyMCE_GZ.init({
 		$title = $_REQUEST['title_fd'];
 		#$parts_bike = $_REQUEST['parts_bike_fd'];
 		
-$session_username = $user->data['username'];		
+$session_username = $session_username;		
 		if(isset($_POST['parts_bike_fd']))
 		 {
 		  $parts_bike = "YES";

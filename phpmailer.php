@@ -3,7 +3,7 @@ use PHPMailer\PHPMailer\PHPMailer;
 use PHPMailer\PHPMailer\Exception;
 
 require 'vendor/autoload.php';
-
+require_once __DIR__ . '/includes/secrets.inc.php';
 //error_reporting(E_ALL);
 //ini_set('display_errors', 1);
 
@@ -16,7 +16,7 @@ try {
     $mail->Host       = 'mail.cyclerestorer.com';
     $mail->SMTPAuth   = true;
     $mail->Username   = 'webmaster@cyclerestorer.com';
-    $mail->Password   = '1975!Gl1000!!';
+    $mail->Password = $EmailPassword;
     $mail->SMTPSecure = PHPMailer::ENCRYPTION_SMTPS;  // Changed to SMTPS
     $mail->Port       = 465;
 

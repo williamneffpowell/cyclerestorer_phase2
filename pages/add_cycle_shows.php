@@ -1,17 +1,5 @@
 <?php
-define('IN_PHPBB', true);
-$phpbb_root_path = '../phpBB3/';
-$phpEx = "php";
-$returnAddress ='../add_serial_numbers.php';
-   //including phpBB3 stuff   
-  
-   include('../phpBB3/common.php');
-   include('../phpBB3/includes/functions_display.php');
-$username = $user->data['username'];
-// Start phpbb3 session management
-   $user->session_begin();
-   $auth->acl($user->data);
-session_start();
+require '../includes/auth_check.inc.php';
 include '../includes/dbconnect.inc.php';
 mysql_connect("$Host","$User","$Password");
 mysql_select_db($DBName) or die(mysql_error());  
@@ -27,7 +15,7 @@ $Link = mysql_connect ($Host, $User, $Password);
 #print "usernerm $username\n";
 //Session doesn't exist
 
-if ($user->data['is_registered'])
+if ($is_logged_in)
 {
 
 echo "<br>";
@@ -44,7 +32,7 @@ print_html_add();
 mysql_close ($Link);
 
 }
-if (!$user->data['is_registered'])
+if (!$is_logged_in)
 {
 $logged_on = "no";
 

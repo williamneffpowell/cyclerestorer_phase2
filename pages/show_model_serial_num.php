@@ -1,19 +1,5 @@
 <?php
-define('IN_PHPBB', true);
-$phpbb_root_path = '../phpBB3/';
-$phpEx = "php";
-$returnAddress = '../show_model_serial_num.php';
-
-// Including phpBB3 core
-include($phpbb_root_path . 'common.php');
-include($phpbb_root_path . 'includes/functions_display.php');
-
-$request->enable_super_globals();
-
-// Start phpBB session
-$user->session_begin();
-$auth->acl($user->data);
-
+require '../includes/auth_check.inc.php';
 // Connect to database
 include '../includes/dbconnect.inc.php';
 $link = mysqli_connect($Host, $User, $Password, $DBName) or die("Database connection failed");
@@ -21,7 +7,7 @@ mysqli_set_charset($link, 'utf8mb4');
 
 // Check login status
 $loginvar = '';
-if ($user->data['is_registered']) {
+if ($is_logged_in) {
     $loginvar = '<form align="center">
     <input type="button" value="Add a New Serial Number Entry" onClick="goToadd_link()">
     </form>';
@@ -122,7 +108,7 @@ while ($Row = $result->fetch_array(MYSQLI_NUM)) {
         $user_tab, $row_id_tab, $nickname, $registration_year, $registration_model, $picID, $row_id) = $Row;
 
     // Check if user is owner
-    $edit_link = ($user_tab === $user->data['username']) ? "<a href='edit_serial_number.php?edit_row=$row_id_tab'>Edit</a>" : "";
+    $edit_link = ($user_tab === $session_username) ? "<a href='edit_serial_number.php?edit_row=$row_id_tab'>Edit</a>" : "";
 
     // Check for member bike
     $member_bike = '';

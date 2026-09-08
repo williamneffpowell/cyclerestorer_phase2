@@ -1,31 +1,17 @@
 <?php
-define('IN_PHPBB', true);
-$phpbb_root_path = '../phpBB3/';
-$phpEx = "php";
-$returnAddress ='../classified_ads.php';
-   //including phpBB3 stuff   
-  // define('IN_PHPBB', true);
-   include('../phpBB3/common.php');
-   include('../phpBB3/includes/functions_display.php');
-
-// Start phpbb3 session management
-   $user->session_begin();
-   $auth->acl($user->data);
-
-session_start();
-
-$session_username = $user->data['username'];
-$session_userid= $user->data['user_id'];	
-
-
+require '../includes/auth_check.inc.php';
 include '../includes/dbconnect.inc.php';
-
-$Link = mysql_connect ($Host, $User, $Password); 
-
-
-$_SESSION['email_id_authenticated'] ="no";   #initialize the this variable that will be used in send_email.php and formhandler.php
-
-if ($user->data['is_registered'])
+mysql_connect("$Host","$User","$Password");
+mysql_select_db($DBName) or die(mysql_error());
+//CHECK LOGIN - PUT THIS CODE ON ALL PROTECTED PAGES
+$failed = 0;
+if ($is_logged_in)
+{
+$logged_in = "yes";
+$login_var = "";
+print_html_add();
+}
+if (!$is_logged_in)
 {
 # LOGIN OK
 $logged_in_var = "yes";
@@ -34,7 +20,7 @@ $loginvar =  '<form align="center">
 <input type=button value="Add or Edit a Part" onClick="goToadd_part_link()">
 </form>';
 }
-if (!$user->data['is_registered'])
+if (!$is_logged_in)
 {
 $logged_on = "no";
 $target_url_in = '/pages/classified_ads.php';

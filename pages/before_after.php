@@ -1,23 +1,5 @@
 <?php
-define('IN_PHPBB', true);
-$phpbb_root_path = '../phpBB3/';
-$phpEx = "php";
-$returnAddress ='../before_after.php';
-   //including phpBB3 stuff   
- //  define('IN_PHPBB', true);
-   include('../phpBB3/common.php');
-   include('../phpBB3/includes/functions_display.php');
-
-include '../includes/dbconnect.inc.php';
-
-$link = mysqli_connect($Host,$User,$Password,$DBName) or
-    die("Connection Unsuccessfull");
-    
-    
-// Start phpbb3 session management
-   $user->session_begin();
-   $auth->acl($user->data);
-	session_start();
+require '../includes/auth_check.inc.php';
 	include '../includes/dbconnect.inc.php';
  
 	
@@ -30,7 +12,7 @@ $session_username = $_SESSION['user_name']??'0';
 
 
 
-if ($user->data['is_registered'] ?? '0'){
+if ($is_logged_in ?? '0'){
 
 
 $session_username = $_SESSION['user_name'];
@@ -70,7 +52,7 @@ eval("page" + id + " = window.open(URL, '" + id + "', 'toolbar=0,scrollbars=1,lo
 </HEAD>
 <body>
 <?php
-if (!$user->data['is_registered'])
+if (!$is_logged_in)
 {
 $target_url_in = 'pages/before_after.php';
 $_SESSION['target_url'] = "$target_url_in";
@@ -169,7 +151,7 @@ if (($before_after_row_temp <> $before_after_row_id))
  $before_after_row_temp = $before_after_row_id;
 }	
 echo "</table>\n";
-if ($user->data['is_registered'])
+if ($is_logged_in)
 {
 	?>
 	<br />
@@ -200,7 +182,7 @@ else
 <tr>
 <td>
 
-<input type="button"  value="Log In to Add a Bike" onClick="javascript: location.href = 'http://www.cyclerestorer.com/phpBB3//ucp.php?mode=login';">
+<input type="button"  value="Log In to Add a Bike" onClick="javascript: location.href = 'http://www.cyclerestorer.com/pages/login.php';">
 </td>
 </tr>
 </table>

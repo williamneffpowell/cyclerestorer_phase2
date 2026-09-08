@@ -1,24 +1,13 @@
 <?PHP
 //CHECK LOGIN - PUT THIS CODE ON ALL PROTECTED PAGES
-define('IN_PHPBB', true);
-$phpbb_root_path = '../phpBB3/';
-$phpEx = "php";
-$returnAddress ='../edit_rest_parts_entry.php';
-   //including phpBB3 stuff   
-
-   include('../phpBB3/common.php');
-   include('../phpBB3/includes/functions_display.php');
-
-// Start phpbb3 session management
-   $user->session_begin();
-   $auth->acl($user->data);
+require '../includes/auth_check.inc.php';
 //CHECK LOGIN - PUT THIS CODE ON ALL PROTECTED PAGES
 session_start();
 
 #$session_username = $_SESSION['user_name'];
 
 include '../includes/dbconnect.inc.php';
-if (!$user->data['is_registered']) 
+if (!$is_logged_in) 
 {
 $target_url_in = '/pages/edit_rest_parts_entry.php';
 $_SESSION['target_url'] = "$target_url_in";

@@ -3,23 +3,9 @@ error_reporting(E_ALL);
  ini_set("display_startup_errors","1");
  ini_set("display_errors","1"); 
  
-define('IN_PHPBB', true);
-$phpbb_root_path = '../phpBB3/';
-$phpEx = "php";
-session_start();
-include '../includes/dbconnect.inc.php';
-
-$returnAddress ='../update_registry_pic.php';
-   //including phpBB3 stuff   
-
-   include('../phpBB3/common.php');
-   include('../phpBB3/includes/functions_display.php');
-
-// Start phpbb3 session management
-   $user->session_begin();
-   $auth->acl($user->data);
+require '../includes/auth_check.inc.php';
 $Link = mysql_connect ($Host, $User, $Password); 
-if ($user->data['is_registered'])
+if ($is_logged_in)
 {
 # LOGIN OK
 $logged_in_var = "yes";

@@ -1,19 +1,6 @@
 <?php
 //show_year_serial_number_page.php
-define('IN_PHPBB', true);
-$phpbb_root_path = '../phpBB3/';
-$phpEx = "php";
-$returnAddress ='../show_year_serial_num.php';
-   //including phpBB3 stuff   
-  // define('IN_PHPBB', true);
-   include('../phpBB3/common.php');
-   include('../phpBB3/includes/functions_display.php');
-
-// Start phpbb3 session management
-   $user->session_begin();
-   $auth->acl($user->data);
-   
-session_start();
+require '../includes/auth_check.inc.php';
 $sessionID = $_SESSION['sessionID']??'0';
 $session_username = $_SESSION['user_name']??'0';
 
@@ -22,7 +9,7 @@ $request->enable_super_globals();
 $link = mysqli_connect($Host, $User, $Password, $DBName) or die("Database connection failed");
 mysqli_set_charset($link, 'utf8mb4');
 
-if ($user->data['is_registered']) 
+if ($is_logged_in) 
 {
 # LOGIN OK
 $loginvar = '<form align="center">
@@ -30,7 +17,7 @@ $loginvar = '<form align="center">
 </form>';
 
 }
-if (!$user->data['is_registered']) 
+if (!$is_logged_in) 
 {
 
 $target_url_in = '/pages/show_man_serial_num.php';
@@ -150,7 +137,7 @@ $nickname = $Row[12] ?? null;
 
 echo "<TR bgcolor=$bgcolor>";
 
-$session_username = $user->data['username']; 
+$session_username = $session_username; 
 if ($user_tab == $session_username)
 {
 

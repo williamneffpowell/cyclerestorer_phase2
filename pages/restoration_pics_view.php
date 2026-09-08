@@ -1,33 +1,12 @@
  <?php
  //restoration_pics_view.php
-define('IN_PHPBB', true);
-$phpbb_root_path = '../phpBB3/';
-$phpEx = "php";
-
-$sort_field_url = "";
-$sort_field_url = "";
-$id_temp_var = "";
-
-
-$returnAddress ='../restoration_pics_view.php';
-   //including phpBB3 stuff   
-  // define('IN_PHPBB', true);
-   include('../phpBB3/common.php');
-   include('../phpBB3/includes/functions_display.php');
-$request->enable_super_globals();
-// Start phpbb3 session management
-$user="";
-$session_username = "";
- //  $user->session_begin();
-//   $auth->acl($user->data);
-   
-
+require '../includes/auth_check.inc.php';
 include '../includes/dbconnect.inc.php';
 	$link = mysqli_connect($Host, $User, $Password, $DBName) or die("Database connection failed");
-$session_username = $user->data['username'] ?? '0';
+$session_username = $session_username ?? '0';
 
 
-//if ($user->data['is_registered']){
+//if ($is_logged_in){
 
 
 
@@ -38,7 +17,7 @@ $session_username = $user->data['username'] ?? '0';
 //$login_var = "";
 
 //}
-/*  if (!$user->data['is_registered'])
+/*  if (!$is_logged_in)
 {
 $target_url_in = '/pages/restoration_pics_view.php';
 $_SESSION['target_url'] = "$target_url_in";

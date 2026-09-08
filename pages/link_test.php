@@ -1,17 +1,5 @@
 <?php
-define('IN_PHPBB', true);
-$phpbb_root_path = '../phpBB3/';
-$phpEx = "php";
-$returnAddress ='../links.php';
-   //including phpBB3 stuff   
- //  define('IN_PHPBB', true);
-   include('../phpBB3/common.php');
-   include('../phpBB3/includes/functions_display.php');
-
-// Start phpbb3 session management
-   $user->session_begin();
-   $auth->acl($user->data);
-session_start();
+require '../includes/auth_check.inc.php';
 $sessionID = $_SESSION['sessionID'];
 $session_username = $_SESSION['user_name'];
 
@@ -20,14 +8,14 @@ $Link = mysql_connect ($Host, $User, $Password);
 $Query = "SELECT * from auth_user WHERE (sesnID='$sessionID')";   #Add Yes logic
 $Result = mysql_db_query ($DBName, $Query, $Link);
 $Row = mysql_fetch_array ($Result);
-if ($user->data['is_registered'])
+if ($is_logged_in)
 {
 # LOGIN OK
 $loginvar = '<form align="center">
 <input type=button value="Add a New Resource Link" onClick="goToadd_link()">
 </form>';
 }
-if (!$user->data['is_registered'])
+if (!$is_logged_in)
 {
 $target_url_in = '/pages/links.php';
 $_SESSION['target_url'] = "$target_url_in";
@@ -145,7 +133,7 @@ $link_tab = $Row[11];
 echo "<TR bgcolor=$bgcolor>";
 $redbug2 = "redbug2";
 #if ($user_tab == $session_username and ($Row[0] <> ""))
-if ($user_tab == $session_username or ($user->data['username']) == $redbug2)
+if ($user_tab == $session_username or ($session_username) == $redbug2)
 {
 $name = ("<a href=edit_links.php?edit_row=$resource_links_row_id>Edit</a>");
 }

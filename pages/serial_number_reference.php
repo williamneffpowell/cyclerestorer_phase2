@@ -4,19 +4,7 @@
 
 // temporarily enable superglobals
 
-define('IN_PHPBB', true);
-$phpbb_root_path = '../phpBB3/';
-$phpEx = "php";
-$returnAddress ='../serial_number_reference.php';
-   //including phpBB3 stuff   
- //  define('IN_PHPBB', true);
-   include('../phpBB3/common.php');
-   include('../phpBB3/includes/functions_display.php');
-
-// Start phpbb3 session management
-   $user->session_begin();
-   $auth->acl($user->data);
-  
+require '../includes/auth_check.inc.php';
 $sessionID = "";
 $session_username = "";
 session_start();
@@ -50,7 +38,7 @@ $Row = mysqli_fetch_array($result, MYSQLI_NUM);
 
 
 
-if ($user->data['is_registered']) 
+if ($is_logged_in) 
 {
 # LOGIN OK
 $loginvar = '<form align="center">

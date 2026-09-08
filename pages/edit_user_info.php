@@ -1,21 +1,7 @@
 <?PHP
-define('IN_PHPBB', true);
-$phpbb_root_path = '../phpBB3/';
-$phpEx = "php";
-$returnAddress ='../edit_user_info.php';
-   //including phpBB3 stuff   
-  // define('IN_PHPBB', true);
-   include('../phpBB3/common.php');
-   include('../phpBB3/includes/functions_display.php');
-
-// Start phpbb3 session management
-   $user->session_begin();
-   $auth->acl($user->data);
-
-session_start();
-
-$session_username = $user->data['username'];
-$session_userid= $user->data['user_id'];	
+require '../includes/auth_check.inc.php';
+$session_username = $session_username;
+$session_userid= $_SESSION['user_id'];	
 
 
 
@@ -30,13 +16,13 @@ $Link = mysql_connect ($Host, $User, $Password);
 #$Row = mysql_fetch_array ($Result);
 #$username = $Row[0];
 //Session doesn't exist
-if ($user->data['is_registered'])
+if ($is_logged_in)
 {
 #print_edit_add();
 #print "logged in ";
 
 }
-if (!$user->data['is_registered'])
+if (!$is_logged_in)
 {
 $logged_on = "no";
 //No Session Variable

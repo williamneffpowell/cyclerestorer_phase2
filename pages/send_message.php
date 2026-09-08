@@ -1,30 +1,17 @@
 <?php
-define('IN_PHPBB', true);
-$phpbb_root_path = '../phpBB3/';
-$phpEx = "php";
-$returnAddress ='../send_message.php';
-   //including phpBB3 stuff   
- 
-   include('../phpBB3/common.php');
-   include('../phpBB3/includes/functions_display.php');
-
-// Start phpbb3 session management
-   $user->session_begin();
-   $auth->acl($user->data);
-session_start();
-
-$session_username = $user->data['username'];
+require '../includes/auth_check.inc.php';
+$session_username = $session_username;
 include('functions.php');
 include '../includes/dbconnect.inc.php';
 
 $Link = mysql_connect ($Host, $User, $Password); 
 
-if ($user->data['is_registered'])
+if ($is_logged_in)
 {
 # LOGIN OK
 $logged_in_var = "yes";
 }
-if (!$user->data['is_registered'])
+if (!$is_logged_in)
 {
 $logged_on = "no";
 $target_url_in = '/pages/send_message.php';

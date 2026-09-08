@@ -1,19 +1,6 @@
 <?php
-define('IN_PHPBB', true);
-$phpbb_root_path = '../phpBB3/';
-$phpEx = "php";
-$returnAddress ='../add_image_library_pics.php';
-   //including phpBB3 stuff   
-
-   include('../phpBB3/common.php');
-   include('../phpBB3/includes/functions_display.php');
-
-// Start phpbb3 session management
-   $user->session_begin();
-   $auth->acl($user->data);
-session_start();
-
-$session_username = $user->data['username'];
+require '../includes/auth_check.inc.php';
+$session_username = $session_username;
 
 include '../includes/dbconnect.inc.php';
 
@@ -24,7 +11,7 @@ $Link = mysql_connect ($Host, $User, $Password);
 $id_temp_add_var = $_REQUEST['edit_row'];
 #******************************************************************
 #print "ID TEmp ADD VAR = $id_temp_add_var";
-if ($user->data['is_registered'])
+if ($is_logged_in)
 {
 # LOGIN OK
 
@@ -67,7 +54,7 @@ $add_picture_form = '<form name=picture_upload onsubmit="return validate_form(th
 
 print "$add_picture_form";
 }
-if (!$user->data['is_registered'])
+if (!$is_logged_in)
 # The link below must be change when it is ported to production, must be changed! 
 #This is the production Link: http://www.cyclerestorer.com/pages/login.php
 #This is the test link: http://localhost:8080/redbug/_no_task/cyclerestorer/pages/login.php

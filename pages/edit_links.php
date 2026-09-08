@@ -1,15 +1,5 @@
 <?php
-define('IN_PHPBB', true);
-$phpbb_root_path = '../phpBB3/';
-$phpEx = "php";
-$returnAddress ='../edit_links.php';
-   //including phpBB3 stuff   
-   include('../phpBB3/common.php');
-   include('../phpBB3/includes/functions_display.php');
-
-// Start phpbb3 session management
-   $user->session_begin();
-   $auth->acl($user->data);
+require '../includes/auth_check.inc.php';
 //CHECK LOGIN - PUT THIS CODE ON ALL PROTECTED PAGES
 session_start();
 $failed = 0;
@@ -25,13 +15,13 @@ $Row = mysql_fetch_array ($Result);
 //$username = $Row[0];
 }
 //Session doesn't exist
-if ($user->data['is_registered']) 
+if ($is_logged_in) 
 {
 #print_edit_add();
 #print "logged in ";
 
 }
-if (!$user->data['is_registered']) 
+if (!$is_logged_in) 
 {
 $logged_on = "no";
 //No Session Variable
@@ -223,7 +213,7 @@ $today = date("Y-m-d h:i:s");
 		$type=$_REQUEST['type_fd'];
 		$html_link=$_REQUEST['html_link_fd'];
 		
-$username = $user->data['username'];		
+$username = $session_username;		
 		
 	     $Query2 = "UPDATE resource_links  SET resource_name = '$link_name',link_comment = '$link_comment', manufacturer = '$manufacturer', model = '$model',type = '$type' ,html_link = '$html_link' WHERE resource_links_row_id = '$id_temp_var'";
 		 	  

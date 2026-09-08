@@ -1,18 +1,5 @@
 <?php
-define('IN_PHPBB', true);
-$phpbb_root_path = '../phpBB3/';
-$phpEx = "php";
-$returnAddress ='../watchvideo.php';
-   //including phpBB3 stuff   
-   include('../phpBB3/common.php');
-   include('../phpBB3/includes/functions_display.php');
-
-// Start phpbb3 session management
-   $user->session_begin();
-   $auth->acl($user->data);
-   
-
-session_start();
+require '../includes/auth_check.inc.php';
 $sessionID = $_SESSION['sessionID'];
 $session_username = $_SESSION['user_name'];
 $userID = $_SESSION['user_ID'];

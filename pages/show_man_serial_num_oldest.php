@@ -1,23 +1,9 @@
 
 <?php
-define('IN_PHPBB', true);
-$phpbb_root_path = '../phpBB3/';
-$phpEx = "php";
-$returnAddress ='../show_man_serial_num.php';
-   //including phpBB3 stuff   
-  // define('IN_PHPBB', true);
-   include('../phpBB3/common.php');
-   include('../phpBB3/includes/functions_display.php');
-
-// Start phpbb3 session management
-   $user->session_begin();
-   $auth->acl($user->data);
-session_start();
-
-
+require '../includes/auth_check.inc.php';
 include '../includes/dbconnect.inc.php';
 
-if ($user->data['is_registered']) 
+if ($is_logged_in) 
 {
 # LOGIN OK
 $loginvar = '<form align="center">
@@ -25,7 +11,7 @@ $loginvar = '<form align="center">
 </form>';
 
 }
-if (!$user->data['is_registered'])
+if (!$is_logged_in)
 {
 
 $target_url_in = '/pages/show_man_serial_num.php';
@@ -167,9 +153,9 @@ $last_bike_year = $bike_year;
 $last_bike_model = $bike_model;
 echo "<TR bgcolor=$bgcolor>";
 
-$user_temp = $user->data['username'];
+$user_temp = $session_username;
 
-if ($user_tab == ($user->data['username']))
+if ($user_tab == ($session_username))
 {
 
 $name = ("<a href=edit_serial_number.php?edit_row=$row_id_tab>Edit</a>");

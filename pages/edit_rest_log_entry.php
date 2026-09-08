@@ -1,16 +1,5 @@
 <?PHP
-define('IN_PHPBB', true);
-$phpbb_root_path = '../phpBB3/';
-$phpEx = "php";
-$returnAddress ='../edit_rest_log_entry.php';
-   //including phpBB3 stuff   
-
-   include('../phpBB3/common.php');
-   include('../phpBB3/includes/functions_display.php');
-
-// Start phpbb3 session management
-   $user->session_begin();
-   $auth->acl($user->data);
+require '../includes/auth_check.inc.php';
 //CHECK LOGIN - PUT THIS CODE ON ALL PROTECTED PAGES
 session_start();
 $failed = 0;
@@ -20,7 +9,7 @@ $failed = 0;
 include '../includes/dbconnect.inc.php';
 
 
-if (!$user->data['is_registered'])
+if (!$is_logged_in)
 {
 $logged_on = "no";
 //No Session Variable

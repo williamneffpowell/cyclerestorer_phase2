@@ -1,32 +1,19 @@
 <?php
-define('IN_PHPBB', true);
-$phpbb_root_path = '../phpBB3/';
-$phpEx = "php";
-$returnAddress ='../edit_restoration_pics.php';
-   //including phpBB3 stuff   
-
-   include('../phpBB3/common.php');
-   include('../phpBB3/includes/functions_display.php');
-
-// Start phpbb3 session management
-   $user->session_begin();
-   $auth->acl($user->data);
-session_start();
-
-$session_username = $user->data['username'];
+require '../includes/auth_check.inc.php';
+$session_username = $session_username;
 
 include '../includes/dbconnect.inc.php';
 
 $Link = mysql_connect ($Host, $User, $Password);
 
 
-if ($user->data['is_registered'])
+if ($is_logged_in)
 {
 $logged_in = "yes";
 $login_var = "";
 
 }
-if (!$user->data['is_registered'])
+if (!$is_logged_in)
 {
 $target_url_in = '/pages/edit_restoration_pics.php';
 $_SESSION['target_url'] = "$target_url_in";
@@ -193,7 +180,7 @@ $total_rows = mysql_fetch_row($results);
 $total_rows_var = $total_rows[0];
 #print "$total_rows_var";
 
-#if (!$user->data['is_registered'])
+#if (!$is_logged_in)
 #{
 if ($pic_display_order <> $total_rows_var )
 {
@@ -232,7 +219,7 @@ echo '<br>';
 <?
 
 
-if (!$user->data['is_registered'])
+if (!$is_logged_in)
 {
 print '<form align="center"><input type=button value="Add a picture" onClick="goToAddPicURL()"></form>';
 echo '</td><td>';

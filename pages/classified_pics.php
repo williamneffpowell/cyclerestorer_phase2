@@ -1,16 +1,5 @@
 <?php
-define('IN_PHPBB', true);
-$phpbb_root_path = '../phpBB3/';
-$phpEx = "php";
-$returnAddress ='../classified_pics.php';
-   //including phpBB3 stuff   
-   include('../phpBB3/common.php');
-   include('../phpBB3/includes/functions_display.php');
-
-// Start phpbb3 session management
-   $user->session_begin();
-   $auth->acl($user->data);
-session_start();
+require '../includes/auth_check.inc.php';
 $sessionID = $_SESSION['sessionID'];
 $session_username = $_SESSION['user_name'];
 
@@ -18,11 +7,11 @@ include '../includes/dbconnect.inc.php';
 
 $Link = mysql_connect ($Host, $User, $Password); 
 
-if ($user->data['is_registered'])
+if ($is_logged_in)
 {
 $loginvar =  "OK" ;
 }
-if (!$user->data['is_registered'])
+if (!$is_logged_in)
 {
 $loginvar =   "NO" ;
 }

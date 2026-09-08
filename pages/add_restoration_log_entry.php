@@ -1,16 +1,5 @@
 <?PHP
-define('IN_PHPBB', true);
-$phpbb_root_path = '../phpBB3/';
-$phpEx = "php";
-$returnAddress ='../add_restoration_log_entry.php';
-   //including phpBB3 stuff
-   include('../phpBB3/common.php');
-   include('../phpBB3/includes/functions_display.php');
-
-// Start phpbb3 session management
-   $user->session_begin();
-   $auth->acl($user->data);
-session_start();
+require '../includes/auth_check.inc.php';
 include '../includes/dbconnect.inc.php';
 mysql_connect("$Host","$User","$Password");
 mysql_select_db($DBName) or die(mysql_error());
@@ -21,7 +10,7 @@ $edit_row = $_REQUEST['edit_row'];
 
 $failed = 0;
 $session_temp_var=$_SESSION['sessionID'];
-if ($user->data['is_registered']) {
+if ($is_logged_in) {
 $Link = mysql_connect ($Host, $User, $Password);
 $Query = "SELECT username, userID FROM auth_user WHERE (sesnID='$session_temp_var');";
 #print $username[0];
@@ -34,7 +23,7 @@ $userID = $Row[2];
 
 }
 
-If ($user->data['is_registered'])
+If ($is_logged_in)
 {
 
 echo "<br>";
@@ -52,7 +41,7 @@ print_html_add($_REQUEST['bfore_aftr_row_id'],$_REQUEST['todo_or_log']);
 mysql_close ($Link);
 
 }
-If (!$user->data['is_registered'])
+If (!$is_logged_in)
 {
 $logged_on = "no";
 
@@ -261,7 +250,7 @@ print ("
 
 $todo_or_log = $_REQUEST['todo_or_log'];
 $bfore_aftr_row_id = $_REQUEST['bfore_aftr_row_id'];
-$username = $user->data['username'];
+$username = $session_username;
 //print "<h2>from the form user_var = $username\n</h2>";
 //print "<h2>from the request var todo_or_log = $todo_or_log \n</h2>";
 //print "<h2>From the header  edit_row = $bfore_aftr_row_id \n</h2>";

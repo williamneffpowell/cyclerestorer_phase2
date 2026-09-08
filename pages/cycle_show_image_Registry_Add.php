@@ -1,29 +1,19 @@
 <?php
-define('IN_PHPBB', true);
-$phpbb_root_path = '../phpBB3/';
-$phpEx = "php";
-$returnAddress ='../cycle_show_image_Registry_Add.php';
-   //including phpBB3 stuff   
-   include('../phpBB3/common.php');
-   include('../phpBB3/includes/functions_display.php');
-
-// Start phpbb3 session management
-   $user->session_begin();
-   $auth->acl($user->data);
+require '../includes/auth_check.inc.php';
 //CHECK LOGIN - PUT THIS CODE ON ALL PROTECTED PAGES
 session_start();
 $failed = 0;
 
-$session_username =$user->data['username'];
+$session_username =$session_username;
 include '../includes/dbconnect.inc.php';
-if ($user->data['is_registered']) {
+if ($is_logged_in) {
 
 print $username;
 print_html_add();
 }
 //Session doesn't exist
 
-if (!$user->data['is_registered'])
+if (!$is_logged_in)
 {
 $logged_on = "no";
 //No Session Variable
@@ -115,7 +105,7 @@ $Link = mysql_connect ($Host, $User, $Password);
 		$location=$_REQUEST['location'];
 		$comments=$_REQUEST['comments'];
 		$entered=date("Y-m-d h:i:s");
-		$session_username =$user->data['username'];
+		$session_username =$session_username;
 		 
 		 $type_of_entry = 'cycle_show';
 		 $query ="INSERT INTO image_library_registry (username,type_of_entry,comments,entered,location)";

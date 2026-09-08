@@ -1,16 +1,5 @@
 <?php
-define('IN_PHPBB', true);
-$phpbb_root_path = '../phpBB3/';
-$phpEx = "php";
-$returnAddress ='../edit_serial_number.php';
-   //including phpBB3 stuff   
-
-   include('../phpBB3/common.php');
-   include('../phpBB3/includes/functions_display.php');
-
-// Start phpbb3 session management
-   $user->session_begin();
-   $auth->acl($user->data);
+require '../includes/auth_check.inc.php';
 //CHECK LOGIN - PUT THIS CODE ON ALL PROTECTED PAGES
 session_start();
 $failed = 0;
@@ -25,13 +14,13 @@ include '../includes/dbconnect.inc.php';
 //$Row = mysql_fetch_array ($Result);
 
 //Session doesn't exist
-if ($user->data['is_registered'])
+if ($is_logged_in)
 {
 #print_edit_add();
 #print "logged in ";
 
 }
-if (!$user->data['is_registered'])
+if (!$is_logged_in)
 {
 $logged_on = "no";
 $failed = 1;

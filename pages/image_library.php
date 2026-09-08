@@ -1,16 +1,5 @@
 <?php
-define('IN_PHPBB', true);
-$phpbb_root_path = '../phpBB3/';
-$phpEx = "php";
-$returnAddress ='../edit_registry.php';
-   //including phpBB3 stuff
-//   define('IN_PHPBB', true);
-   include('../phpBB3/common.php');
-   include('../phpBB3/includes/functions_display.php');
-$request->enable_super_globals();
-// Start phpbb3 session management
-   $user->session_begin();
-   $auth->acl($user->data);
+require '../includes/auth_check.inc.php';
 $login_var = "";
 $sort_field_in = "";
 $manufacturer_tab_temp = "";
@@ -26,18 +15,18 @@ $manufacturer_tab = "";
 //CHECK LOGIN - PUT THIS CODE ON ALL PROTECTED PAGES
 $fail4ed = 0;
 
-$session_username = $user->data['username'] ?? '0';
+$session_username = $session_username ?? '0';
 
 	$Link = mysqli_connect($Host, $User, $Password, $DBName) or die("Database connection failed");
 
 //Session doesn't exist
-if ($user->data['is_registered'])
+if ($is_logged_in)
 {
 # Do Nothing print_html_add(); login OK.
 
 $logged_in_var = "yes";
 }
-if (!$user->data['is_registered'])
+if (!$is_logged_in)
 {
 $logged_on = "no";
 //No Session Variable

@@ -1,32 +1,18 @@
 <?php
-define('IN_PHPBB', true);
-$phpbb_root_path = '../phpBB3/';
-$phpEx = "php";
-$returnAddress ='../add_resource_link.php';
-   //including phpBB3 stuff   
-
-   include('../phpBB3/common.php');
-   include('../phpBB3/includes/functions_display.php');
-
-// Start phpbb3 session management
-   $user->session_begin();
-   $auth->acl($user->data);
-   
-   
-session_start();
+require '../includes/auth_check.inc.php';
 include '../includes/dbconnect.inc.php';
 mysql_connect("$Host","$User","$Password");
 mysql_select_db($DBName) or die(mysql_error());  
 //CHECK LOGIN - PUT THIS CODE ON ALL PROTECTED PAGES
 
-if ($user->data['is_registered'])
+if ($is_logged_in)
 {
 print_html_add();
 # Do Nothing print_html_add();
 
 
 }
-if (!$user->data['is_registered'])
+if (!$is_logged_in)
 {
 $logged_on = "no";
 
@@ -164,7 +150,7 @@ $today = date("Y-m-d h:i:s");
 		$link_comment=$_REQUEST['link_comment'];
 		$user_var=$_REQUEST['user_form_var'];
 		
-$session_username = $user->data['username'];		
+$session_username = $session_username;		
 
 
 mysql_connect("$Host","$User","$Password");

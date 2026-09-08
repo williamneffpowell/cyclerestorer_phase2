@@ -1,17 +1,5 @@
 <?php
-define('IN_PHPBB', true);
-$phpbb_root_path = '../phpBB3/';
-$phpEx = "php";
-$returnAddress ='../message_test.php';
-   //including phpBB3 stuff   
- //  define('IN_PHPBB', true);
-   include('../phpBB3/common.php');
-   include('../phpBB3/includes/functions_display.php');
-
-// Start phpbb3 session management
-   $user->session_begin();
-   $auth->acl($user->data);
-session_start();
+require '../includes/auth_check.inc.php';
 $sessionID = $_SESSION['sessionID'];
 $session_username = $_SESSION['user_name'];
 
@@ -20,14 +8,14 @@ $Link = mysql_connect ($Host, $User, $Password);
 $Query = "SELECT * from auth_user WHERE (sesnID='$sessionID')";   #Add Yes logic
 $Result = mysql_db_query ($DBName, $Query, $Link);
 $Row = mysql_fetch_array ($Result);
-if ($user->data['is_registered'])
+if ($is_logged_in)
 {
 # LOGIN OK
 $loginvar = '<form align="center">
 <input type=button value="Send a message" onClick="goTo_message_link()">
 </form>';
 }
-if (!$user->data['is_registered'])
+if (!$is_logged_in)
 {
 $target_url_in = '/pages/message_test.php';
 $_SESSION['target_url'] = "$target_url_in";

@@ -1,17 +1,5 @@
 <?php
-define('IN_PHPBB', true);
-$phpbb_root_path = '../phpBB3/';
-$phpEx = "php";
-$returnAddress ='../before_after.php';
-   //including phpBB3 stuff   
- //  define('IN_PHPBB', true);
-   include('../phpBB3/common.php');
-   include('../phpBB3/includes/functions_display.php');
-
-// Start phpbb3 session management
-   $user->session_begin();
-   $auth->acl($user->data);
-	session_start();
+require '../includes/auth_check.inc.php';
 	include '../includes/dbconnect.inc.php';
 	mysql_connect("$Host","$User","$Password");
 	mysql_select_db("$DBName") or die(mysql_error());  
@@ -19,7 +7,7 @@ $returnAddress ='../before_after.php';
 $failed = 0;
 $session_temp_var=$_SESSION['sessionID'];
 $session_username = $_SESSION['user_name'];
-if ($user->data['is_registered']){
+if ($is_logged_in){
 $Link = mysql_connect ($Host, $User, $Password);
 
 $session_username = $_SESSION['user_name'];
@@ -59,7 +47,7 @@ eval("page" + id + " = window.open(URL, '" + id + "', 'toolbar=0,scrollbars=1,lo
 </HEAD>
 <body>
 <?
-if (!$user->data['is_registered'])
+if (!$is_logged_in)
 {
 $target_url_in = 'pages/before_after.php';
 $_SESSION['target_url'] = "$target_url_in";
@@ -178,7 +166,7 @@ else
 <tr>
 <td>
 
-<input type="button"  value="Log In to Add a Bike" onClick="javascript: location.href = 'http://www.cyclerestorer.com/phpBB3//ucp.php?mode=login';">
+<input type="button"  value="Log In to Add a Bike" onClick="javascript: location.href = 'http://www.cyclerestorer.com/pages/login.php';">
 </td>
 </tr>
 </table>

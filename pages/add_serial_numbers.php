@@ -1,18 +1,5 @@
 <?php
-define('IN_PHPBB', true);
-$phpbb_root_path = '../phpBB3/';
-$phpEx = "php";
-$returnAddress ='../add_serial_numbers.php';
-   //including phpBB3 stuff   
-
-   include('../phpBB3/common.php');
-   include('../phpBB3/includes/functions_display.php');
-
-// Start phpbb3 session management
-   $user->session_begin();
-   $auth->acl($user->data);
-   
-session_start();
+require '../includes/auth_check.inc.php';
 include '../includes/dbconnect.inc.php';
 mysql_connect("$Host","$User","$Password");
 mysql_select_db($DBName) or die(mysql_error());  
@@ -24,7 +11,7 @@ mysql_select_db($DBName) or die(mysql_error());
 //Session doesn't exist
 
 
-if ($user->data['is_registered']) 
+if ($is_logged_in) 
 {
 print_html_add();
 # Do Nothing print_html_add();
@@ -243,7 +230,7 @@ $Row = mysql_fetch_array($result);
 if ($Row[0] == "") {
 
 
-$user_temp = $user->data['username'];
+$user_temp = $session_username;
 	 
 
 $query ="INSERT INTO serial_numbers(engine_number,frame_number,production_run,enter_date,user_name,bike_year,model,nickname,ccs,num_cyl,fuel_tank_color,manufacturer)

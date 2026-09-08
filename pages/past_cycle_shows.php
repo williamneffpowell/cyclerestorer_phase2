@@ -1,33 +1,20 @@
 <?php
-define('IN_PHPBB', true);
-$phpbb_root_path = '../phpBB3/';
-$phpEx = "php";
-$returnAddress ='../past_cycle_shows.php';
-   //including phpBB3 stuff   
-
-   include('../phpBB3/common.php');
-   include('../phpBB3/includes/functions_display.php');
-
-// Start phpbb3 session management
-   $user->session_begin();
-   $auth->acl($user->data);
-session_start();
-
-$username = $user->data['username'];
+require '../includes/auth_check.inc.php';
+$username = $session_username;
 
 
 include '../includes/dbconnect.inc.php';
 
 $Link = mysql_connect ($Host, $User, $Password); 
 
-if ($user->data['is_registered'])
+if ($is_logged_in)
 {
 # LOGIN OK
 $loginvar =  '<form align="center">
 <input type=button value="Add a Cycle Show" onClick="goToadd_link()">
 </form>';
 }
-if (!$user->data['is_registered'])
+if (!$is_logged_in)
 {
 $target_url_in = '/pages/cycle_shows.php';
 $_SESSION['target_url'] = "$target_url_in";

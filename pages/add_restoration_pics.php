@@ -1,19 +1,5 @@
 <?php
-define('IN_PHPBB', true);
-$phpbb_root_path = '../phpBB3/';
-$phpEx = "php";
-$returnAddress ='../add_restoration_pics.php';
-   //including phpBB3 stuff   
-   include('../phpBB3/common.php');
-   include('../phpBB3/includes/functions_display.php');
-
-// Start phpbb3 session management
-   $user->session_begin();
-   $auth->acl($user->data);
-   
-session_start();
-
-
+require '../includes/auth_check.inc.php';
 include '../includes/dbconnect.inc.php';
 
 $Link = mysql_connect ($Host, $User, $Password); 
@@ -83,7 +69,7 @@ if (validate_required(file_name,"You Must Select A File to Upload")==false)
 </TD></TR>
 </TABLE>	
 <?PHP
-if ($user->data['is_registered'])
+if ($is_logged_in)
 {
 # LOGIN OK
 
@@ -127,7 +113,7 @@ $add_picture_form = '<form name=picture_upload onsubmit="return validate_form(th
 
 print "$add_picture_form";
 }
-if (!$user->data['is_registered'])
+if (!$is_logged_in)
 # The link below must be change when it is ported to production, must be changed! 
 #This is the production Link: http://www.cyclerestorer.com/pages/login.php
 #This is the test link: http://localhost:8080/redbug/_no_task/cyclerestorer/pages/login.php

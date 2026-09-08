@@ -4,15 +4,8 @@ $phpbb_root_path = '../phpBB3/';
 $phpEx = "php";
 $returnAddress ='../add_resource_link.php';
    //including phpBB3 stuff
-   define('IN_PHPBB', true);
-   include('../phpBB3/common.php');   
-   include('../phpBB3/includes/functions_display.php');
-
-// Start phpbb3 session management
-   $user->session_begin();
-   $auth->acl($user->data);
-session_start();
-$session_username = $user->data['username'];
+   require '../includes/auth_check.inc.php';
+$session_username = $session_username;
 include '../includes/dbconnect.inc.php';
 mysql_connect("$Host","$User","$Password");
 mysql_select_db($DBName) or die(mysql_error());
@@ -21,7 +14,7 @@ $session_username = $_SESSION['user_name'];
 $failed = 0;
 $session_temp_var=$_SESSION['sessionID'];
 
-if ($user->data['is_registered']) {
+if ($is_logged_in) {
 $Link = mysql_connect ($Host, $User, $Password);
 //$Query = "SELECT username, userID FROM auth_user WHERE (sesnID='$session_temp_var');";
 #print $username[0];
@@ -30,7 +23,7 @@ $Link = mysql_connect ($Host, $User, $Password);
 //$username = $Row[0];
 //$userID = $Row[1];
 }
-if (!$user->data['is_registered'])
+if (!$is_logged_in)
 {
 
 echo "<br>";
@@ -236,7 +229,7 @@ mysql_connect("$Host","$User","$Password");
 mysql_select_db($DBName) or die(mysql_error());
 $Link = mysql_connect ($Host, $User, $Password);
 //$session_userID = $_SESSION['user_ID'];
-$session_username = $user->data['username'];
+$session_username = $session_username;
 $query ="INSERT INTO tb_rest_tech(username,contact_email,phone,rest_technique,date_entered,manufacturer,model,year,description,cost,state,country,item_title,parts_bike,userID)
  VALUES ('$session_username','$email','$phone','$rest_technique','$today','$manufacturer','$model','$year','$description','$cost','$state','$country','$item_title','$parts_bike','$session_userID')";
 			#print "user_var = $user_var\n";

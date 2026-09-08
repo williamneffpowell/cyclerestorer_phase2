@@ -1,19 +1,5 @@
 <?php
-define('IN_PHPBB', true);
-$phpbb_root_path = '../phpBB3/';
-$phpEx = "php";
-$returnAddress ='../Registry_Add.php';
-   //including phpBB3 stuff   
-   include('../phpBB3/common.php');
-   include('../phpBB3/includes/functions_display.php');
-
-// Start phpbb3 session management
-   $user->session_begin();
-   $auth->acl($user->data);
-   
-session_start();
-
-
+require '../includes/auth_check.inc.php';
 //$session_username = $_SESSION['user_name'];
 //$session_userID = $_SESSION['user_ID'];
 include '../includes/dbconnect.inc.php';
@@ -21,12 +7,12 @@ include '../includes/dbconnect.inc.php';
 mysql_connect("$Host","$User","$Password");
 mysql_select_db($DBName) or die(mysql_error());  
 //Session doesn't exist
-if ($user->data['is_registered'])
+if ($is_logged_in)
 {
-$session_username = $user->data['username'];
+$session_username = $session_username;
 print_html_add();
 }
-if (!$user->data['is_registered'])
+if (!$is_logged_in)
 {
 $logged_on = "no";
 //No Session Variable
@@ -220,7 +206,7 @@ $today = date("Y-m-d h:i:s");
 		$owner=$_REQUEST['owner'];
 		$location=$_REQUEST['location'];
 		$comments=$_REQUEST['comments'];
-		$user_id_temp = $user->data['user_id'];
+		$user_id_temp = $_SESSION['user_id'];
 	    $type_of_entry = 'Registry';
 		 $query ="INSERT INTO registry (username,manufacturer,model,year,location,comments,type_of_entry,entered,serial_number,engine_number,userID)";
 		 $query.= " VALUES 	('$session_username','$manufacturer','$model','$year','$location','$comments','$type_of_entry','$today','$serial_number','$engine_number','$user_id_temp')"; 		  

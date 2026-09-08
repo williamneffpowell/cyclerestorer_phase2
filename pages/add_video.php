@@ -1,33 +1,21 @@
 <?php
-define('IN_PHPBB', true);
-$phpbb_root_path = '../phpBB3/';
-$phpEx = "php";
-$returnAddress ='../add_video.php';
-   //including phpBB3 stuff   
-   include('../phpBB3/common.php');
-   include('../phpBB3/includes/functions_display.php');
-
-// Start phpbb3 session management
-   $user->session_begin();
-   $auth->acl($user->data);
-   
-session_start();
+require '../includes/auth_check.inc.php';
 $edit_row = $_REQUEST['edit_row'];
 
 
-$session_username = $user->data['username'];
+$session_username = $session_username;
 $userID = $_SESSION['user_ID'];
 include '../includes/dbconnect.inc.php';
 
 $Link = mysql_connect ($Host, $User, $Password); 
 
-if ($user->data['is_registered'])
+if ($is_logged_in)
 {
 # LOGIN OK
 $logged_in_var = "yes";
 
 }
-if (!$user->data['is_registered'])
+if (!$is_logged_in)
 {
 $logged_on = "no";
 $target_url_in = '/pages/add_video.php';

@@ -1,18 +1,6 @@
 <?PHP
-define('IN_PHPBB', true);
-$phpbb_root_path = '../phpBB3/';
-$phpEx = "php";
-$returnAddress ='../profile.php';
-   //including phpBB3 stuff   
-   include('../phpBB3/common.php');
-   include('../phpBB3/includes/functions_display.php');
-
-// Start phpbb3 session management
-   $user->session_begin();
-   $auth->acl($user->data);
-session_start();
-
-$session_username = $user->data['username'];
+require '../includes/auth_check.inc.php';
+$session_username = $session_username;
 
 
 #$userID = $_SESSION['user_ID'];
@@ -22,7 +10,7 @@ $session_username = $user->data['username'];
 #$Query = "SELECT * from auth_user WHERE (sesnID='$sessionID')";   #Add Yes logic
 #$Result = mysql_db_query ($DBName, $Query, $Link);
 #$Row = mysql_fetch_array ($Result);
-if ($user->data['is_registered'])
+if ($is_logged_in)
 {
 # LOGIN OK
 $logged_in_var = "yes";
@@ -54,7 +42,7 @@ include '../includes/dbconnect.inc.php';
 $Link = mysql_connect ($Host, $User, $Password); 
 
 #print_header($username);
-$uid= $user->data['user_id'];
+$uid= $_SESSION['user_id'];
 $Query = "SELECT u.username, u.bio, p.filename, p.caption, u.url, DATE_FORMAT(u.lastlogin, '%m/%e/%y'), (u.lastlogin>ADDDATE(NOW(), INTERVAL -3 MINUTE)) FROM auth_user AS u LEFT JOIN tb_pictures AS p ON u.picID=p.picID WHERE u.userID=$uid;";
 $Result = mysql_db_query ($DBName, $Query, $Link);
 $Row = mysql_fetch_array ($Result);

@@ -1,25 +1,9 @@
 <?php
-define('IN_PHPBB', true);
-$phpbb_root_path = '../phpBB3/';
-$phpEx = "php";
-$returnAddress ='../cycle_shows.php';
-   //including phpBB3 stuff   
- //  define('IN_PHPBB', true);
-   include('../phpBB3/common.php');
-   include('../phpBB3/includes/functions_display.php');
-
-// Start phpbb3 session management
-
-
-   $user->session_begin();
-   $auth->acl($user->data);
-   
-
-
-$username = $user->data['username'];
+require '../includes/auth_check.inc.php';
+$username = $session_username;
 
 //$session_userID = $_SESSION['user_ID'];
-$session_userID = $user->data['user_id'];
+$session_userID = $_SESSION['user_id'];
 
 include '../includes/dbconnect.inc.php';
 
@@ -34,14 +18,14 @@ include '../includes/dbconnect.inc.php';
 //$result = $stmt->get_result();
 //$Row = $result->fetch_array(MYSQLI_NUM);
 $request->enable_super_globals();
-if ($user->data['is_registered'])
+if ($is_logged_in)
 {
 # LOGIN OK
 $loginvar =  '<form align="center">
 <input type=button value="Add a Cycle Show" onClick="goToadd_link()">
 </form>';
 }
-if (!$user->data['is_registered'])
+if (!$is_logged_in)
 {
 $target_url_in = '/pages/cycle_shows.php';
 $_SESSION['target_url'] = "$target_url_in";

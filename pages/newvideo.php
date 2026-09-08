@@ -1,22 +1,6 @@
 <?php
-define('IN_PHPBB', true);
-$phpbb_root_path = '../phpBB3/';
-$phpEx = "php";
-$returnAddress ='../newvideo.php';
-   //including phpBB3 stuff   
-
-   include('../phpBB3/common.php');
-   include('../phpBB3/includes/functions_display.php');
-
-// Start phpbb3 session management
-   $user->session_begin();
-   $auth->acl($user->data);
-   
-
-session_start();
-
-$session_username = $user->data['username'];
-$showID = $user->date['showID'];
+require '../includes/auth_check.inc.php';
+$session_username = $session_username;
 //$SESSION['showID'] = $showID;
 
 include '../includes/dbconnect.inc.php';
@@ -25,12 +9,12 @@ $showID = $_REQUEST['edit_row'];
 $Link = mysql_connect ($Host, $User, $Password); 
 
 
-if ($user->data['is_registered'])
+if ($is_logged_in)
 {
 # LOGIN OK
 $logged_in_var = "yes";
 }
-if (!$user->data['is_registered'])
+if (!$is_logged_in)
 {
 $logged_on = "no";
 $target_url_in = '/pages/newvideo.php';

@@ -1,26 +1,14 @@
 <?php
-define('IN_PHPBB', true);
-$phpbb_root_path = '../phpBB3/';
-$phpEx = "php";
-$returnAddress ='../image_library_manufacturer.php';
-   //including phpBB3 stuff   
-  // define('IN_PHPBB', true);
-   include('../phpBB3/common.php');
-   include('../phpBB3/includes/functions_display.php');
-
-// Start phpbb3 session management
-   $user->session_begin();
-   $auth->acl($user->data);
-	session_start();
+//image_library_manufacturer.php
+require '../includes/auth_check.inc.php';
 	include '../includes/dbconnect.inc.php';
-	mysql_connect("$Host","$User","$Password");
-	mysql_select_db("$DBName") or die(mysql_error());  
+ 
 //CHECK LOGIN - PUT THIS CODE ON ALL PROTECTED PAGES
 $failed = 0;
-$session_temp_var=$_SESSION['sessionID'];
-$session_username = $user->data['username'];
-if ($user->data['is_registered']) {
-$Link = mysql_connect ($Host, $User, $Password);
+//$session_temp_var=$_SESSION['sessionID'];
+$session_username = $session_username ?? '0';
+if ($is_logged_in) {
+	$Link = mysqli_connect($Host, $User, $Password, $DBName) or die("Database connection failed");
 
 //Session doesn't exist
 
@@ -29,7 +17,7 @@ $Link = mysql_connect ($Host, $User, $Password);
 $logged_in_var = "yes";
 }
 
-if (!$user->data['is_registered'])
+if (!$is_logged_in)
 {
 $logged_on = "no";
 //No Session Variable
@@ -89,10 +77,10 @@ a:visited {
   </table>
 
     <?php
-	$manufacturer = $_REQUEST['manufacturer'];
+//	$manufacturer = $_REQUEST['manufacturer'];
 	
-$sort_field_url = $_REQUEST['sort_field'];  #URL Variable for which field will be sorted 
-$sort_field_order_url = $_REQUEST['sort_field_order'];	
+$sort_field_url = $_GET['sort_field'] ?? '0';  #URL Variable for which field will be sorted 
+$sort_field_order_url = $_GET['sort_field_order']?? '0';	
 	
 
 // Connecting, selecting database
@@ -122,16 +110,38 @@ if ($sort_field_order_url == "" or $sort_field_order_url == "ascending")
 }
 
 
-mysql_connect("$Host","$User","$Password");
-mysql_select_db("$DBName") or die(mysql_error());
 
 //$query = "(SELECT * FROM image_library_registry) UNION (Select before_after.row_id FROM before_after  $sort_field_in )";  #WHERE before_after.registration_row_id = image_library_registry.row_i           //
 	
-$query = "(SELECT DISTINCT r.username,r.manufacturer,r.model,r.year,r.row_id  FROM image_library_registry as r LEFT JOIN bike_pictures as b ON r.row_id = b.registry_row_id  where r.manufacturer = '$manufacturer' $sort_field_in )";	
+//$query = "(SELECT DISTINCT r.username,r.manufacturer,r.model,r.year,r.row_id  FROM image_library_registry as r LEFT JOIN bike_pictures as b ON r.row_id = b.registry_row_id  where r.manufacturer = '$manufacturer' $sort_field_in )";	
 
 
-$result = mysql_query($query) or die('Query failed: ' . mysql_error());
- $Link = mysql_connect ($Host, $User, $Password); 
+//$result = mysqli_query($query) or die('Query failed: ' . mysql_error());
+
+
+
+// Sanitize sort field to prevent SQL injection
+$allowed_sort_fields = ['username', 'manufacturer', 'model', 'year'];
+$sort_field = in_array($sort_field_in, $allowed_sort_fields) ? $sort_field_in : 'username'; // Default to 'username'
+
+$query = "SELECT DISTINCT r.username, r.manufacturer, r.model, r.year, r.row_id  
+          FROM image_library_registry AS r  
+          LEFT JOIN bike_pictures AS b ON r.row_id = b.registry_row_id  
+          WHERE r.manufacturer = ? 
+          ORDER BY r.$sort_field"; // Using the sanitized sort field
+
+$stmt = $Link->prepare($query);
+$stmt->bind_param("s", $manufacturer);
+$stmt->execute();
+$result = $stmt->get_result();
+
+
+
+
+
+
+
+
 // Printing results in HTML
 echo "<table width='100%' class='registry'>\n";
 
@@ -145,19 +155,20 @@ echo " <a href=image_library_manufacturer.php?sort_field=1&manufacturer=$manufac
 echo "<TH width='15%'><div align='left'><a href=image_library_manufacturer.php?sort_field=2&sort_field_order=$sort_field_order_url&manufacturer=$manufacturer>Model</a>";
 echo " <a href=image_library_manufacturer.php?sort_field=2&manufacturer=$manufacturer target='_self'></a></TH>";
 echo "<TH width='15%'><div align='left'>View</a>";
+$bgcolor = "";
+$fcolor = "";
 
-
-while ($Row = mysql_fetch_array($result))
+while ($Row = mysqli_fetch_assoc($result, MYSQLI_NUM))
 {
 if ($bgcolor == "BBBBBB") {$bgcolor = "777777";$fcolor="FFFFFF";}
 else {$bgcolor = "BBBBBB";$fcolor="000000";}
 
-$user_tab = $Row[0];
-$row_id_tab = $Row[4];
-$manufacturer_tab = $Row[1];
-$model_tab = $Row[2];
-$year_tab = $Row[3];
-$before_after_tab = $Row[5];
+$user_tab = $Row[0]?? '0';
+$row_id_tab = $Row[4]?? '0';
+$manufacturer_tab = $Row[1]?? '0';
+$model_tab = $Row[2]?? '0';
+$year_tab = $Row[3]?? '0';
+$before_after_tab = $Row[5]?? '0';
 
 
 #if ($model_tab_temp = $model_tab and $year_tab_temp = $year_tab and $manufacturer_tab_temp = $manufacturer_tab) 
@@ -170,12 +181,12 @@ echo "\t\t<td><font color=$fcolor>$model_tab</td>\n";
 
 if ( $logged_in_var == "yes")
 {
-echo "<td><a href=add_image_library_pics.php?edit_row=$row_id_tab>Add Pictures</a></td>\n";
+echo "<td><a href=add_image_library_pics.php?edit_row=" . htmlspecialchars($row_id_tab) . "'>Add Pictures</a></td>\n";
 }
 
 #if ($before_after_tab <> "")
 #{
-echo "<td><a href=image_library_pics.php?edit_row=$row_id_tab>View</a></td>\n";
+echo "<td><a href=image_library_pics.php?edit_row=" . htmlspecialchars($row_id_tab) . "'>View</a></td>\n";
      
 #}
 #else
@@ -198,10 +209,10 @@ echo "\t</tr>\n";
 echo "</table>\n";
 
 
-mysql_free_result($result);
+mysqli_free_result($result);
 
 // Closing connection
-#mysql_close($link);
+mysqli_close($Link);
 echo "<br>";
 include 'bottom_index_table.php';
 include '../includes/analytics.inc.php';

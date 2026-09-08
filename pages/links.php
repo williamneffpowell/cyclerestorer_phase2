@@ -2,17 +2,8 @@
 error_reporting(E_ALL);
 ini_set('display_errors', 1);
 
-//define('IN_PHPBB', true);  //Commented Out
-//$phpbb_root_path = '../phpBB3/'; //Commented Out
-//$phpEx = "php"; //Commented Out
-$returnAddress ='../links.php';
-    //including phpBB3 stuff    
-    //include('../phpBB3/common.php');  //Commented Out
-    //include('../phpBB3/includes/functions_display.php');  //Commented Out
-
-// Start phpbb3 session management
-    //$user->session_begin();  //Commented Out
-    //$auth->acl($user->data);  //Commented Out
+//require '../includes/auth_check.inc.php';
+//Commented Out
 //session_start();  // Removed redundant session start - Important:  Do NOT remove this, it is needed.
 // Removed session_start();
 $sort_field_in = "";

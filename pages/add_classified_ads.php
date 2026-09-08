@@ -1,31 +1,19 @@
 <?php
-define('IN_PHPBB', true);
-$phpbb_root_path = '../phpBB3/';
-$phpEx = "php";
-$returnAddress ='../add_classified_ads.php';
-   //including phpBB3 stuff   
-   include('../phpBB3/common.php');
-   include('../phpBB3/includes/functions_display.php');
-
-// Start phpbb3 session management
-   $user->session_begin();
-   $auth->acl($user->data);
-session_start();
+require '../includes/auth_check.inc.php';
 include '../includes/dbconnect.inc.php';
 mysql_connect("$Host","$User","$Password");
 mysql_select_db($DBName) or die(mysql_error());  
 //CHECK LOGIN - PUT THIS CODE ON ALL PROTECTED PAGES
-$session_username = $user->data['username'];
 $failed = 0;
 
-if ($user->data['is_registered'])
+if ($is_logged_in)
 {
 $logged_in = "yes";
 $login_var = "";
 print_html_add();
 
 }
-if (!$user->data['is_registered'])
+if (!$is_logged_in)
 {
 $target_url_in = '/pages/add_classified_ads.php';
 $_SESSION['target_url'] = "$target_url_in";
@@ -161,7 +149,6 @@ body {
 
 <?
 
-
 function print_html_add() {
 print '
 <form name=adform method="POST" onsubmit="return validate_form(this)">
@@ -223,14 +210,14 @@ print '
           <td><input type="text" name="model_fd"></td>
           <td>&nbsp;</td>
         </tr> 
-		      <tr>
+	      <tr>
           <td><div align="center"><strong>* Description</strong></div></td>
         
 		  <td align="center" width="50" height="5"><textarea name="description_fd" cols="40" rows="10"></textarea> </td>
          
           <td>&nbsp;</td>
         </tr>
-		        <tr>
+	        <tr>
           <td width="210"><div align="center"><strong>Price</div></td>
           <td width="148"><div align="center">
             <input type="text" name="price_fd">
@@ -271,7 +258,6 @@ print '
 </html>
 '; 
 }
-$session_username = $user->data['username'];
 $today = date("Y-m-d h:i:s");
  if ($_REQUEST['submit']) { 
  		$title=$_REQUEST['title_fd'];
@@ -287,8 +273,8 @@ $today = date("Y-m-d h:i:s");
 
 		$email=$_REQUEST['email_fd'];
 		$parts_bike=$_REQUEST['parts_bike'];
-$user_temp = $user->data['username'];
-$user_id_temp = $user->data['user_id'];
+$user_temp = $session_username;
+$user_id_temp = $_SESSION['user_id'];
 		
 mysql_connect("$Host","$User","$Password");
 mysql_select_db($DBName) or die(mysql_error());  

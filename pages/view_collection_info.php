@@ -1,18 +1,7 @@
 <?PHP
 //view_collection_info.php
 
-define('IN_PHPBB', true);
-$phpbb_root_path = '../phpBB3/';
-$phpEx = "php";
-$logged_in_var = "";
-$returnAddress = '../view_collection_info.php';
-//including phpBB3 stuff
-include('../phpBB3/common.php');
-include('../phpBB3/includes/functions_display.php');
-
-// Start phpbb3 session management
-$user->session_begin();
-$auth->acl($user->data);
+require '../includes/auth_check.inc.php';
 $request->enable_super_globals();
 session_start();
 //$sessionID = $_SESSION['sessionID'];  // Removed direct access, see below
@@ -78,7 +67,7 @@ $reg_picID = $_REQUEST['picID'] ?? '0';
 $reg_rowID = $_REQUEST['edit_row'] ?? '0';
 $_SESSION['reg_rowID'] = "$reg_rowID";
 #******************************************************************
-if ($user->data['is_registered']) {
+if ($is_logged_in) {
     $logged_in_var = "yes";
     # LOGIN OK
 }
@@ -173,7 +162,7 @@ If ($logged_in_var == "yes" and $userID == $reg_userID) { // Changed $userID to 
 <TR><TD>
 <?php
 ###########################################################
-//$session_username = $user->data['username']; // Removed
+//$session_username = $session_username; // Removed
 if (isset($_SESSION['username']) && $username == $_SESSION['username'] )
 {
 echo "<a href=edit_registry.php?edit_row=$reg_rowID&picID=$reg_picID>Edit Bike Registration</a>";

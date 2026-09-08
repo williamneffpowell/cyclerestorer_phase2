@@ -1,16 +1,5 @@
 <?PHP
-define('IN_PHPBB', true);
-$phpbb_root_path = '../phpBB3/';
-$phpEx = "php";
-$returnAddress ='../add_restoration_parts_entry.php';
-   //including phpBB3 stuff   
-
-   include('../phpBB3/common.php');
-   include('../phpBB3/includes/functions_display.php');
-
-// Start phpbb3 session management
-   $user->session_begin();
-   $auth->acl($user->data);
+require '../includes/auth_check.inc.php';
 //CHECK LOGIN - PUT THIS CODE ON ALL PROTECTED PAGES
 session_start();
 include '../includes/dbconnect.inc.php';
@@ -21,7 +10,7 @@ mysql_select_db($DBName) or die(mysql_error());
 #print "usernerm $username\n";
 //Session doesn't exist
 
-if ($user->data['is_registered'])
+if ($is_logged_in)
 {
 
 echo "<br>";
@@ -37,7 +26,7 @@ print_html_add();
 
 
 }
-if (!$user->data['is_registered'])
+if (!$is_logged_in)
 {
 $logged_on = "no";
 
@@ -226,7 +215,7 @@ echo '
 		$desired_cost=$_REQUEST['desired_cost_fd'];
 		$enter_date=date("Y-m-d h:i:s");
 		$wanted_purchased=$_REQUEST['wanted_purchased_fd'];
-$username = $user->data['username'];
+$username = $session_username;
 mysql_connect("$Host","$User","$Password");
 mysql_select_db($DBName) or die(mysql_error());
 $Link = mysql_connect ($Host, $User, $Password);

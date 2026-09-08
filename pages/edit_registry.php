@@ -1,17 +1,5 @@
 <?php
-define('IN_PHPBB', true);
-$phpbb_root_path = '../phpBB3/';
-$phpEx = "php";
-$returnAddress ='../edit_registry.php';
-   //including phpBB3 stuff   
-
-   include('../phpBB3/common.php');
-   include('../phpBB3/includes/functions_display.php');
-
-// Start phpbb3 session management
-   $user->session_begin();
-   $auth->acl($user->data);
-   
+require '../includes/auth_check.inc.php';
 //CHECK LOGIN - PUT THIS CODE ON ALL PROTECTED PAGES
 session_start();
 
@@ -22,16 +10,16 @@ include '../includes/dbconnect.inc.php';
 
 //if ($session_temp_var <> "") {
 $Link = mysql_connect ($Host, $User, $Password);
-$session_username = $user->data['username'];
+$session_username = $session_username;
 $failed = 0;
 $session_temp_var=$_SESSION['sessionID'];
-if ($user->data['is_registered'])
+if ($is_logged_in)
 {
-$username = $user->data['username'];
+$username = $session_username;
 $logged_on = "yes";
 //Session doesn't exist
 }
-if (!$user->data['is_registered'])
+if (!$is_logged_in)
 {
 $logged_on = "no";
 }
