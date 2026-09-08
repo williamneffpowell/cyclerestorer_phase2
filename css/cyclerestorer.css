@@ -1,0 +1,262 @@
+body {
+	padding:0;
+	margin:0;
+	color:#993333;
+	background-color: #CCCCCC;
+	font-size: 6px ;
+	line-height: 150%;
+	border: 0;
+	border-top: 0;
+	margin: 0;
+	padding: 0; 
+	font-family: Verdana, Arial, Helvetica, sans-serif;
+}
+/* Increase font size for login form fields */
+input[type="text"],
+input[type="password"] {
+  font-size: 18px; /* Adjust the size as needed */
+  padding: 10px; /* Adjust padding for better visual appearance */
+}
+
+/* You might also want to adjust the labels for better alignment */
+div align="center" table td {
+  font-size: 16px; /* Adjust label size if needed */
+}
+table.index 
+{text-align: center;
+font-family: Verdana, Geneva, Arial, Helvetica, sans-serif ;
+font-weight: normal;
+font-size: 14px;
+
+}
+/* 
+border-collapse: collapse;
+border-spacing: 0px;}
+*/
+td.cat {
+	background-color: #F8E9C7;
+	text-align: center;
+	font-size: 10px;
+	font-weight: bold;
+ a:visited { color: rgb(204, 204, 204) } /* for visited links */ 
+ a:hover { color: rgb(0, 96, 255) } /* when mouse is over link */ 
+  a:active { color: rgb(255, 0, 102) } /* when link is clicked */
+}
+
+
+br{
+	font-size:8px;
+	color: #0A246A;
+}
+
+h1 {
+	font-size: 50px;
+	font-weight: bold;
+	color: #993333;
+	font-family: Verdana, Arial, Helvetica, sans-serif;
+}
+h2 {
+	font-family: Verdana, Arial, Helvetica, sans-serif;
+	font-size: 14px;
+	font-weight: bold;
+	color: #993333;
+}
+table.journal
+{
+text-align: left;
+margin-left: auto;
+margin-right: auto;
+font-family: Verdana, Geneva, Arial, Helvetica, sans-serif ;
+background-color: ;
+color: #993333;
+font-weight: normal;
+font-size: 10px;
+width: 700px;
+border: 1px;
+/*border-collapse: collapse;*/
+/*border-spacing: 0px; */
+
+  :link { color:black }  /* for unvisited links */
+A:link {text-decoration:color: rgb(204, 204, 204)}
+A:visited {text-decoration: color: rgb(0, 96, 255)}
+A:active {text-decoration: color: rgb(255, 0, 102)}
+A:hover { text-decoration: color: red }
+
+}
+
+table.links
+{
+
+margin-left: auto;
+margin-right: auto;
+font-family: Verdana, Geneva, Arial, Helvetica, sans-serif ;
+background-color: #666;
+color: #fff;
+font-weight: normal;
+font-size: 11px;
+width: 700px;
+border: 0px;
+border-collapse: collapse;
+border-spacing: 0px;
+
+  :link { color:black }  /* for unvisited links */
+A:link {text-decoration:color: rgb(204, 204, 204)}
+A:visited {text-decoration: color: rgb(0, 96, 255)}
+A:active {text-decoration: color: rgb(255, 0, 102)}
+A:hover { text-decoration: color: red }
+
+}
+
+.box {
+
+border:2px 
+#79888E solid;
+font-family:sans-serif;
+font-size:100%;
+
+}
+
+.box A
+{
+font-family:sans-serif;
+font-size:100%;
+}
+
+
+table.links td 
+{
+
+padding: 4px;
+text-align: left;
+border: 1px #fff solid;
+}
+
+table.links td.hed
+{background-color: #666;
+color: #fff;
+padding: 4px;
+width: 700px;
+text-align: left;
+font-size: 12px;
+font-weight: bold;} 
+
+table.classified 
+{
+margin-left: auto;
+margin-right: auto;
+font-family: Verdana, Geneva, Arial, Helvetica, sans-serif ;
+background-color: #666;
+color: #fff;
+font-weight: normal;
+font-size: 11px;
+width: 800px;
+border: 0px;
+border-collapse: collapse;
+border-spacing: 0px;
+}
+
+table.classified td 
+{
+
+padding: 4px;
+text-align: left;
+border: 1px #fff solid;}
+
+table.classified td.hed
+{background-color: #666;
+color: #fff;
+padding: 4px;
+width: 700px;
+text-align: left;
+font-size: 12px;
+font-weight: bold;} 
+
+table.registryhome 
+{text-align: center;
+font-family: Verdana, Geneva, Arial, Helvetica, sans-serif ;
+background-color: #777;
+color: #fff;
+font-weight: normal;
+font-size: 11px;
+width: 10%;
+border: 0px;
+border-collapse: collapse;
+border-spacing: 0px;
+}
+table.serialnumberreference 
+{text-align: center;
+font-family: Verdana, Geneva, Arial, Helvetica, sans-serif ;
+background-color: #777;
+color: #fff;
+font-weight: normal;
+font-size: 13px;
+width: 10%;
+border: 0px;
+th: {font-size: 14px text-align:center;}
+border-collapse: collapse;
+border-spacing: 0px;
+}
+table.registry 
+{text-align: center;
+font-family: Verdana, Geneva, Arial, Helvetica, sans-serif ;
+background-color: #666;
+color: #fff;
+font-weight: normal;
+font-size: 11px;
+width: 50%;
+border: 0px;
+border-collapse: collapse;
+border-spacing: 0px;
+  :link { color:black }  /* for unvisited links */
+A:link {text-decoration:color: rgb(204, 204, 204)}
+A:visited {text-decoration: color: rgb(0, 96, 255)}
+A:active {text-decoration: color: rgb(255, 255, 255)}
+A:hover { text-decoration: color: red }
+
+}
+
+table.registry td 
+{
+
+padding: 4px;
+text-align: left;
+border: 1px #fff solid;}
+
+table.registry td.hed
+{background-color: #BBB;
+color: #fff;
+padding: 4px;
+text-align: left;
+font-size: 12px;
+font-weight: bold;} 
+
+table.discussion
+{ 
+margin-left: auto;
+margin-right: auto;
+font-family: Verdana, Geneva, Arial, Helvetica, sans-serif ;
+font-weight: normal;
+font-size: 11px;
+width: 90%;
+border: 0px;
+border-collapse: collapse;
+border-spacing: 0px;
+}
+
+table.discussion td 
+{
+margin-left: auto;
+margin-right: auto;
+padding: 1px;
+text-align: center;
+border: 1px #fff solid;}
+
+table.discussion td.hed
+{background-color: #666;
+margin-left: auto;
+margin-right: auto;
+color: #fff;
+padding: 4px;
+text-align: left;
+font-size: 12px;
+font-weight: bold;} 

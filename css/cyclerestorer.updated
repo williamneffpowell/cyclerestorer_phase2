@@ -1,0 +1,207 @@
+body {padding:0;
+	margin:0;
+	color:#993333;
+	background-color: #CCCCCC;
+	background-image: none;
+	font-size: 6px ;
+	line-height: 150%;
+	border: 0;
+	border-top: 0;
+	margin: 0;
+	padding: 0; 
+	font-family: Verdana, Arial, Helvetica, sans-serif;}
+
+table.index 
+{text-align: center;
+font-family: Verdana, Geneva, Arial, Helvetica, sans-serif ;
+font-weight: normal;
+font-size: 14px;}
+
+/*border-collapse: collapse;
+border-spacing: 0px;} */
+
+td.cat {background-color: #F8E9C7;
+	background-image: none;
+	text-align: center;
+	font-size: 10px;
+	font-weight: bold;
+/*  :visited { color: rgb(204, 204, 204) } /* for visited links */ 
+  a:active { color: rgb(255, 0, 102) } /* when link is clicked */
+  a:hover { color: rgb(0, 96, 255) } /* when mouse is over link */
+
+
+
+br{font-size:8px;
+	color: #0A246A;}
+	
+.gray_tnr_12{color:#6E6E6E; }
+
+
+ .Wh_TNR_Large {color: #993333;
+	font-weight: bold;
+	font-size: 8px;}
+	
+.wh_tnr_12 {color: #993333}
+.Bk_TNR_12pt {color: #333333}
+.style2 .BK_12pt_bld style2 {
+	font-family: Verdana, Arial, Helvetica, sans-serif;
+	font-size: 16px;
+	font-weight: bold;}
+	
+
+.BK_12pt_bld {color: #000000;
+	font-weight: bold;}
+	
+.Wh_bold_tnr {font-family: Verdana, Arial, Helvetica, sans-serif;
+	font-weight: bold;
+	color: #993333;}
+	
+.bk_sm_tnr {	font-size: small;
+	color: #993333;}
+	
+.Wh_tnr_xxsm {font-size: 6px;}
+
+.gray_tnr_9 {font-family: Verdana, Arial, Helvetica, sans-serif;
+	font-size: 9px;
+	font-style: normal;
+	line-height: normal;}
+
+h1 {	font-size: 50px;
+	font-weight: bold;
+	color: #993333;
+	font-family: Verdana, Arial, Helvetica, sans-serif;}
+	
+h2 {	font-family: Verdana, Arial, Helvetica, sans-serif;
+	font-size: 14px;
+	font-weight: bold;
+	color: #993333;}
+	
+table.links
+{margin-left: auto;
+margin-right: auto;
+font-family: Verdana, Geneva, Arial, Helvetica, sans-serif ;
+background-color: #666;
+background-image: none;
+color: #fff;
+font-weight: normal;
+font-size: 11px;
+width: 700px;
+border: 0px;
+border-collapse: collapse;
+border-spacing: 0px;
+  :link { color:black; }  /* for unvisited links */
+  /* :visited { color: rgb(204, 204, 204) } /* for visited links */
+  a:active { color: rgb(255, 0, 102)}  /* when link is clicked */
+  a:hover { color: rgb(0, 96, 255) } }/* when mouse is over link */
+ 
+
+.box {border:2px 
+#79888E solid;
+font-family:sans-serif;
+font-size:100%;}
+
+.box A
+{font-family:sans-serif;
+font-size:100%;}
+
+
+table.links td 
+{padding: 4px;
+text-align: left;
+border: 1px #fff solid;}
+
+table.links td.hed
+{background-color: #666;
+background-image: none;
+color: #fff;
+padding: 4px;
+width: 700px;
+text-align: left;
+font-size: 12px;
+font-weight: bold;} 
+
+table.classified 
+{margin-left: auto;
+margin-right: auto;
+font-family: Verdana, Geneva, Arial, Helvetica, sans-serif ;
+background-color: #666;
+background-image: none;
+color: #fff;
+font-weight: normal;
+font-size: 11px;
+width: 800px;
+border: 0px;
+border-collapse: collapse;
+border-spacing: 0px;
+}
+
+table.classified td 
+{padding: 4px;
+text-align: left;
+border: 1px #fff solid;}
+
+table.classified td.hed
+{background-color: #666;
+background-image: none;
+color: #fff;
+padding: 4px;
+width: 700px;
+text-align: left;
+font-size: 12px;
+font-weight: bold;} 
+
+table.registry 
+{text-align: center;
+font-family: Verdana, Geneva, Arial, Helvetica, sans-serif ;
+background-color: #666;
+background-image: none;
+color: #fff;
+font-weight: normal;
+font-size: 11px;
+width: 400px;
+border: 0px;
+border-collapse: collapse;
+border-spacing: 0px;}
+
+table.registry td 
+{padding: 4px;
+text-align: left;
+border: 1px #fff solid;}
+
+table.registry td.hed
+{background-color: #666;
+background-image: none;
+color: #fff;
+padding: 4px;
+text-align: left;
+font-size: 12px;
+font-weight: bold;} 
+
+table.discussion
+{margin-left: auto;
+margin-right: auto;
+font-family: Verdana, Geneva, Arial, Helvetica, sans-serif ;
+font-weight: normal;
+font-size: 11px;
+width: 90%;
+border: 0px;
+border-collapse: collapse;
+border-spacing: 0px;}
+
+table.discussion td 
+{margin-left: auto;
+margin-right: auto;
+padding: 1px;
+text-align: center;
+border: 1px #fff solid;}
+
+table.discussion td.hed
+{background-color: #666;
+background-image: none;
+margin-left: auto;
+margin-right: auto;
+color: #fff;
+padding: 4px;
+text-align: left;
+font-size: 12px;
+font-weight: bold;} 

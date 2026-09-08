@@ -1,0 +1,198 @@
+Cyclerestorer requirements: 
+
+*********************************************************************************************
+MAKE SITE MORE MODULAR so that an easy switch can be made to all restorer sites. 
+
+
+
+%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%
+
+EDIT USER INFORMATION PAGE
+
+ make it re-check e-mail. 
+
+#################################################################################################
+USER REGISTRATION
+
+Add City State Address as optional, Actually, add signup page 2
+
+Bring in the second page to add the image.
+
+########################################################################################################
+CLASSIFIED ADS PAGE	
+
+"Click on Username to contact seller" Is too small. 
+
+It is flagging description as being empty when it is not empty. 
+
+Make the alternate text apear "Email lister about ad". Also more information about how the page works, 
+limits, terms, responsibility, etc. 
+
+Make the parts page better, make it have the ability to upload an image of the part. Make policies like
+craigslist. 
+
+The sorting is screwing up because the variable values are not sequential and not catching dupes. 
+
+The username is not going to the sent-to database when an e-mail goes out....
+
+The Add Classified Ad page is not showing the site default scheme, maybe css not getting populated. 
+
+Add the YEAR to the information obtained and printed out. 
+
+Use the More section. 
+
+Make the photos go in table order and make the comments about the photos alternate text. 
+
+####################################################################################################
+MYACCOUNT
+
+http://www.cyclerestorer.com/pages/announcement.php send announcement is not working. 
+
+Try to allow the user to decide whether or not they want to send and receive messages. 
+
+
+#####################################################################################################
+CONTACTS
+
+Adding yourself as a friend should not work and spawn an e-mail to yourself. 
+
+Logins can't happen from any page when logging in from an e-mail. 
+
+What about the delete_friends page? Where is it?
+
+####################################################################################################
+
+ADD A BEFORE AFTER IS TOTALY HOSED
+
+Make it editable. 
+
+It should be optional to take information from Before and after or whether or not the bike should be
+registered. 
+
+The edit of journal entry does not change description field. 
+
+Add a to-do or done category. 
+
+###################################################################################################
+FAIR MARKET VALUE PAGE
+
+This should be created to help people evaluate bike values based on real sale values. A comment field
+should be added for each bike. DATE, LOCATION, MAKE, MODEL, YEAR. PURCHASE or a BUY. CONDITION drop 
+down. Auction, Private sale, Dealer, other. 
+
+###################################################################################################
+
+MEMBER COLLECTION
+
+Create the ability for a member to add their bike image when initially entering their contact information. 
+Somehow do that. Stupid that they have to go back and edit to add an image. 
+
+
+##############################################################################################
+
+RESTORATION TECHNIQUES PAGE
+
+Allow comments and additional notes.
+
+###################################################################################################
+
+LINKS PAGE
+
+Make links reviewable before allowing them to get posted. Or just e-mail the fact that a link has been 
+added to the administrator.
+
+Links page in Firefox is not showing the borders.
+
+Make the link itself an image and put the link as alternate text when they mouse over. 
+
+Limit the length of the description.
+
+###################################################################################################
+BIKE REGISTRATION PAGE
+
+Do you want a serial number or not? The edit field for library has a serial number, listing does not....
+
+Fonts are screwy in firefox
+
+When they delete a bike, have pop-up if they sold the bike and ask them to enter an entry in the bike
+ valuation page? Ask them to put in fair value, not a price for selling to a friend.
+########################################################################################################
+BIKE BEFORE AFTER PICS
+
+Allow users to Edit their content and pics. 
+
+Allow people to email you about your bike from the restoration Pics page. 
+
+Put in a bike valuation? 
+
+Purchase price and purchase date? 
+
+Make a report available in txt and pdf form? 
+**********************************************************************************************************
+FORUM PAGE
+
+Re-arrange the date output toe dd/mm/yyyy instead of the unreadable thing showing now. 
+
+Shrink Fonts on forum.
+
+#########################################################################################################
+SERIAL NUMBER REGISTRATION
+
+Fix the Serial Number Registration so that it  is editable. 
+
+Add a comment Field.
+
+Serial Number Registry serial numbers should be varchar 30
+
+################################################################################
+DISCUSSION PAGE
+
+Make the fonts smaller and connect it to the CSS stylsheet.
+
+########################################################################################
+IMAGE LIBRARY
+ 
+
+IMAGE_LIBRARY_PICS.php is faulty, after you log in from the page it shoots you back to a different
+row.
+
+Make initial image on the upload come onto the index page. Or, make that optional. 
+
+Increase the resolution of the image upload. 
+
+Get rid of the add link and make it a button.
+
+Make it flag a duplacate on Manufacturer, Model, and Year. 
+
+Make the image library editable by the administrator (me).
+
+
+########################################################################################## 
+MEMBER COLLECTION
+
+Firefox is not showing the proper fonts.
+
+
+##########################################################################################
+
+
+MAKE A BIKE VALUATION PAGE
+
+  Manufacturer
+  Model
+  Year
+  Condition
+  Selling or Buying Price
+  Comments
+  Date of Transaction
+  Username
+  Location
+  
+  Have it graph the value.
+  
+Have it average similar Manufacturer Model Year if there are multiple entries. 
+
+######################################################################################################
+Figure out a policy agreement
+
+###################################################################################################3

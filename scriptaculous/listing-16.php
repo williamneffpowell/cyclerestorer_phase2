@@ -1,0 +1,1 @@
+Sortable.create('movies_list', { onUpdate : updateOrder });

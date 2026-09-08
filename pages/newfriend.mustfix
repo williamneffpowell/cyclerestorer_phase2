@@ -1,0 +1,205 @@
+<?PHP
+session_start();
+$sessionID = $_SESSION['sessionID'];
+$session_username = $_SESSION['user_name'];
+$userID = $_SESSION['user_ID'];
+include '../includes/dbconnect.inc.php';
+
+$Link = mysql_connect ($Host, $User, $Password); 
+$Query = "SELECT * from auth_user WHERE (sesnID='$sessionID')";   #Add Yes logic
+$Result = mysql_db_query ($DBName, $Query, $Link);
+$Row = mysql_fetch_array ($Result);
+if ($Row[0] <> "")
+{
+# LOGIN OK
+$logged_in_var = "yes";
+
+}
+else
+{
+$logged_on = "no";
+$target_url_in = 'pages/newfriend.php';
+$_SESSION['target_url'] = "$target_url_in";
+$target_url_goto= $_SESSION['target_url'];
+
+}
+########################################################################################################
+#             End of Login
+########################################################################################################
+
+
+include('functions.php');
+
+#if (checklogin($userID, "newfriend.php?uid=$uid&src=$src")) {
+
+
+if ($uid <> "") {
+
+if ($src == 1) {$target = "myaccount.php";}
+elseif ($src == 2) {$target = "profile.php?uid=$uid";}
+elseif ($src == 3) {$target = "messages.php";}
+
+else {$target = "myaccount.php";}
+
+$Query = "SELECT username, email FROM auth_user WHERE userID=$uid";
+$Result = mysql_db_query ($DBName, $Query, $Link);
+$Row = mysql_fetch_array ($Result);
+$alias = $Row[0];
+$email = $Row[1];
+
+// DID YOU REQUEST ME TO BE YOUR FRIEND?
+
+$Query = "SELECT * FROM tb_friend_pending WHERE requestorID=$uid AND friendID=$userID;";
+$Result = mysql_db_query ($DBName, $Query, $Link);
+$Row = mysql_fetch_array ($Result);
+
+// INSERT FRIENDS 
+if ($Row[0] <> "") {
+	$Query = "DELETE FROM friend_pending WHERE friendID=$userID AND requestorID=$uid";
+	$Result = mysql_db_query ($DBName, $Query, $Link);
+	$Query = "INSERT into friends VALUES ($userID, $uid)";
+	$Result = mysql_db_query ($DBName, $Query, $Link);
+	$Query = "INSERT into friends VALUES ($uid, $userID)";
+	$Result = mysql_db_query ($DBName, $Query, $Link);
+	$Query = "UPDATE auth_user SET friends=(friends+1) WHERE userID=$userID";
+	$Result = mysql_db_query ($DBName, $Query, $Link);
+	$Query = "UPDATE auth_user SET friends=(friends+1) WHERE userID=$uid";
+	$Result = mysql_db_query ($DBName, $Query, $Link);
+
+	$message = ("
+	$alias,
+	<BR><BR>
+	$alias has added you as a contact.
+	<BR><BR>
+	Very Best, Webmaster
+	");
+
+	$headers = "MIME-Version: 1.0\r\n"; 
+	$headers .= "Content-type: text/html;"; 
+
+	mail( "$email", "New Contact",
+	$message, "Return-path: webmaster@cyclerestorer.com\nFrom: webmaster@cyclerestorer.com\n$headers" );
+
+
+
+	#print_header($username);
+	print ("<BR><CENTER>");
+	#echo show_ad(1);
+	print ("</CENTER>");
+
+	print ("
+	<BR>
+	<H2 align=center>$alias has been added to your contacts!</H2>
+	<HR>
+	<CENTER><A HREF=$target>click here to continue</A></CENTER>
+	<BR>
+	");
+
+#print_footer($username);
+}
+// INSERT PENDING 
+else 
+{
+
+
+//CHECK IF ALREADY FRIENDS
+
+$Query = "SELECT * FROM friends WHERE friendID=$uid AND userID=$userID;";
+$Result = mysql_db_query ($DBName, $Query, $Link);
+$Row = mysql_fetch_array ($Result);
+
+
+
+if ($Row[0] == "") 
+{
+	$Query = "INSERT into tb_friend_pending VALUES ($userID, $uid)";
+	$Result = mysql_db_query ($DBName, $Query, $Link);
+
+	$message = ("
+	$alias,
+	<BR><BR>
+	$alias would like to have you as a contact. You can either add $alias as a contact or delete this request by logging in to your account.
+	
+	Login and go to Myaccount. Then click on Contact Requests. 
+	<BR><BR>
+
+	<A HREF=http://cyclerestorer.com> Cyclerestorer Home Page </A>
+	<BR><BR>
+	Very Best, Webmaster
+	");
+
+
+	$headers = "MIME-Version: 1.0\r\n"; 
+	$headers .= "Content-type: text/html;"; 
+
+
+	mail( "$email", "New Contact Request",
+	$message, "Return-path: webmaster@cyclerestorer.com\nFrom: webmaster@cyclerestorer.com\n$headers" );
+
+
+	#print_header($username);
+	print ("<BR><CENTER>");
+	#echo show_ad(1);
+	print ("</CENTER>");
+
+	print ("
+	<BR>
+	<H2 align=center>A contact request has been sent to $alias</H2>
+	<HR>
+	<H3 align=center>You will not become a contact until $alias approves you</H3>
+	<CENTER><A HREF=$target>click here to continue</A></CENTER>
+	<BR>
+	");
+
+#print_footer($username);
+
+
+
+}
+
+
+else 
+{
+
+
+#print_header($username);
+	print ("<BR><CENTER>");
+#echo show_ad(1);
+	print ("</CENTER>");
+
+	print ("
+	<BR>
+	<H2 align=center>This user is already your contact</H2>
+	<HR>
+	<CENTER><A HREF=$target>click here to continue</A></CENTER>
+	<BR>
+	");
+
+#print_footer($username);
+
+
+}
+
+}
+
+
+
+
+
+}
+else {print ("incomplete form");}
+
+
+
+
+
+
+
+
+
+mysql_close ($Link);
+
+// END CHECK LOGIN
+#}
+
+?>

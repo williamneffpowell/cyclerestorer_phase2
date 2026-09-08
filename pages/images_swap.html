@@ -1,0 +1,24 @@
+<HTML>
+<HEAD>
+<SCRIPT LANGUAGE=JavaScript>
+intImage = 2;
+function swapImage() {
+switch (intImage) { 
+case 1: 
+  IMG1.src = "http://www.cyclerestorer.com/Images/on_button.jpg"   
+  intImage = 2   
+  return(false);
+  case 2: 
+    IMG1.src = "http://www.cyclerestorer.com/Images/off_switch.jpg"   
+	intImage = 1   
+	return(false); 
+	}
+	}
+	</SCRIPT>
+	</HEAD>
+	<BODY>
+	<IMG id="IMG1" name="IMG1" src="http://www.cyclerestorer.com/Images/off_switch.jpg"  
+	onclick="swapImage();"
+	></BODY>
+	</HTML>
+

@@ -1,0 +1,23 @@
+Cyclerestorer requirements: 
+
+
+
+Registration: 
+
+When someone registers, if there is a duplicate username, the popup message 
+comes up saying as much. Put a “Back” button on so they don’t lose their input. 
+
+Change color to new background color on index page. 
+
+edit_registry.php has a highlighted yellow header with no content. 
+
+Fix ? mark on the discussion page. Fix discussion page altogether.....
+
+Fix the add_restoration_pics.php, it is very boring, possibly add the time recordings
+into that. 
+
+On the before and after page add a link to the before after page for the bike if there is a
+an entry. 
+
+Fix the libray page so that every column sorts, even when logged in. 
+ 

@@ -1,0 +1,45 @@
+# Secrets / credentials
+**/dbconnect.inc.php
+includes/secrets.inc.php
+javascript/includes/pages.old/
+javascript/includes/includes.old/
+pages/insertberforeafter.php
+
+# User-uploaded content (data, not code)
+Images/
+userpics/
+userthumbs/
+thumbs/
+image_upload/
+image_library_upload/
+classified_ad_image_upload/
+randomimages/
+registrythumbs/
+regsitrypics/
+pages/uploaded_files/
+
+# Forum being removed
+phpBB3/
+phpBB3_10_24_2015_update_attempt/
+phpBB3_newest_copy/
+phpBB3_running_but_not_well_10_24_2015/
+phpBB3_upgrade_attemp/
+
+# Cruft / leftovers
+login.old
+temp.html
+temp.php
+temp2.php
+tempdir/
+tempdir_temp_delete_soon/
+pages/tempdir_OLD_BLOW_AWAY_SOON/
+phptest-*
+backup/
+photo_test/
+
+# Logs
+error_log
+*.log
+
+# Scratch files created during cleanup
+password_check.txt
