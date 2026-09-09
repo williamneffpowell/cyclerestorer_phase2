@@ -10,8 +10,8 @@ $session_username = "";
 session_start();
 $sessionId = $_SESSION['SESSION_ID']??'0'; 
 
+$session_username = $_REQUEST['username'] ?? '';
 
-$session_username = request_var('username', '', 'string');
 
 include '../includes/dbconnect.inc.php';
 
