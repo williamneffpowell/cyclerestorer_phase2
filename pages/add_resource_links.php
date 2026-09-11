@@ -1,8 +1,7 @@
 <?php
 require '../includes/auth_check.inc.php';
 include '../includes/dbconnect.inc.php';
-mysql_connect("$Host","$User","$Password");
-mysql_select_db($DBName) or die(mysql_error());  
+mysqli_connect("$Host","$User","$Password","$DBName");
 //CHECK LOGIN - PUT THIS CODE ON ALL PROTECTED PAGES
 
 if ($is_logged_in)
@@ -48,7 +47,7 @@ body {
 
 </head>
 <body>
-<?
+<?php
 //END CHECK LOGIN
 #print "usernameagain $username\n";
 function print_html_add() {
@@ -153,15 +152,14 @@ $today = date("Y-m-d h:i:s");
 $session_username = $session_username;		
 
 
-mysql_connect("$Host","$User","$Password");
-mysql_select_db($DBName) or die(mysql_error());  
-$Link = mysql_connect ($Host, $User, $Password);		 
+mysqli_connect("$Host","$User","$Password","$DBName");
+$Link = mysqli_connect($Host, $User, $Password, $DBName);		 
 		 
 		 $Query2 ="INSERT INTO resource_links(date_entered,manufacturer,resource_name,link_comment,html_link,link_rating,username,model,type)  VALUES ('$today','$manufacturer','$link_name','$link_comment','$html_link','$link_rating','$session_username','$model','$type')"; 
 			#print "user_var = $user_var\n";  
 		#print " Query $query \n";
 
-	$result=mysql_query($Query2) or die(mysql_error());
+	$result=mysqli_query($Link, $Query2) or die(mysqli_error($Link));
 		
 
 		
@@ -175,7 +173,7 @@ $Link = mysql_connect ($Host, $User, $Password);
 		  else 
 		  {
 		  echo "<b>ERROR: unable to post.</b>"; 
-		  mysql_close ($Link);
+		  mysqli_close($Link);
 		  }
 	    } 
 		

@@ -4,10 +4,10 @@ $sessionID = $_SESSION['sessionID'];
 $session_username = $_SESSION['user_name'];
 
 include '../includes/dbconnect.inc.php';
-$Link = mysql_connect ($Host, $User, $Password); 
+$Link = mysqli_connect($Host, $User, $Password, $DBName); 
 $Query = "SELECT * from auth_user WHERE (sesnID='$sessionID')";   #Add Yes logic
-$Result = mysql_db_query ($DBName, $Query, $Link);
-$Row = mysql_fetch_array ($Result);
+$Result = mysqli_query($Link, $Query);
+$Row = mysqli_fetch_array($Result);
 if ($is_logged_in)
 {
 # LOGIN OK
@@ -73,7 +73,7 @@ echo "<br>";
 
 
 // Closing connection
-#mysql_close($link);
+#mysqli_close($link);
 include 'bottom_index_table.php';
 include '../includes/analytics.inc.php';
 ?>

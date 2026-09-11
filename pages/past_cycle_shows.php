@@ -5,7 +5,7 @@ $username = $session_username;
 
 include '../includes/dbconnect.inc.php';
 
-$Link = mysql_connect ($Host, $User, $Password); 
+$Link = mysqli_connect($Host, $User, $Password, $DBName); 
 
 if ($is_logged_in)
 {
@@ -98,15 +98,14 @@ if ($sort_field_order_url == "" or $sort_field_order_url == "ascending")
 
 
 
-mysql_connect("$Host","$User","$Password");
-mysql_select_db("$DBName") or die(mysql_error());
+mysqli_connect("$Host","$User","$Password","$DBName");
 $today = date("Y-m-d");
 
 // Performing SQL query
 $query = "SELECT * FROM cycle_shows ";
 #print "$query\n";
-$result = mysql_query($query) or die('Query failed: ' . mysql_error());
- $Link = mysql_connect ($Host, $User, $Password); 
+$result = mysqli_query($Link, $query) or die('Query failed: ' . mysqli_error($Link));
+ $Link = mysqli_connect($Host, $User, $Password, $DBName); 
 // Printing results in HTML
 echo "<table width=80% align='center'  class='classified' cellspacing='0'>\n";
 echo "<TH width='10%'><div align='left'>Show Name<a href=cycle_shows.php?sort_field=5&sort_field_order=$sort_field_order_url></TH>";
@@ -129,7 +128,7 @@ if (($userID_tab == session_userID) and ($Row[1] <> ""))
 
 
 
-while ($Row = mysql_fetch_array($result))
+while ($Row = mysqli_fetch_array($result))
 {
 	if ($bgcolor == "BBBBBB") 
 	{
@@ -205,9 +204,9 @@ echo "</table>\n";
 echo "<br>";
 print "<table align='center'><tr><td>$loginvar</td></tr></table>";
 
-mysql_free_result($result);
+mysqli_free_result($result);
 // Closing connection
-#mysql_close($link);
+#mysqli_close($link);
 include 'bottom_index_table.php';
 include '../includes/analytics.inc.php';
 ?>

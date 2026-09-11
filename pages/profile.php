@@ -1,4 +1,4 @@
-<?PHP
+<?php
 require '../includes/auth_check.inc.php';
 $session_username = $session_username;
 
@@ -6,10 +6,10 @@ $session_username = $session_username;
 #$userID = $_SESSION['user_ID'];
 #include '../includes/dbconnect.inc.php';
 
-#$Link = mysql_connect ($Host, $User, $Password); 
+#$Link = mysqli_connect($Host, $User, $Password, $DBName); 
 #$Query = "SELECT * from auth_user WHERE (sesnID='$sessionID')";   #Add Yes logic
-#$Result = mysql_db_query ($DBName, $Query, $Link);
-#$Row = mysql_fetch_array ($Result);
+#$Result = mysqli_query($Link, $Query);
+#$Row = mysqli_fetch_array($Result);
 if ($is_logged_in)
 {
 # LOGIN OK
@@ -39,13 +39,13 @@ include('functions.php');
 
 include '../includes/dbconnect.inc.php';
 
-$Link = mysql_connect ($Host, $User, $Password); 
+$Link = mysqli_connect($Host, $User, $Password, $DBName); 
 
 #print_header($username);
 $uid= $_SESSION['user_id'];
 $Query = "SELECT u.username, u.bio, p.filename, p.caption, u.url, DATE_FORMAT(u.lastlogin, '%m/%e/%y'), (u.lastlogin>ADDDATE(NOW(), INTERVAL -3 MINUTE)) FROM auth_user AS u LEFT JOIN tb_pictures AS p ON u.picID=p.picID WHERE u.userID=$uid;";
-$Result = mysql_db_query ($DBName, $Query, $Link);
-$Row = mysql_fetch_array ($Result);
+$Result = mysqli_query($Link, $Query);
+$Row = mysqli_fetch_array($Result);
 
 $alias = $Row[0];
 $bio = $Row[1];
@@ -61,9 +61,9 @@ $online = $Row[6];
 
 
 <BR>
-<H2 align=center><?echo $alias;?></H2>
+<H2 align=center><?php echo $alias;?></H2>
 
-<?
+<?php
 if ($uid == $userID) {print ("<H3 ALIGN=CENTER><A HREF=edit_user_info.php><FONT COLOR=79888E>edit my profile</FONT></A></H3>");}
 
 ?>
@@ -78,7 +78,7 @@ if ($uid == $userID) {print ("<H3 ALIGN=CENTER><A HREF=edit_user_info.php><FONT 
 
 <TABLE width=275 cellpadding=0 cellspacing=0 bgcolor=ffffff>
 <TR><TH colspan=2 bgcolor=79888E>
-<?echo $alias;?>'s Stats
+<?php echo $alias;?>'s Stats
 </TH></TR>
 
 <TR><TD>
@@ -87,10 +87,10 @@ if ($uid == $userID) {print ("<H3 ALIGN=CENTER><A HREF=edit_user_info.php><FONT 
 
 <TR><TD width=150>
 
-<A HREF=../userpics/<?echo $image;?> target=_new>
-<IMG SRC="../userthumbs/<?echo $image;?>" alt="<?echo $caption;?>" border=0>
+<A HREF=../userpics/<?php echo $image;?> target=_new>
+<IMG SRC="../userthumbs/<?php echo $image;?>" alt="<?php echo $caption;?>" border=0>
 </A>
-<?
+<?php
 if ($online == 0) {
 print ("<BR>Last logon: $lastlogon");
 }
@@ -111,9 +111,9 @@ print ("
 </TD>
 </TR>
 <TR><TD colspan=2><BR>
-<A HREF=send_message.php?rec=<?echo $alias;?>><IMG SRC=../Images/icons/email_icon.gif border=0></A> <A HREF=send_message.php?rec=<?echo $alias;?>>send message</A> |  
-<A HREF=newfriend.php?uid=<?echo $uid;?>&src=2><IMG SRC=../Images/icons/friendrequest_icon.gif border=0></A> <A HREF=newfriend.php?uid=<?echo $uid;?>&src=2>Add Contact</A>
-<?echo $sr;?>
+<A HREF=send_message.php?rec=<?php echo $alias;?>><IMG SRC=../Images/icons/email_icon.gif border=0></A> <A HREF=send_message.php?rec=<?php echo $alias;?>>send message</A> |  
+<A HREF=newfriend.php?uid=<?php echo $uid;?>&src=2><IMG SRC=../Images/icons/friendrequest_icon.gif border=0></A> <A HREF=newfriend.php?uid=<?php echo $uid;?>&src=2>Add Contact</A>
+<?php echo $sr;?>
 </A>
 </TR>
 
@@ -129,7 +129,7 @@ print ("
 
 
 
-<TABLE cellpadding=0 cellspacing=0 width=275><TR><TH bgcolor=79888E><?echo $alias;?>'s Bio</TH></TR>
+<TABLE cellpadding=0 cellspacing=0 width=275><TR><TH bgcolor=79888E><?php echo $alias;?>'s Bio</TH></TR>
 <TR><TD>
 <div class="box">
 <TABLE>
@@ -137,8 +137,8 @@ print ("
 <TR><TD>
 
 <DIV style="width: 260; height: 200; overflow:auto; padding: 4; ">
-<?echo $bio;?>
-<?echo $url;?>
+<?php echo $bio;?>
+<?php echo $url;?>
 </DIV>
 
 
@@ -152,7 +152,7 @@ print ("
 <!-- RIGHT COLUMN -->
 <TD width=425 valign=top align=right>
 
-<?
+<?php
 
 $friends = ("
 <TABLE width=400 cellpadding=0 cellspacing=0 bgcolor=ffffff>
@@ -170,9 +170,9 @@ $r = 0;
 $t = 0;
 
 $Query = "SELECT f.friendID, u.username, p.filename, p.caption FROM auth_user AS u LEFT JOIN tb_pictures AS p ON p.picID=u.picID, friends AS f WHERE f.userID=$uid AND f.friendID=u.userID ORDER BY RAND() LIMIT 0,12";
-$Result = mysql_db_query ($DBName, $Query, $Link);
+$Result = mysqli_query($Link, $Query);
 
-while ($Row = mysql_fetch_array ($Result)) {
+while ($Row = mysqli_fetch_array($Result)) {
 if ($Row[2] <> "") {$image = "<IMG SRC=../userthumbs/$Row[2] border=0 alt=\"$Row[3]\" width=100 height=100>";}
 else {$image = "<IMG SRC=../userthumbs/default.jpg border=0 alt=\"No Image available\" width=100 height=100>";}
 if ($r == 0) {$friends = $friends . ("<TR>");}
@@ -219,7 +219,7 @@ print ("</CENTER>");
 
 <?php
 
-mysql_close ($Link);
+mysqli_close($Link);
 #print_footer($username);
 include 'bottom_index_table.php';
 include '../includes/analytics.inc.php';

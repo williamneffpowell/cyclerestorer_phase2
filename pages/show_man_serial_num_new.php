@@ -71,9 +71,7 @@ elseif ( $sort_field_url == 5)
 {$sort_field_in = "order by s.manufacturer";}
 
 
-mysql_connect("$Host","$User","$Password");
-mysql_select_db("$DBName") or die(mysql_error());
-
+mysqli_connect("$Host","$User","$Password","$DBName");
 //performing SQL query s=serial_numbers r=registry p=tb_pictures i=image_library_registry b=bike_pictures
 $query = "SELECT s.engine_number,s.frame_number,s.bike_year,s.model,s.ccs,s.num_cyl,s.fuel_tank_color,s.manufacturer,
 s.user_name,s.serial_row_id,s.nickname,s.production_run, 
@@ -99,8 +97,8 @@ LEFT JOIN tb_pictures  as p on r.picID = p.picID where s.manufacturer = '$manufa
 
 //$query = "SELECT * FROM serial_numbers where manufacturer = '$manufacturer'  $sort_field_in ";
 #print "$query\n";
-$result = mysql_query($query) or die('Query failed: ' . mysql_error());
- $Link = mysql_connect ($Host, $User, $Password); 
+$result = mysqli_query($Link, $query) or die('Query failed: ' . mysqli_error($Link));
+ $Link = mysqli_connect($Host, $User, $Password, $DBName); 
 // Printing results in HTML
 
 echo "<table class='registry' width=100% align='center'>\n";
@@ -118,7 +116,7 @@ echo "<TH width='15%'><div align='left'>Production Run</TH>";
 echo "<TH width='15%'><div align='left'>Registration Groups</TH>";
 echo "<TH width='15%'><div align='left'>Image Library</TH>";
 
-while ($Row = mysql_fetch_array($result))
+while ($Row = mysqli_fetch_array($result))
 {
 if ($bgcolor == "BBBBBB") {$bgcolor = "777777";$fcolor="FFFFFF";}
 else {$bgcolor = "BBBBBB";$fcolor="000000";}
@@ -229,12 +227,12 @@ $image_year = 6;
 echo "</table>\n";
 
 echo "<br>";
-mysql_free_result($result);
+mysqli_free_result($result);
 
 print "<table align='center'><tr><td>$loginvar</td></tr></table>";
 
 // Closing connection
-#mysql_close($link);
+#mysqli_close($link);
 include 'bottom_index_table.php';
 include '../includes/analytics.inc.php';
 ?>

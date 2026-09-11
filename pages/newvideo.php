@@ -6,7 +6,7 @@ $session_username = $session_username;
 include '../includes/dbconnect.inc.php';
 $showID = $_REQUEST['edit_row'];
 
-$Link = mysql_connect ($Host, $User, $Password); 
+$Link = mysqli_connect($Host, $User, $Password, $DBName); 
 
 
 if ($is_logged_in)
@@ -71,11 +71,11 @@ if (strpos($embedcode, "height") === false) {$failed = 1;}
 // INSERT USER 
 $Query = "INSERT into tb_video VALUES ('', '','$title','$description','','$embedcode','',0,0,'',CURDATE(),'',1,'$showID','$session_username')";
 
-if (mysql_db_query ($DBName, $Query, $Link)) {
+if (mysqli_query($Link, $Query)) {
 
 $Query = "SELECT videoID FROM tb_video WHERE username='$username' AND title='$title' ORDER BY videoID DESC;";
-$Result4 = mysql_db_query ($DBName, $Query, $Link)  or die ('Update Query Failed $Query2');
-$Row = mysql_fetch_array ($Result4);
+$Result4 = mysqli_query($Link, $Query)  or die ('Update Query Failed $Query2');
+$Row = mysqli_fetch_array($Result4);
 $videoID = $Row[0];
 
 #header("Location: edit_video.php?videoID=$videoID");
@@ -109,7 +109,7 @@ Please go back and double check it. If you continue to have difficulties please 
 }
 else {print ("incomplete form");}
 
-mysql_close ($Link);
+mysqli_close($Link);
 
 // END CHECK LOGIN
 }

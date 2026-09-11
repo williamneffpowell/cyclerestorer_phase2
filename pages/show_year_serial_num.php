@@ -5,7 +5,6 @@ $sessionID = $_SESSION['sessionID']??'0';
 $session_username = $_SESSION['user_name']??'0';
 
 include '../includes/dbconnect.inc.php';
-$request->enable_super_globals();
 $link = mysqli_connect($Host, $User, $Password, $DBName) or die("Database connection failed");
 mysqli_set_charset($link, 'utf8mb4');
 
@@ -57,7 +56,7 @@ function goToLogin(){ window.location = "http://www.cyclerestorer.com/pages/logi
       <td width="19%"><p align="center" class="Wh_TNR_Large"><h1>Cyclerestorer</h1> </p>
         <p align="center" class="white_24pt_bold"><h4 align="center">Serial Number Reference by Manufacturer and Year</h4></p>
       <p align="center"><img src="../Images/serial_numbers.jpg" width="138" height="89" align="middle"></p>
-	   <p align="center" class="white_24pt_bold"><h4 align="center"><? echo "$manufacturer  $bike_year" ?></h4></p>
+	   <p align="center" class="white_24pt_bold"><h4 align="center"><?php echo "$manufacturer  $bike_year" ?></h4></p>
 	  </td>
       <td width="44%">&nbsp;</td>
     </tr>
@@ -82,10 +81,8 @@ elseif ( $sort_field_url == 5)
 {$sort_field_in = "order by manufacturer";}
 
 
-//mysql_connect("$Host","$User","$Password");
-//mysql_select_db("$DBName") or die(mysql_error());
-
-// Performing SQL query
+//mysqli_connect("$Host","$User","$Password","$DBName");
+//// Performing SQL query
 
 
 $stmt = $link->prepare("SELECT * FROM serial_numbers WHERE manufacturer = ? AND bike_year = ? $sort_field_in");
@@ -101,8 +98,8 @@ $result = $stmt->get_result();
 
 
 #print "$query\n";
-//$result = mysqli_query($link, $query) or die('Query failed: ' . mysql_error());
-// $Link = mysql_connect ($Host, $User, $Password); 
+//$result = mysqli_query($link, $query) or die('Query failed: ' . mysqli_error($Link));
+// $Link = mysqli_connect($Host, $User, $Password, $DBName); 
 // Printing results in HTML
 
 echo "<table class='registry'  align='center'>\n";

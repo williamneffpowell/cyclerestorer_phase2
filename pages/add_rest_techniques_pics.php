@@ -4,10 +4,10 @@ $session_username = $session_username;
 
 include '../includes/dbconnect.inc.php';
 
-$Link = mysql_connect ($Host, $User, $Password); 
+$Link = mysqli_connect($Host, $User, $Password, $DBName); 
 $Query = "SELECT * from auth_user WHERE (sesnID='$sessionID')";   #Add Yes logic
-$Result = mysql_db_query ($DBName, $Query, $Link);
-$Row = mysql_fetch_array ($Result);
+$Result = mysqli_query($Link, $Query);
+$Row = mysqli_fetch_array($Result);
 #**************************************************************************
 # The row to select from the Before_after Page selection 
 $id_temp_add_var = $_REQUEST['edit_row'];
@@ -110,11 +110,10 @@ $login_var = '<form method="POST" action="http://www.cyclerestorer.com/pages/log
 //END CHECK LOGIN
 #########################################################################################################################################################
 
-$Link = mysql_connect ($Host, $User, $Password);
+$Link = mysqli_connect($Host, $User, $Password, $DBName);
 #$host_server_link= "localhost:8080/redbug/_no_task/cyclerestorer";
-mysql_select_db("$DBName") or die(mysql_error());
-#$result = mysql_query($query) or die('Query failed: ' . mysql_error());
-#$Link = mysql_connect ($Host, $User, $Password); 
+#$result = mysqli_query($Link, $query) or die('Query failed: ' . mysqli_error($Link));
+#$Link = mysqli_connect($Host, $User, $Password, $DBName); 
 echo '<br>';
 echo '</tr>';
 
@@ -214,12 +213,9 @@ if (is_uploaded_file($_FILES['file_name']['tmp_name']))
 
 if (is_uploaded_file($_FILES['file_name']['tmp_name']))
 {
-$Link = mysql_connect ($Host, $User, $Password);
+$Link = mysqli_connect($Host, $User, $Password, $DBName);
 
 #$host_server_link= "localhost:8080/redbug/_no_task/cyclerestorer";
-mysql_select_db("$DBName") or die(mysql_error());
-
-
 $photo_comment=$_REQUEST['photo_comment'];
 
 //$file_var=$HTTP_POST_FILES['file_name']['name'];
@@ -231,12 +227,12 @@ $id_column = "img_lib_rowID";
 
 
 $query ="INSERT INTO classified_image_library (username,pic_comment,filename,pic_enter_date) VALUES('$session_username','$photo_comment','$temp_th_url','$today')"; 	
-		$result=mysql_query($query) or die ('Insert Query Failed' . mysql_error());
+		$result=mysqli_query($Link, $query) or die ('Insert Query Failed' . mysqli_error($Link));
 		
 function previous_id($table, $id_column) {
   if ($table && $id_column) {
-    $result = mysql_query("SELECT MAX(".$id_column.") AS maxid FROM ".$table);
-    $stuff = mysql_fetch_assoc($result);
+    $result = mysqli_query($Link, "SELECT MAX(".$id_column.") AS maxid FROM ".$table);
+    $stuff = mysqli_fetch_assoc($result);
     return $stuff['maxid'];
   } else {
     return false;
@@ -249,11 +245,11 @@ $bike_picture_id = previous_id($table, $id_column);
 
 
 $query ="INSERT INTO ad_pictures (bike_picture_id,registry_row_id) VALUES('$bike_picture_id','$id_temp_add_var')"; 	
-		$result=mysql_query($query) or die ('Insert Query Failed' . mysql_error());
+		$result=mysqli_query($Link, $query) or die ('Insert Query Failed' . mysqli_error($Link));
 		
-if (mysql_db_query ($DBName, $Query, $Link)) 
+if (mysqli_query($Link, $Query)) 
 			{
-		    	mysql_close ($Link);
+		    	mysqli_close($Link);
 				$target_url_goto= $_SESSION['target_url'];
 				echo '<script language="JavaScript" type="text/javascript">
 				window.location.href="http://www.cyclerestorer.com/',"$target_url_goto",'" </script>';
@@ -310,7 +306,7 @@ if (validate_required(file_name,"You Must Select A File to Upload")==false)
 </head>
 <body>
 
-<?PHP
+<?php
 include 'bottom_index_table.php';
 include '../includes/analytics.inc.php';
 ?>

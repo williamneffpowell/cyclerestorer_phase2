@@ -4,10 +4,10 @@ $sessionID = $_SESSION['sessionID'];
 $session_username = $_SESSION['user_name'];
 
 include '../includes/dbconnect.inc.php';
-$Link = mysql_connect ($Host, $User, $Password); 
+$Link = mysqli_connect($Host, $User, $Password, $DBName); 
 $Query = "SELECT * from auth_user WHERE (sesnID='$sessionID')";   #Add Yes logic
-$Result = mysql_db_query ($DBName, $Query, $Link);
-$Row = mysql_fetch_array ($Result);
+$Result = mysqli_query($Link, $Query);
+$Row = mysqli_fetch_array($Result);
 if ($is_logged_in)
 {
 # LOGIN OK
@@ -94,14 +94,12 @@ if ($sort_field_order_url == "" or $sort_field_order_url == "ascending")
 				{$sort_field_in = "order by resource_name DESC";}
 }
 
-mysql_connect("$Host","$User","$Password");
-mysql_select_db("$DBName") or die(mysql_error());
-
+mysqli_connect("$Host","$User","$Password","$DBName");
 // Performing SQL query
 $query = "SELECT * FROM resource_links $sort_field_in ";
 #print "$query\n";
-$result = mysql_query($query) or die('Query failed: ' . mysql_error());
- $Link = mysql_connect ($Host, $User, $Password); 
+$result = mysqli_query($Link, $query) or die('Query failed: ' . mysqli_error($Link));
+ $Link = mysqli_connect($Host, $User, $Password, $DBName); 
 // Printing results in HTML
 echo "<table class='links' align='center' >\n";
 
@@ -115,7 +113,7 @@ echo "<TH width='10%'><div align='center' ><a href=links.php?sort_field=7&sort_f
 echo "<TH width='10%'><div align='left' ><a href=links.php?sort_field=4&sort_field_order=$sort_field_order_url>Date Entered</a></TH>";
 #echo "</span>";
 $header_color = "FFFFFF";
-while ($Row = mysql_fetch_array($result))
+while ($Row = mysqli_fetch_array($result))
 {
 if ($bgcolor == "BBBBBB") {$bgcolor = "777777";$header_color="FFFFFF";}
 else {$bgcolor = "BBBBBB";$header_color="000000";}
@@ -170,10 +168,10 @@ echo "<br>";
 echo "<br>";
 
  
-mysql_free_result($result);
+mysqli_free_result($result);
 
 // Closing connection
-#mysql_close($link);
+#mysqli_close($link);
 include 'bottom_index_table.php';
 include '../includes/analytics.inc.php';
 ?>

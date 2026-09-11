@@ -7,19 +7,18 @@ $returnAddress ='../add_resource_link.php';
    require '../includes/auth_check.inc.php';
 $session_username = $session_username;
 include '../includes/dbconnect.inc.php';
-mysql_connect("$Host","$User","$Password");
-mysql_select_db($DBName) or die(mysql_error());
+mysqli_connect("$Host","$User","$Password","$DBName");
 //CHECK LOGIN - PUT THIS CODE ON ALL PROTECTED PAGES
 $session_username = $_SESSION['user_name'];
 $failed = 0;
 $session_temp_var=$_SESSION['sessionID'];
 
 if ($is_logged_in) {
-$Link = mysql_connect ($Host, $User, $Password);
+$Link = mysqli_connect($Host, $User, $Password, $DBName);
 //$Query = "SELECT username, userID FROM auth_user WHERE (sesnID='$session_temp_var');";
 #print $username[0];
-//$Result = mysql_db_query ($DBName, $Query, $Link);
-//$Row = mysql_fetch_array ($Result);
+//$Result = mysqli_query($Link, $Query);
+//$Row = mysqli_fetch_array($Result);
 //$username = $Row[0];
 //$userID = $Row[1];
 }
@@ -36,7 +35,7 @@ echo "<br>";
 
 
 # Do Nothing print_html_add();
-mysql_close ($Link);
+mysqli_close($Link);
 
 
 $logged_on = "no";
@@ -52,7 +51,7 @@ echo '<script language="JavaScript" type="text/javascript">
 $failed = 1;
 
 }
-	  # if(!mysql_db_query($dbname,$query,$link_id)) die(mysql_error());
+	  # if(!mysql_db_query($dbname,$query,$link_id)) die(mysqli_error($Link));
 		# echo "success in database entry.";
 //END CHECK LOGIN ##################################################################################################
 ?>
@@ -139,7 +138,7 @@ tinyMCE_GZ.init({
 <link href="../css/cyclerestorer.css" rel="stylesheet" type="text/css">
 
 
-<?
+<?php
 
 print_html_add();
 function print_html_add() {
@@ -225,16 +224,15 @@ $today = date("Y-m-d h:i:s");
 	
 
 
-mysql_connect("$Host","$User","$Password");
-mysql_select_db($DBName) or die(mysql_error());
-$Link = mysql_connect ($Host, $User, $Password);
+mysqli_connect("$Host","$User","$Password","$DBName");
+$Link = mysqli_connect($Host, $User, $Password, $DBName);
 //$session_userID = $_SESSION['user_ID'];
 $session_username = $session_username;
 $query ="INSERT INTO tb_rest_tech(username,contact_email,phone,rest_technique,date_entered,manufacturer,model,year,description,cost,state,country,item_title,parts_bike,userID)
  VALUES ('$session_username','$email','$phone','$rest_technique','$today','$manufacturer','$model','$year','$description','$cost','$state','$country','$item_title','$parts_bike','$session_userID')";
 			#print "user_var = $user_var\n";
 		#print " Query $query \n";
-		$result=mysql_query($query) or die ('Insert Query Failed' . mysql_error());
+		$result=mysqli_query($Link, $query) or die ('Insert Query Failed' . mysqli_error($Link));
 
 		if    ($result)
 		{
@@ -244,7 +242,7 @@ $query ="INSERT INTO tb_rest_tech(username,contact_email,phone,rest_technique,da
 		  else
 		  {
 		  echo "<b>ERROR: unable to post.</b>";
-		  mysql_close ($Link);
+		  mysqli_close($Link);
 		  }
 
 		  if ($parts_bike)

@@ -1,11 +1,11 @@
-<?PHP
+<?php
 require '../includes/auth_check.inc.php';
 $session_username = $session_username;
 
 
 include '../includes/dbconnect.inc.php';
 
-$Link = mysql_connect ($Host, $User, $Password); 
+$Link = mysqli_connect($Host, $User, $Password, $DBName); 
 if ($is_logged_in)
 {
 $logged_in = "yes";
@@ -64,10 +64,10 @@ print ("ImageFilename Worked");
 $caption = ($_POST["caption"]) ;
 // INSERT PICTURE
 $Query = "INSERT INTO tb_pictures VALUES ('', '$imageFilename', '$caption')";
-$Result = mysql_db_query ($DBName, $Query, $Link);
+$Result = mysqli_query($Link, $Query);
 $Query = "SELECT picID FROM tb_pictures WHERE (filename='$imageFilename')";
-$Result = mysql_db_query ($DBName, $Query, $Link);
-$Row = mysql_fetch_array ($Result);
+$Result = mysqli_query($Link, $Query);
+$Row = mysqli_fetch_array($Result);
 
 if  ($Result) 
 			{
@@ -89,15 +89,15 @@ $session_username = $session_username;
 
 
 $Query3 = "UPDATE auth_user SET picID='$picID' WHERE (username='$session_username')";
-$Result3 = mysql_db_query ($DBName, $Query3, $Link);
+$Result3 = mysqli_query($Link, $Query3);
 
 
 
 
-mysql_close ($Link);
+mysqli_close($Link);
 if  ($Result3) 
 			{
-		    	mysql_close ($Link);
+		    	mysqli_close($Link);
 				echo '<script language="JavaScript" type="text/javascript">
 				window.location.href="http://www.cyclerestorer.com/index.php" </script>';
 			}
@@ -109,8 +109,8 @@ if  ($Result3)
 ?>
 
 <h3> This is a head line and it should work </h3>
-<?PHP echo $Row2[0]; ?>" alt="<?echo $Row2[1];?>		
-<?		
+<?php echo $Row2[0]; ?>" alt="<?php echo $Row2[1];?>		
+<?php		
 header("Location: edit_user_info.php?r=$userID");
 
 } // END WAS PICTURE UPLOAD OK

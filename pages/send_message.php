@@ -4,7 +4,7 @@ $session_username = $session_username;
 include('functions.php');
 include '../includes/dbconnect.inc.php';
 
-$Link = mysql_connect ($Host, $User, $Password); 
+$Link = mysqli_connect($Host, $User, $Password, $DBName); 
 
 if ($is_logged_in)
 {
@@ -47,7 +47,7 @@ echo '<script language="JavaScript" type="text/javascript">
 <br>
 
 </div>
-<?
+<?php
 if ($logged_in_var == "yes") {                      
 
 
@@ -128,12 +128,12 @@ return (errs==0);
 <TR><TH colspan=2 bgcolor=79888E>Send Private Message</TH></TR>
 <TR>
 <TD>To: </TD>
-<TD><INPUT TYPE=TEXT NAME=recipient VALUE="<?echo $rec;?>" size=15> (Enter Cyclerestorer Username)</TD>
+<TD><INPUT TYPE=TEXT NAME=recipient VALUE="<?php echo $rec;?>" size=15> (Enter Cyclerestorer Username)</TD>
 </TR>
 
 <TR>
 <TD>Subject:</TD>
-<TD><INPUT TYPE=TEXT NAME=subject VALUE="<?echo $sub;?>" size=40></TD>
+<TD><INPUT TYPE=TEXT NAME=subject VALUE="<?php echo $sub;?>" size=40></TD>
 </TR>
 
 <TR>
@@ -149,7 +149,7 @@ return (errs==0);
 <BR>
 <?php
 
-mysql_close ($Link);
+mysqli_close($Link);
 
 // End check log in
 #}

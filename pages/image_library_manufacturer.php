@@ -7,13 +7,9 @@ require '../includes/auth_check.inc.php';
 $failed = 0;
 //$session_temp_var=$_SESSION['sessionID'];
 $session_username = $session_username ?? '0';
+$Link = mysqli_connect($Host, $User, $Password, $DBName) or die("Database connection failed");
+
 if ($is_logged_in) {
-	$Link = mysqli_connect($Host, $User, $Password, $DBName) or die("Database connection failed");
-
-//Session doesn't exist
-
-# Do Nothing print_html_add(); login OK.
-
 $logged_in_var = "yes";
 }
 
@@ -77,7 +73,7 @@ a:visited {
   </table>
 
     <?php
-//	$manufacturer = $_REQUEST['manufacturer'];
+$manufacturer = $_REQUEST['manufacturer'] ?? '';
 	
 $sort_field_url = $_GET['sort_field'] ?? '0';  #URL Variable for which field will be sorted 
 $sort_field_order_url = $_GET['sort_field_order']?? '0';	
@@ -116,7 +112,7 @@ if ($sort_field_order_url == "" or $sort_field_order_url == "ascending")
 //$query = "(SELECT DISTINCT r.username,r.manufacturer,r.model,r.year,r.row_id  FROM image_library_registry as r LEFT JOIN bike_pictures as b ON r.row_id = b.registry_row_id  where r.manufacturer = '$manufacturer' $sort_field_in )";	
 
 
-//$result = mysqli_query($query) or die('Query failed: ' . mysql_error());
+//$result = mysqli_query($query) or die('Query failed: ' . mysqli_error($Link));
 
 
 
@@ -158,7 +154,7 @@ echo "<TH width='15%'><div align='left'>View</a>";
 $bgcolor = "";
 $fcolor = "";
 
-while ($Row = mysqli_fetch_assoc($result, MYSQLI_NUM))
+while ($Row = mysqli_fetch_array($result, MYSQLI_NUM))
 {
 if ($bgcolor == "BBBBBB") {$bgcolor = "777777";$fcolor="FFFFFF";}
 else {$bgcolor = "BBBBBB";$fcolor="000000";}
@@ -181,12 +177,12 @@ echo "\t\t<td><font color=$fcolor>$model_tab</td>\n";
 
 if ( $logged_in_var == "yes")
 {
-echo "<td><a href=add_image_library_pics.php?edit_row=" . htmlspecialchars($row_id_tab) . "'>Add Pictures</a></td>\n";
+echo "<td><a href=add_image_library_pics.php?edit_row=" . htmlspecialchars($row_id_tab) . ">Add Pictures</a></td>\n";
 }
 
 #if ($before_after_tab <> "")
 #{
-echo "<td><a href=image_library_pics.php?edit_row=" . htmlspecialchars($row_id_tab) . "'>View</a></td>\n";
+echo "<td><a href=image_library_pics.php?edit_row=" . htmlspecialchars($row_id_tab) . ">View</a></td>\n";
      
 #}
 #else

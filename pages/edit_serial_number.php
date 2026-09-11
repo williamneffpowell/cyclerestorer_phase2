@@ -7,11 +7,11 @@ $failed = 0;
 $session_username = $_SESSION['user_name'];
 include '../includes/dbconnect.inc.php';
 //if ($session_temp_var <> "") {
-//$Link = mysql_connect ($Host, $User, $Password);
+//$Link = mysqli_connect($Host, $User, $Password, $DBName);
 //$Query = "SELECT username FROM auth_user WHERE (sesnID='$session_temp_var');";
 #print $username[0];
-//$Result = mysql_db_query ($DBName, $Query, $Link);
-//$Row = mysql_fetch_array ($Result);
+//$Result = mysqli_query($Link, $Query);
+//$Row = mysqli_fetch_array($Result);
 
 //Session doesn't exist
 if ($is_logged_in)
@@ -35,12 +35,11 @@ echo '<script language="JavaScript" type="text/javascript">
 ####################################  Done Login Test    #################################################################################
 ##########################################################################################################################################
 $id_temp_var = $_REQUEST['edit_row'];
-mysql_connect("$Host","$User","$Password");
-mysql_select_db("$DBName") or die(mysql_error());
+mysqli_connect("$Host","$User","$Password","$DBName");
 // Performing SQL query
 $query = "SELECT * FROM serial_numbers   where (serial_row_id ='$id_temp_var')";
-$result = mysql_query($query) or die('Query failed: ' . mysql_error());
-$Row = mysql_fetch_array($result);
+$result = mysqli_query($Link, $query) or die('Query failed: ' . mysqli_error($Link));
+$Row = mysqli_fetch_array($result);
 $user_tab = $Row[3];
 #$model_tab = $Row[6];
 
@@ -122,35 +121,35 @@ tinyMCE_GZ.init({
 		   <tr>
           <td class="wh_tnr_12"><div align="left">Manufacturer:</div></td>
           <td><div align="left">
-            <input type="text" name="manufacturer_fd" value="<?PHP echo $Row[6]; ?>">
+            <input type="text" name="manufacturer_fd" value="<?php echo $Row[6]; ?>">
           </div></td>
           <td>&nbsp;</td>
         </tr>
 		<tr>
           <td class="wh_tnr_12"><div align="left">Model:</div></td>
           <td><div align="left">
-            <input type="text" name="model_fd" value="<?PHP echo $Row[5]; ?>">
+            <input type="text" name="model_fd" value="<?php echo $Row[5]; ?>">
           </div></td>
           <td>&nbsp;</td>
         </tr>
 		<tr>
           <td class="wh_tnr_12"><div align="left">Nickname:</div></td>
           <td><div align="left">
-            <input type="text" name="nickname_fd" value="<?PHP echo $Row[12]; ?>">
+            <input type="text" name="nickname_fd" value="<?php echo $Row[12]; ?>">
           </div></td>
           <td>&nbsp;</td>
         </tr>
 		<tr>
           <td class="wh_tnr_12"><div align="left">CCs:</div></td>
           <td><div align="left">
-            <input type="text" name="ccs_fd" value="<?PHP echo $Row[9]; ?>">
+            <input type="text" name="ccs_fd" value="<?php echo $Row[9]; ?>">
           </div></td>
           <td>&nbsp;</td>
         </tr>
 		<tr>
           <td class="wh_tnr_12"><div align="left">Number of Cylinders:</div></td>
           <td><div align="left">
-            <input type="text" name="num_cyl_fd" value="<?PHP echo $Row[8]; ?>">
+            <input type="text" name="num_cyl_fd" value="<?php echo $Row[8]; ?>">
           </div></td>
           <td>&nbsp;</td>
         </tr>
@@ -159,29 +158,29 @@ tinyMCE_GZ.init({
         <tr>
           <td class="wh_tnr_12"><div align="left">Fuel Tank Color:</div></td>
           <td><div align="left">
-            <input type="text" name="fuel_tank_color_fd" value="<?PHP echo $Row[10]; ?>">
+            <input type="text" name="fuel_tank_color_fd" value="<?php echo $Row[10]; ?>">
           </div></td>
           <td>&nbsp;</td>
         </tr>
         <tr>
           <td class="wh_tnr_12"><div align="left">Year:</div></td>
           <td><div align="left">
-            <input type="text" name="bike_year_fd" value="<?PHP echo $Row[4]; ?>">
+            <input type="text" name="bike_year_fd" value="<?php echo $Row[4]; ?>">
           </div></td>
           <td>&nbsp;</td>
         </tr>
           <td class="wh_tnr_12"><div align="left">Engine Number:</div></td>
-          <td><input type="text" name="engine_number_fd" value="<?PHP echo $Row[0]; ?>"></td>
+          <td><input type="text" name="engine_number_fd" value="<?php echo $Row[0]; ?>"></td>
           <td>&nbsp;</td>
         </tr>
          <tr>
            <td class="wh_tnr_12"><div align="left">Frame Number:</div></td>
-          <td><input type="text" name="frame_number_fd" value="<?PHP echo $Row[1]; ?>"></td>
+          <td><input type="text" name="frame_number_fd" value="<?php echo $Row[1]; ?>"></td>
           <td>&nbsp;</td>
         </tr>
 		 <tr>
            <td class="wh_tnr_12"><div align="left">Production Run:</div></td>
-          <td><input type="text" name="production_run_fd" value="<?PHP echo $Row[13]; ?>"></td>
+          <td><input type="text" name="production_run_fd" value="<?php echo $Row[13]; ?>"></td>
           <td>&nbsp;</td>
         </tr>
              
@@ -202,7 +201,7 @@ tinyMCE_GZ.init({
  
 
 
-<?PHP
+<?php
 
 $today = date("Y-m-d h:i:s");
   if ($_REQUEST['submit']) { 
@@ -222,11 +221,11 @@ $username = $_SESSION['user_name'];
 	     $Query2 = "UPDATE serial_numbers  SET ccs = '$ccs',num_cyl = '$num_cyl', fuel_tank_color = '$fuel_tank_color', engine_number = '$engine_number', production_run = '$production_run', frame_number = '$frame_number', manufacturer = '$manufacturer', model = '$model',nickname = '$nickname', bike_year = '$bike_year', enter_date = '$today' WHERE serial_row_id = '$id_temp_var'";
 		 	  
 		  
-		$result=mysql_query($Query2) or die ( 'Update Query Failed $Query2'. mysql_error());	
+		$result=mysqli_query($Link, $Query2) or die ( 'Update Query Failed $Query2'. mysqli_error($Link));	
 		
 		if  ($result) 
 			{
-		    	mysql_close ($Link);
+		    	mysqli_close($Link);
 				echo '<script language="JavaScript" type="text/javascript">
 				window.location.href="http://www.cyclerestorer.com/pages/serial_number_reference.php" </script>';
 			
@@ -243,12 +242,12 @@ $username = $_SESSION['user_name'];
 	     $Query2 = "Delete from serial_numbers  where serial_row_id = '$id_temp_var'";
 		 	  
 		  
-		$result=mysql_query($Query2) or die ('Update Query Failed $Query2');
+		$result=mysqli_query($Link, $Query2) or die ('Update Query Failed $Query2');
 		
 		
 		if  ($result) 
 			{
-		    	mysql_close ($Link);
+		    	mysqli_close($Link);
 				echo '<script language="JavaScript" type="text/javascript">
 				window.location.href="http://www.cyclerestorer.com/pages/serial_number_reference.php" </script>';
 			}

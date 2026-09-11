@@ -1,4 +1,4 @@
-<?PHP
+<?php
 require '../includes/auth_check.inc.php';
 $failed = 0;
 $session_temp_var=$_SESSION['sessionID'];
@@ -26,12 +26,11 @@ $failed = 1;
 ##########################################################################################################################################
 $session_username = $session_username;	
 $id_temp_var = $_REQUEST['edit_row'];
-mysql_connect("$Host","$User","$Password");
-mysql_select_db("$DBName") or die(mysql_error());
+mysqli_connect("$Host","$User","$Password","$DBName");
 // Performing SQL query
 $query = "SELECT * FROM tb_rest_tech  where (item_row_id ='$id_temp_var')";
-$result = mysql_query($query) or die('Query failed: ' . mysql_error());
-$Row = mysql_fetch_array($result);
+$result = mysqli_query($Link, $query) or die('Query failed: ' . mysqli_error($Link));
+$Row = mysqli_fetch_array($result);
 #$model_tab = $Row[6];
 
 
@@ -123,7 +122,7 @@ tinyMCE_GZ.init({
           <td width="210" class="wh_tnr_12"><div align="left">Title:</div></td>
     
 		   <td><div align="left">
-		    <input type="text" name="item_title_fd" value="<?PHP echo $Row[12]; ?>">
+		    <input type="text" name="item_title_fd" value="<?php echo $Row[12]; ?>">
         </td>
             <br>
           </div></td>
@@ -132,32 +131,32 @@ tinyMCE_GZ.init({
 		 <tr>
           <td class="wh_tnr_12"><div align="left">Manufacturer:</div></td>
           <td><div align="left">
-            <input type="text" name="manufacturer_fd" value="<?PHP echo $Row[5]; ?>">
+            <input type="text" name="manufacturer_fd" value="<?php echo $Row[5]; ?>">
           </div></td>
           <td>&nbsp;</td>
         </tr>
         <tr>
           <td class="wh_tnr_12"><div align="left">Model:</div></td>
           <td><div align="left">
-            <input type="text" name="model_fd" value="<?PHP echo $Row[6]; ?>">
+            <input type="text" name="model_fd" value="<?php echo $Row[6]; ?>">
           </div></td>
           <td>&nbsp;</td>
         </tr>
 		       <tr>
           <td class="wh_tnr_12"><div align="left">Year:</div></td>
           <td><div align="left">
-            <input type="text" name="year_fd" value="<?PHP echo $Row[18]; ?>">
+            <input type="text" name="year_fd" value="<?php echo $Row[18]; ?>">
           </div></td>
           <td>&nbsp;</td>
         </tr>
 		 <tr>
           <td class="wh_tnr_12"><div align="left">Description:</div></td>
-		  <TD><textarea  name="description_fd" rows="10" cols="40"><? echo $Row[7];?></TEXTAREA></TD>
+		  <TD><textarea  name="description_fd" rows="10" cols="40"><?php echo $Row[7];?></TEXTAREA></TD>
           <td>&nbsp;</td>
         </tr>
         <tr>
           <td class="wh_tnr_12"><div align="left">Cost:</div></td>
-          <td><input type="text" name="cost_fd" value="<?PHP echo $Row[8]; ?>"></td>
+          <td><input type="text" name="cost_fd" value="<?php echo $Row[8]; ?>"></td>
           <td>&nbsp;</td>
         </tr>
 
@@ -181,7 +180,7 @@ tinyMCE_GZ.init({
  
 
 
-<?PHP
+<?php
 $session_username = $session_username;	
 
  if ($_REQUEST['submit']) { 
@@ -203,11 +202,11 @@ $session_username = $session_username;
 	     $Query2 = "UPDATE tb_rest_tech SET item_title = '$item_title', rest_technique = '$rest_technique', manufacturer = '$manufacturer', model = '$model', year = '$year',username = '$session_username',date_entered = '$date_entered',description = '$description',cost = '$cost' WHERE item_row_id = '$id_temp_var'";
 		 	  
 		  
-		$result=mysql_query($Query2) or die ( 'Update Query Failed $Query2'. mysql_error());	
+		$result=mysqli_query($Link, $Query2) or die ( 'Update Query Failed $Query2'. mysqli_error($Link));	
 		
 		if  ($result) 
 			{
-		    	mysql_close ($Link);
+		    	mysqli_close($Link);
 				echo '<script language="JavaScript" type="text/javascript">
 				window.location.href="http://www.cyclerestorer.com/pages/restoration_techniques.php" </script>';
 			
@@ -230,12 +229,12 @@ $session_username = $session_username;
 	     $Query2 = "Delete from tb_rest_tech where item_row_id = '$id_temp_var'";
 		 	  
 		  
-		$result=mysql_query($Query2) or die ('Update Query Failed $Query2');
+		$result=mysqli_query($Link, $Query2) or die ('Update Query Failed $Query2');
 		
 		
 		if  ($result) 
 			{
-		    	mysql_close ($Link);
+		    	mysqli_close($Link);
 				echo '<script language="JavaScript" type="text/javascript">
 				window.location.href="http://www.cyclerestorer.com/pages/restoration_techniques.php" </script>';
 			}

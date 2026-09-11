@@ -1,7 +1,6 @@
 	<?php
 require '../includes/auth_check.inc.php';
 include '../includes/dbconnect.inc.php';
-$request->enable_super_globals();
 
 
 
@@ -118,8 +117,7 @@ function popitup(url) {
 <?php
 
 #$host_server_link= "localhost:8080/redbug/_no_task/cyclerestorer";
-#mysql_select_db("$DBName") or die(mysql_error());
-$sort_field_url ="";
+#$sort_field_url ="";
 if ($sort_field_url == "")
 {
 $sort_field_in =  "order by username" ;}

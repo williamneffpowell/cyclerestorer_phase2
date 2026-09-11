@@ -23,7 +23,6 @@ $target_url_goto= $_SESSION['target_url'];
 ########################################################################################################
 #             End of Login
 ########################################################################################################
-$request->enable_super_globals();
 
 $manufacturer = $_REQUEST['manufacturer'] ?? false;
 $bike_model = $_REQUEST['model'] ?? false;
@@ -113,7 +112,7 @@ try {
 
 
 
-//$result = mysqli_query($query) or die('Query failed: ' . mysql_error());
+//$result = mysqli_query($query) or die('Query failed: ' . mysqli_error($Link));
 // Printing results in HTML
 
 
@@ -206,7 +205,7 @@ echo "<br>";
 mysqli_free_result($result);
 //print "<table align='center'><tr><td>$loginvar</td></tr></table>";
 // Closing connection
-#mysql_close($link);
+#mysqli_close($link);
 include 'bottom_index_table.php';
 include '../includes/analytics.inc.php';
 ?>

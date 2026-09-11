@@ -5,7 +5,7 @@ $session_username = $session_username;
 
 include '../includes/dbconnect.inc.php';
 
-$Link = mysql_connect ($Host, $User, $Password); 
+$Link = mysqli_connect($Host, $User, $Password, $DBName); 
 
 if ($is_logged_in)
 {
@@ -33,34 +33,19 @@ include('functions.php');
 print "<h5> Receivername = $recievername </h5>";
 print "<h5> Subject = $subject </h5>";
 print "<h5> body = $body </h5>";
-if ($loginvar == "Yes")  {
-
 //$Query = "SELECT username, user_email FROM phpbb_users WHERE username='$receivername' ";
-//$Result = mysql_db_query ($DBName, $Query, $Link);
-//$Row = mysql_fetch_array ($Result);
-
-
-<HTML>
-<head><script type="text/javascript">
-function goTo_send_message(){ window.location = "http://www.cyclerestorer.com/pages/add_resource_links.php"; }
-
-</script>
-<BODY>
-
-
-}
-
+//$Result = mysqli_query($Link, $Query);
+//$Row = mysqli_fetch_array($Result);
 
 print "<table align='center'><tr align='center'><td>$loginvar</td></tr></table>"; 
 
 
 
 
-mysql_close ($Link);
+mysqli_close($Link);
 include 'bottom_index_table.php';
 include '../includes/analytics.inc.php';
 
 //End check login
-}
 
 ?>

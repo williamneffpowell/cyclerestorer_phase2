@@ -4,7 +4,7 @@ $session_username = $session_username;
 
 include '../includes/dbconnect.inc.php';
 
-$Link = mysql_connect ($Host, $User, $Password);
+$Link = mysqli_connect($Host, $User, $Password, $DBName);
 
 
 if ($is_logged_in)
@@ -93,20 +93,18 @@ if (validate_required(file_name,"You Must Select A File to Upload")==false)
 
 </p>
 <br>
-<?
+<?php
 
 if ($sort_field_url == "")
 {
 $sort_field_in =  "order by username" ;}
 
 #print "ID TEMP TEMP VAR $id_temp_var \n";
-$Link = mysql_connect ($Host, $User, $Password);
+$Link = mysqli_connect($Host, $User, $Password, $DBName);
 #$host_server_link= "localhost:8080/redbug/_no_task/cyclerestorer";
-mysql_select_db("$DBName") or die(mysql_error());
-
 $query = ("SELECT b.restoration_title, b.username from before_after as b  where b.row_id = '$id_temp_var' ");
-$result = mysql_query($query) or die('Query failed: ' . mysql_error());
-$Row = mysql_fetch_array($result);
+$result = mysqli_query($Link, $query) or die('Query failed: ' . mysqli_error($Link));
+$Row = mysqli_fetch_array($result);
 $restoration_title = $Row[0];
 $username = $Row[1];
 
@@ -130,10 +128,10 @@ $username = $Row[1];
 
 
 
-<?
+<?php
 $query = ("SELECT  filename,pic_comment,pic_enter_date,pic_display_order from before_after_pics  where before_after_row_id ='$id_temp_var' order by pic_display_order, pic_enter_date");
-$result = mysql_query($query) or die('Query failed: ' . mysql_error());
- $Link = mysql_connect ($Host, $User, $Password);
+$result = mysqli_query($Link, $query) or die('Query failed: ' . mysqli_error($Link));
+ $Link = mysqli_connect($Host, $User, $Password, $DBName);
 // Printing results in HTML
 echo "<table align='left' width=80% >\n";
 echo '<table align=center>';
@@ -143,7 +141,7 @@ echo '<table align=center>';
 
 echo '<br>';
 $td_var = 1;
-while ($Row = mysql_fetch_array($result))
+while ($Row = mysqli_fetch_array($result))
 {
 if ($bgcolor == "BBBBBB") {$bgcolor = "777777";}
 else {$bgcolor = "BBBBBB";}
@@ -174,9 +172,9 @@ $name = "  ";
 echo "\t\t<td align='left' width= 50 ><A HREF=\"javascript:popUp('../image_upload/$file_name')\"><img src='../image_upload/thumbs/$file_name' alt='$photo_comment &nbsp; $pic_enter_date' align='left'>";
 #print "id_temp_var $id_temp_var";
 $sql = "SELECT COUNT(*) FROM before_after_pics where before_after_row_id = '$id_temp_var'";
-$results = mysql_query($sql) or die(mysql_error());
+$results = mysqli_query($Link, $sql) or die(mysqli_error($Link));
 #print "$results";
-$total_rows = mysql_fetch_row($results); 
+$total_rows = mysqli_fetch_row($results); 
 $total_rows_var = $total_rows[0];
 #print "$total_rows_var";
 
@@ -216,7 +214,7 @@ echo '<br>';
 <tr align="center">
 <td >
 
-<?
+<?php
 
 
 if (!$is_logged_in)

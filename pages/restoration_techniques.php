@@ -4,7 +4,7 @@ $session_username = $session_username;
 
 include '../includes/dbconnect.inc.php';
 
-$Link = mysql_connect ($Host, $User, $Password); 
+$Link = mysqli_connect($Host, $User, $Password, $DBName); 
 
 if ($is_logged_in)
 {
@@ -93,16 +93,14 @@ if ($sort_field_order_url == "" or $sort_field_order_url == "ascending")
 }
 
 
-mysql_connect("$Host","$User","$Password");
-mysql_select_db("$DBName") or die(mysql_error());
-
+mysqli_connect("$Host","$User","$Password","$DBName");
 // Performing SQL query
 $query = "(SELECT DISTINCT  tb_rest_tech.rest_technique,tb_rest_tech.your_name,tb_rest_tech.username,tb_rest_tech.manufacturer,tb_rest_tech.model,tb_rest_tech.description,tb_rest_tech.cost,tb_rest_tech.date_entered,tb_rest_tech.state,tb_rest_tech.country, tb_rest_tech.item_title, tb_rest_tech.item_row_id, tb_rest_tech.parts_bike,tb_rest_tech.year, ad_pictures.bike_picture_id FROM tb_rest_tech LEFT JOIN ad_pictures ON tb_rest_tech.item_row_id = ad_pictures.registry_row_id  $sort_field_in)";	
 
 #$query = "SELECT * FROM tb_rest_tech $sort_field_in ";
 #print "$query\n";
-$result = mysql_query($query) or die('Query failed: ' . mysql_error());
- $Link = mysql_connect ($Host, $User, $Password); 
+$result = mysqli_query($Link, $query) or die('Query failed: ' . mysqli_error($Link));
+ $Link = mysqli_connect($Host, $User, $Password, $DBName); 
 // Printing results in HTML
 echo "<table width='100%' align='center'  class='classified' cellspacing='0'>\n";
 echo "<TH width='7%'><div align='left'>Technique<br>Title</TH>";
@@ -119,7 +117,7 @@ if ($logged_in_var == "yes")
 	 }
 echo "<TH width='5%'><div align='Center'>Image</TH>";
 
-while ($Row = mysql_fetch_array($result))
+while ($Row = mysqli_fetch_array($result))
 {
 	if ($bgcolor == "BBBBBB") 
 	{
@@ -208,10 +206,10 @@ echo "</table>\n";
 echo "<br>";
 print "<table align='center'><tr><td>$loginvar</td></tr></table>";
 
-mysql_free_result($result);
+mysqli_free_result($result);
 
 // Closing connection
-#mysql_close($link);
+#mysqli_close($link);
 include 'bottom_index_table.php';
 include '../includes/analytics.inc.php';
 ?>

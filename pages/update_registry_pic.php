@@ -1,10 +1,10 @@
-<?PHP
+<?php
 error_reporting(E_ALL);
  ini_set("display_startup_errors","1");
  ini_set("display_errors","1"); 
  
 require '../includes/auth_check.inc.php';
-$Link = mysql_connect ($Host, $User, $Password); 
+$Link = mysqli_connect($Host, $User, $Password, $DBName); 
 if ($is_logged_in)
 {
 # LOGIN OK
@@ -46,19 +46,18 @@ else {
 #******************************************************************
 // INSERT PICTURE
 
-mysql_select_db("$DBName") or die(mysql_error());																	
 if ($imageFilename <> "") {
 $Query = "INSERT INTO tb_pictures VALUES ('', '$imageFilename', '$caption')";
-$Result = mysql_query ($Query) or die ('Query Failed: ' .mysql_error());
+$Result = mysqli_query($Link, $Query) or die ('Query Failed: ' .mysqli_error($Link));
 $Query = "SELECT picID FROM tb_pictures WHERE filename='$imageFilename';";
-$Result = mysql_db_query ($DBName, $Query, $Link);
-$Row = mysql_fetch_array ($Result);
+$Result = mysqli_query($Link, $Query);
+$Row = mysqli_fetch_array($Result);
 $picID = $Row[0];
 }
 // UPDATE USER
 $reg_rowID = $_SESSION['PASSED_ROW_ID'];
 $Query = "UPDATE registry SET picID=$picID  WHERE row_ID=$reg_rowID";
-$Result = mysql_db_query ($DBName, $Query, $Link);
+$Result = mysqli_query($Link, $Query);
 } // END WAS PICTURE UPLOAD OK
 
 } // END CHECK IF FORM IS COMPLETE
@@ -198,12 +197,12 @@ include '../includes/analytics.inc.php';
 /*echo '<script language="JavaScript" type="text/javascript">
 				window.location.href="http://www.cyclerestorer.com/pages/serial_number_reference.php" </script>'; */
 $query = "SELECT picID FROM registry  where row_id ='$reg_rowID'";
-$result = mysql_query($query) or die('Query failed: ' . mysql_error());
-$Row = mysql_fetch_array($result);
+$result = mysqli_query($Link, $query) or die('Query failed: ' . mysqli_error($Link));
+$Row = mysqli_fetch_array($result);
 $new_picID = $Row[0];
 
 
-mysql_close ($Link);
+mysqli_close($Link);
 
  header("Location: http://www.cyclerestorer.com/pages/view_collection_info.php?edit_row=$reg_rowID&picID=$new_picID"); 
 

@@ -86,7 +86,7 @@ a:visited {
   </table>
 
     <?php
-$sort_field_url = $_GET['sort_field'] ?? '0';  #URL Variable for which field will be sorted
+$sort_field_url = $_GET['sort_field'] ?? '';  #URL Variable for which field will be sorted
 // Connecting, selecting database
 #include '../includes/dbconnect.inc.php';
 if ($sort_field_url == "")
@@ -150,32 +150,27 @@ $before_after_tab = $Row[5]?? '0';
 
 #if ($model_tab_temp = $model_tab and $year_tab_temp = $year_tab and $manufacturer_tab_temp = $manufacturer_tab)
 #{
-echo "<TR bgcolor=$bgcolor>";
-#echo "\t\t<td><font color=$fcolor>$manufacturer_tab</td>\n";
-
 $urlbike_manufacturer = urlencode($bike_manufacturer);
 
 if ($bike_manufacturer <> $manufacturer_temp)
 {
+echo "<TR bgcolor=$bgcolor>";
 echo "\t\t<td><font color=$fcolor><a href=image_library_manufacturer.php?manufacturer=$urlbike_manufacturer >$bike_manufacturer</a></td>\n";
+echo "\t</tr>\n";
 }
 
 $manufacturer_temp = $bike_manufacturer;
-echo "\t</tr>\n";
-
 $model_tab_temp = $model_tab;
 $year_tab_temp = $year_tab;
 $manufacturer_tab_temp = $manufacturer_tab;
-
-echo "\t</tr>\n";
 # end of while
 }
 echo "</table>\n";
 
-//mysql_free_result($result);
+//mysqli_free_result($result);
 
 // Closing connection
-#mysql_close($Link);
+#mysqli_close($Link);
 echo "<br>";
 include 'bottom_index_table.php';
 include '../includes/analytics.inc.php';

@@ -1,25 +1,24 @@
 <?php
 require '../includes/auth_check.inc.php';
 	include '../includes/dbconnect.inc.php';
-	mysql_connect("$Host","$User","$Password");
-	mysql_select_db("$DBName") or die(mysql_error());  
+	mysqli_connect("$Host","$User","$Password","$DBName");
 //CHECK LOGIN - PUT THIS CODE ON ALL PROTECTED PAGES
 $failed = 0;
 $session_temp_var=$_SESSION['sessionID'];
 $session_username = $_SESSION['user_name'];
 if ($is_logged_in){
-$Link = mysql_connect ($Host, $User, $Password);
+$Link = mysqli_connect($Host, $User, $Password, $DBName);
 //$Query = "SELECT username FROM auth_user WHERE (sesnID='$session_temp_var');";
 #print $username[0];
-//$Result = mysql_db_query ($DBName, $Query, $Link);
-//$Row = mysql_fetch_array ($Result);
+//$Result = mysqli_query($Link, $Query);
+//$Row = mysqli_fetch_array($Result);
 //$username = $Row[0];
 //Session doesn't exist
 $session_username = $_SESSION['user_name'];
 if ($session_username <> "")
 {
 # Do Nothing print_html_add();
-//mysql_close ($Link);
+//mysqli_close($Link);
 
 }
 else 
@@ -66,7 +65,7 @@ eval("page" + id + " = window.open(URL, '" + id + "', 'toolbar=0,scrollbars=1,lo
 
 
 
-<?
+<?php
 
 if (!$is_logged_in)
 {
@@ -97,17 +96,14 @@ $sort_field_in =  "order by username" ;}
 #elseif ( $sort_field_url == 6)
 #{$sort_field_in = "order by owner DESC";}
 
-$Link = mysql_connect ($Host, $User, $Password);
+$Link = mysqli_connect($Host, $User, $Password, $DBName);
 #$host_server_link= "localhost:8080/redbug/_no_task/cyclerestorer";
-mysql_select_db("$DBName") or die(mysql_error());
-
-
 $query = ("SELECT before_after.username, before_after.restoration_title, before_after.registration_row_id,before_after.row_id, registry.manufacturer, registry.model,registry.year  from before_after LEFT JOIN registry on registry.row_id=before_after.registration_row_id");
 
 #$query = "SELECT * FROM before_after  $sort_field_in ";
 #print "$query\n";
-$result = mysql_query($query) or die('Query failed: ' . mysql_error());
- $Link = mysql_connect ($Host, $User, $Password); 
+$result = mysqli_query($Link, $query) or die('Query failed: ' . mysqli_error($Link));
+ $Link = mysqli_connect($Host, $User, $Password, $DBName); 
 // Printing results in HTML
 echo "<table class='registry' width='60%' align='center'>\n";
 #echo "<TR><TH width='5%'><div align='left'>Edit if Owner</TH>";
@@ -119,7 +115,7 @@ echo "<TH width='10%'><div align='Center'>Model</TH>";
 echo "<TH width='5%'><div align='Center'>Year</TH>";
 
 
-while ($Row = mysql_fetch_array($result))
+while ($Row = mysqli_fetch_array($result))
 {
 if ($bgcolor == "BBBBBB") {$bgcolor = "777777";$fcolor="FFFFFF";}
 else {$bgcolor = "BBBBBB";$fcolor="000000";}
@@ -175,7 +171,7 @@ if ($session_username <> "")
 <br />
 <br/>
 <br/>
-	<?
+	<?php
 }
 else
 {
@@ -195,7 +191,7 @@ else
 <br />
 <br/>
 <br/>
-	<?
+	<?php
 
 }
 

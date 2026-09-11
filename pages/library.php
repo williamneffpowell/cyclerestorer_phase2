@@ -163,7 +163,7 @@ $query = "";
 
 $query = "(SELECT r.username,r.row_id,r.action,r.manufacturer,r.model,r.year,r.serial_number,r.owner,r.location,r.comments,r.entered,b.row_id,p.picID,p.filename,p.caption,r.picID,r.userID,entered FROM registry as r LEFT JOIN before_after as b ON r.row_id = b.registration_row_id LEFT JOIN  tb_pictures as p ON r.picID = p.picID  $sort_field)";	
 
-//$result = mysql_query($query) or die('Query failed: ' . mysql_error());
+//$result = mysqli_query($Link, $query) or die('Query failed: ' . mysqli_error($Link));
 /* activate reporting */
 mysqli_report(MYSQLI_REPORT_ERROR | MYSQLI_REPORT_STRICT);
 try {
@@ -296,7 +296,7 @@ echo "</table>\n";
 mysqli_free_result($result);
 
 // Closing connection
-#mysql_close($link);
+#mysqli_close($link);
 ?>
 </p><?php 
 include 'bottom_index_table.php';

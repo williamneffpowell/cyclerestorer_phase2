@@ -8,7 +8,7 @@ $failed = 0;
 
 include '../includes/dbconnect.inc.php';
 
-$Link = mysql_connect ($Host, $User, $Password);
+$Link = mysqli_connect($Host, $User, $Password, $DBName);
 
 
 
@@ -39,12 +39,11 @@ echo '<script language="JavaScript" type="text/javascript">
 ####################################  Done Login Test    #################################################################################
 ##########################################################################################################################################
 $edit_row = $_REQUEST['edit_row'];
-mysql_connect("$Host","$User","$Password");
-mysql_select_db("$DBName") or die(mysql_error());
+mysqli_connect("$Host","$User","$Password","$DBName");
 // Performing SQL query
 $query = "SELECT * FROM cycle_shows  where (showID ='$edit_row')";
-$result = mysql_query($query) or die('Query failed: ' . mysql_error());
-$Row = mysql_fetch_array($result);
+$result = mysqli_query($Link, $query) or die('Query failed: ' . mysqli_error($Link));
+$Row = mysqli_fetch_array($result);
 #$user_tab = $Row[3];
 #$model_tab = $Row[6];
 ?>
@@ -160,7 +159,7 @@ tinyMCE_GZ.init({
 		   <tr>
           <td class="wh_tnr_12"><div align="left">Show Name:</div></td>
           <td><div align="left">
-            <input type="text" name="show_name_fd" value="<?PHP echo $Row[0]; ?>">
+            <input type="text" name="show_name_fd" value="<?php echo $Row[0]; ?>">
 			 <input type="hidden" name="showID" value= "<?php echo $edit_row;?> ">
           </div></td>
           <td>&nbsp;</td>
@@ -168,21 +167,21 @@ tinyMCE_GZ.init({
 		<tr>
           <td class="wh_tnr_12"><div align="left">Show Address</div></td>
           <td><div align="left">
-            <input type="text" name="show_address_fd" value="<?PHP echo $Row[2]; ?>">
+            <input type="text" name="show_address_fd" value="<?php echo $Row[2]; ?>">
           </div></td>
           <td>&nbsp;</td>
         </tr>
 		<tr>
           <td class="wh_tnr_12"><div align="left">Show City:</div></td>
           <td><div align="left">
-            <input type="text" name="show_city_fd" value="<?PHP echo $Row[3]; ?>">
+            <input type="text" name="show_city_fd" value="<?php echo $Row[3]; ?>">
           </div></td>
           <td>&nbsp;</td>
         </tr>
 		<tr>
           <td class="wh_tnr_12"><div align="left">Show State:</div></td>
           <td><div align="left">
-            <input type="text" name="show_state_fd" value="<?PHP echo $Row[4]; ?>">
+            <input type="text" name="show_state_fd" value="<?php echo $Row[4]; ?>">
           </div></td>
           <td>&nbsp;</td>
         </tr>
@@ -191,7 +190,7 @@ tinyMCE_GZ.init({
           <tr>
           <td width="210" class="wh_tnr_12"><div align="left">Show Zipcode</div></td>
            <td >
-          <input type="text" name="show_zipcode_fd" value ="<?PHP echo $Row[5]; ?>">
+          <input type="text" name="show_zipcode_fd" value ="<?php echo $Row[5]; ?>">
         </td>
             <br>
           </div></td>
@@ -200,7 +199,7 @@ tinyMCE_GZ.init({
 		
 		<tr>
           <td width="210" class="wh_tnr_12"><div align="center">Comment:</div></td>
-         <td align="center" width="50" height="5"><textarea  name="comment_fd" rows="10" cols="40"><?PHP echo $Row[6]; ?></textarea >
+         <td align="center" width="50" height="5"><textarea  name="comment_fd" rows="10" cols="40"><?php echo $Row[6]; ?></textarea >
          </td>
             <br>
           </div></td>
@@ -211,7 +210,7 @@ tinyMCE_GZ.init({
         <tr>
           <td class="wh_tnr_12"><div align="center">Start Date:<a href="javascript:NewCal(\'demo1\',\'YYYYMMDD\')"><img src="../Images/cal.gif" width="16" height="16" border="0" alt="Pick a Start date"></a></div></td>
           <td><div align="left">
-            <input id="demo1" type="text" name="start_date_fd" value="<?PHP echo $Row[7]; ?>">
+            <input id="demo1" type="text" name="start_date_fd" value="<?php echo $Row[7]; ?>">
           </div></td>
           <td>&nbsp;</td>
         </tr>
@@ -219,7 +218,7 @@ tinyMCE_GZ.init({
 		
           <td class="wh_tnr_12"><div align="center">End Date:<a href="javascript:NewCal(\'demo1\',\'YYYYMMDD\')"><img src="../Images/cal.gif" width="16" height="16" border="0" alt="Pick a Start date"></a></div></td>
           <td><div align="left">
-            <input type="text" name="end_date_fd" value="<?PHP echo $Row[8]; ?>">
+            <input type="text" name="end_date_fd" value="<?php echo $Row[8]; ?>">
           </div></td>
           <td>&nbsp;</td>
         </tr>
@@ -242,7 +241,7 @@ tinyMCE_GZ.init({
  
 
 
-<?PHP
+<?php
 
 
  if ($_REQUEST['submit']) { 
@@ -261,18 +260,18 @@ tinyMCE_GZ.init({
 	 $Query = "UPDATE cycle_shows SET  show_name = '$show_name', show_address = '$show_address',show_city = '$show_city',show_zipcode = '$show_zipcode', comment = '$comment', start_date = '$start_date', end_date = '$end_date', enter_date = '$enter_date' WHERE showID = '$show_id' ";
 		
 		#print " Query $query \n";
-		$result=mysql_query($Query) or die ('Insert Query Failed' . mysql_error());
+		$result=mysqli_query($Link, $Query) or die ('Insert Query Failed' . mysqli_error($Link));
 			
 		if    ($result) 
 		{ 
-			mysql_close ($Link);
+			mysqli_close($Link);
 				  echo '<script language="JavaScript" type="text/javascript">
 				window.location.href="http://www.cyclerestorer.com/pages/cycle_shows.php"</script>';
 		  }
 		  else 
 		  {
 		  echo "<b>ERROR: unable to post.</b>"; 
-		  mysql_close ($Link);
+		  mysqli_close($Link);
 		  }
 	}	  
 		  
@@ -289,12 +288,12 @@ tinyMCE_GZ.init({
 	     $Query2 = "Delete from cycle_show where showID = '$show_id'";
 		 	  
 		  
-		$result=mysql_query($Query2) or die ('Update Query Failed $Query2');
+		$result=mysqli_query($Link, $Query2) or die ('Update Query Failed $Query2');
 		
 		
 		if  ($result) 
 			{
-		    	mysql_close ($Link);
+		    	mysqli_close($Link);
 				echo '<script language="JavaScript" type="text/javascript">
 				window.location.href="http://www.cyclerestorer.com/pages/classified_ads.php" </script>';
 			}

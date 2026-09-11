@@ -2,7 +2,7 @@
 require '../includes/auth_check.inc.php';
 include '../includes/dbconnect.inc.php';
 
-$Link = mysql_connect ($Host, $User, $Password); 
+$Link = mysqli_connect($Host, $User, $Password, $DBName); 
 
 #**************************************************************************
 # The row to select from the Before_after Page selection 
@@ -68,7 +68,7 @@ if (validate_required(file_name,"You Must Select A File to Upload")==false)
 <CENTER>* Images must be GIF or JPEG and no greater than 1 MB in size.</CENTER>
 </TD></TR>
 </TABLE>	
-<?PHP
+<?php
 if ($is_logged_in)
 {
 # LOGIN OK
@@ -157,11 +157,10 @@ $login_var = '<form method="POST" action="http://www.cyclerestorer.com/pages/log
 //END CHECK LOGIN
 #########################################################################################################################################################
 
-$Link = mysql_connect ($Host, $User, $Password);
+$Link = mysqli_connect($Host, $User, $Password, $DBName);
 #$host_server_link= "localhost:8080/redbug/_no_task/cyclerestorer";
-mysql_select_db("$DBName") or die(mysql_error());
-#$result = mysql_query($query) or die('Query failed: ' . mysql_error());
-#$Link = mysql_connect ($Host, $User, $Password); 
+#$result = mysqli_query($Link, $query) or die('Query failed: ' . mysqli_error($Link));
+#$Link = mysqli_connect($Host, $User, $Password, $DBName); 
 
 echo '</tr>';
 
@@ -273,35 +272,27 @@ if (is_uploaded_file($_FILES['file_name']['tmp_name']))
 
 if (is_uploaded_file($_FILES['file_name']['tmp_name']))
 {
-$Link = mysql_connect ($Host, $User, $Password);
+$Link = mysqli_connect($Host, $User, $Password, $DBName);
 #$host_server_link= "localhost:8080/redbug/_no_task/cyclerestorer";;
 
 #$host_server_link= "localhost:8080/redbug/_no_task/cyclerestorer";
-mysql_select_db("$DBName") or die(mysql_error());
-
-
 $photo_comment=$_REQUEST['photo_comment'];
 //$file_var=$_FILES['file_name']['name'];
 $bef_pic_row_id=$_REQUEST["bef_aft_val"];
 $today = date("Y-m-d h:i:s");
 
-$Link = mysql_connect ($Host, $User, $Password); 
-mysql_select_db("$DBName") or die(mysql_error());
-
-
+$Link = mysqli_connect($Host, $User, $Password, $DBName); 
 $sql = "SELECT COUNT(*) FROM before_after_pics where before_after_row_id = '$bef_pic_row_id'";
-$results = mysql_query($sql) or die(mysql_error());
-$total_rows = mysql_fetch_row($results); 
+$results = mysqli_query($Link, $sql) or die(mysqli_error($Link));
+$total_rows = mysqli_fetch_row($results); 
 $total_plus_one = $total_rows[0] + 1;
 
-$Link = mysql_connect ($Host, $User, $Password); 
-mysql_select_db("$DBName") or die(mysql_error());
-
+$Link = mysqli_connect($Host, $User, $Password, $DBName); 
 $query ="INSERT INTO before_after_pics (pic_comment,filename,pic_enter_date,before_after_row_id,pic_display_order) VALUES('$photo_comment','$temp_th_url','$today','$bef_pic_row_id','$total_plus_one')"; 	
 
 #print $query;
-		$result=mysql_query($query) or die (print '<h5>Insert Query Failed</h5>' . mysql_error());
-	mysql_close ($Link);
+		$result=mysqli_query($Link, $query) or die (print '<h5>Insert Query Failed</h5>' . mysqli_error($Link));
+	mysqli_close($Link);
 echo '<script language="JavaScript" type="text/javascript">
 			//	window.location.href="http://www.cyclerestorer.com/pages/restoration_pics.php?edit_row=',"$bef_pic_row_id",'"</script>';	 
 echo "\n";
@@ -316,7 +307,7 @@ echo "<h3><a href=restoration_pics.php?edit_row=$id_temp_add_var>Back to Picture
 
 </p>
 <p>&nbsp;</p>
-<?PHP
+<?php
 include 'bottom_index_table.php';
 include '../includes/analytics.inc.php';
 ?>

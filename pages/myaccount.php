@@ -5,7 +5,7 @@ $session_username = $session_username;
 include('functions.php');
 include '../includes/dbconnect.inc.php';
 
-$Link = mysql_connect ($Host, $User, $Password); 
+$Link = mysqli_connect($Host, $User, $Password, $DBName); 
 if ($is_logged_in)
 {
 # LOGIN OK
@@ -58,7 +58,7 @@ function goToLogin(){ window.location = "http://www.cyclerestorer.com/pages/logi
 <?php
 #$username = $_POST['username'];
 
-$Link = mysql_connect ($Host, $User, $Password); 
+$Link = mysqli_connect($Host, $User, $Password, $DBName); 
 //if (checklogin($userID, "profile.php?uid=$uid")) {
 
 
@@ -70,8 +70,8 @@ $Link = mysql_connect ($Host, $User, $Password);
 #print_header($username);
 
 $Query = "SELECT p.filename, p.caption FROM tb_pictures AS p, auth_user AS u WHERE u.username='$session_username' AND u.picID=p.picID;";
-$Result = mysql_db_query ($DBName, $Query, $Link);
-$Row = mysql_fetch_array ($Result);
+$Result = mysqli_query($Link, $Query);
+$Row = mysqli_fetch_array($Result);
 if ($Row[0] <> "") {$image = "../userthumbs/$Row[0]";}
 else {$image = "../userthumbs/default.jpg";}
 if ($Row[1] <> "") {$caption="\"$Row[1]\"";}
@@ -82,32 +82,32 @@ else {$caption = "No picture";}
 
 
 $Query = "SELECT COUNT(*) FROM  registry WHERE username='$session_username'";
-$Result = mysql_db_query ($DBName, $Query, $Link);
-$Row = mysql_fetch_array ($Result);
+$Result = mysqli_query($Link, $Query);
+$Row = mysqli_fetch_array($Result);
 $bikes = $Row[0];
 
 $Query = "SELECT COUNT(*) FROM  registry WHERE username='$session_username' and type_of_entry='Registry'";
-$Result = mysql_db_query ($DBName, $Query, $Link);
-$Row = mysql_fetch_array ($Result);
+$Result = mysqli_query($Link, $Query);
+$Row = mysqli_fetch_array($Result);
 $active_bikes = $Row[0];
 
 
 #echo "<h5> Username = $username session_username = $session_username</h5>";
 
 $Query = "SELECT COUNT(*) FROM  registry WHERE username='$session_username' and type_of_entry='Sold'";
-$Result = mysql_db_query ($DBName, $Query, $Link);
-$Row = mysql_fetch_array ($Result);
+$Result = mysqli_query($Link, $Query);
+$Row = mysqli_fetch_array($Result);
 $sold_bikes = $Row[0];
 
 $Query = "SELECT  bio,url  FROM auth_user  WHERE username='$session_username';";
-$Result = mysql_db_query ($DBName, $Query, $Link);
-$Row = mysql_fetch_array ($Result);
+$Result = mysqli_query($Link, $Query);
+$Row = mysqli_fetch_array($Result);
 $bio = $Row[0];
 $url = $Row[1];
 
 ?>
 <BR>
-<H2 align=center>Welcome <?echo $session_username;?></H2>
+<H2 align=center>Welcome <?php echo $session_username;?></H2>
 <div align="center"><br>
   <br>
   
@@ -121,14 +121,14 @@ $url = $Row[1];
    
      
         <TABLE width=200 ALIGN=LEFT cellpadding=0 cellspacing=2>
-          <TR><TH colspan=2 bgcolor=79888E>Hi <?echo $alias;?></TH></TR>
+          <TR><TH colspan=2 bgcolor=79888E>Hi <?php echo $alias;?></TH></TR>
           <TR><TD>
               <div class="box">
               <TABLE align=center cellpadding=4 cellspacing=4 width=200>
                 <TD>
                   <div class="box">
                     <TR>
-                     <CENTER> <TD width=150 valign=top><a href=profile.php><img src="<?echo $image;?>" alt=<?echo $caption;?> border=0></a>
+                     <CENTER> <TD width=150 valign=top><a href=profile.php><img src="<?php echo $image;?>" alt=<?php echo $caption;?> border=0></a>
                         <LEFT>
                           
                           <A  HREF=edit_user_info.php>Edit Account pic and Bio</A><BR><BR> 
@@ -154,14 +154,14 @@ $url = $Row[1];
 <!--  ###########################  BIO  TABLE  -->
         <div align="center">
           <TABLE width=250 ALIGN=CENTER cellpadding=0 cellspacing=0 width=225>
-            <TR><TH bgcolor=79888E><?echo $alias;?>'s Bio</TH></TR>
+            <TR><TH bgcolor=79888E><?php echo $alias;?>'s Bio</TH></TR>
             <TR><TD>
               <div class="box">
                 <TABLE>
                   <TR><TD>
                     <DIV style="width: 250; height: 200; overflow:auto; padding: 4; ">
-                      <?echo $bio;?>
-                      <?echo $url;?>                     
+                      <?php echo $bio;?>
+                      <?php echo $url;?>                     
       					</TD>
 					</TR>
                  </TABLE>
@@ -186,17 +186,17 @@ $url = $Row[1];
             
 			   <tr>
                   <td>Bikes Registered</td>
-                  <td><?echo $bikes;?></td>
+                  <td><?php echo $bikes;?></td>
          	   </tr>
 			   <tr>
                   <td>
-				   <? echo "<a HREF= http://www.cyclerestorer.com/pages/user_library.php?user_library_var=$session_username&type_entry_var=Registry>Owned Bikes</a>"; ?>
+				   <?php echo "<a HREF= http://www.cyclerestorer.com/pages/user_library.php?user_library_var=$session_username&type_entry_var=Registry>Owned Bikes</a>"; ?>
 				   </td>
-                  <td><?echo $active_bikes;?></td>
+                  <td><?php echo $active_bikes;?></td>
          	   </tr>
 			     <tr>
-                  <td><? echo "<a align=left href=user_library.php?user_library_var=$session_username&type_entry_var=Sold>Previously Owned</a>"; ?></td>
-                  <td><?echo $sold_bikes;?></td>
+                  <td><?php echo "<a align=left href=user_library.php?user_library_var=$session_username&type_entry_var=Sold>Previously Owned</a>"; ?></td>
+                  <td><?php echo $sold_bikes;?></td>
          	   </tr>
 			   <tr>
 			      
@@ -249,7 +249,7 @@ $url = $Row[1];
 <TR>
 <TD>
 <TABLE  ALIGN=CENTER width=400 bgcolor=eeeeee cellpadding=0 cellspacing=0>
-<TR><TH bgcolor=79888E colspan=2><?echo $alias;?>'s Bikes</TH></TR>
+<TR><TH bgcolor=79888E colspan=2><?php echo $alias;?>'s Bikes</TH></TR>
 <TR><TD>
 <div class=box>
 <TABLE width=95% align=center> -->
@@ -257,10 +257,10 @@ $url = $Row[1];
 <?php 
 
 $Query = "SELECT manufacturer,  year, model FROM registry WHERE username='$session_username' ORDER BY manufacturer, year, model";
-$Result = mysql_db_query ($DBName, $Query, $Link);
+$Result = mysqli_query($Link, $Query);
 $results = 0;
 
-while ($Row = mysql_fetch_array ($Result)) 
+while ($Row = mysqli_fetch_array($Result)) 
 
 {
 
@@ -305,7 +305,7 @@ if ($results == 0)
 
 <?php
 
-mysql_close ($Link);
+mysqli_close($Link);
 include 'bottom_index_table.php';
 include '../includes/analytics.inc.php';
 #}

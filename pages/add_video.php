@@ -7,7 +7,7 @@ $session_username = $session_username;
 $userID = $_SESSION['user_ID'];
 include '../includes/dbconnect.inc.php';
 
-$Link = mysql_connect ($Host, $User, $Password); 
+$Link = mysqli_connect($Host, $User, $Password, $DBName); 
 
 if ($is_logged_in)
 {
@@ -131,13 +131,13 @@ return (errs==0);
 
 
 
-<FORM NAME=video ACTION=newvideo.php?edit_row=<?echo $edit_row;?> METHOD=POST onSubmit="return check_form();">
+<FORM NAME=video ACTION=newvideo.php?edit_row=<?php echo $edit_row;?> METHOD=POST onSubmit="return check_form();">
 <TABLE align=center bgcolor=eeeeee width=700>
 <TR><TH colspan=2 bgcolor=79888E>Add New Video</TH>
 </TR>
 <TR>
 <TD>Video Title</TD>
-<TD><INPUT TYPE=TEXT NAME=title SIZE=60 value="<?echo $title;?>"></TD>
+<TD><INPUT TYPE=TEXT NAME=title SIZE=60 value="<?php echo $title;?>"></TD>
 </TR>
 <TR>
 <TD>Category</TD>
@@ -147,10 +147,10 @@ return (errs==0);
 
 <TR>
 <TD valign=top>Description</TD>
-<TD><textarea id="elm1" name="description" rows="15" cols="40"><?echo $description;?></TEXTAREA></TD>
+<TD><textarea id="elm1" name="description" rows="15" cols="40"><?php echo $description;?></TEXTAREA></TD>
 </TR>
 
-<input type="hidden" name="showID" value= "<?echo $edit_row;?> ">
+<input type="hidden" name="showID" value= "<?php echo $edit_row;?> ">
 <TR>
 <TD valign=top>Embed Code</TD>
 <TD><textarea name="embedcode" rows="3" cols="60"></TEXTAREA></TD>
@@ -178,7 +178,7 @@ return (errs==0);
 
 } //end check status
 
-mysql_close ($Link);
+mysqli_close($Link);
 
 
 // End check log in

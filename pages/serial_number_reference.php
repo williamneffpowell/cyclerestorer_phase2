@@ -7,11 +7,10 @@
 require '../includes/auth_check.inc.php';
 $sessionID = "";
 $session_username = "";
-session_start();
 $sessionId = $_SESSION['SESSION_ID']??'0'; 
 
-$session_username = $_REQUEST['username'] ?? '';
 
+$session_username = $_REQUEST['username'] ?? '';
 
 include '../includes/dbconnect.inc.php';
 
@@ -202,7 +201,7 @@ mysqli_free_result($result);
 //print "<table align='center'><tr><td>$loginvar</td></tr></table>";
 
 // Closing connection
-#mysql_close($link);
+#mysqli_close($link);
 include 'bottom_index_table.php';
 include '../includes/analytics.inc.php';
 ?>

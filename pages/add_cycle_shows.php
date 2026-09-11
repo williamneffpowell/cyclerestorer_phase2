@@ -1,14 +1,13 @@
 <?php
 require '../includes/auth_check.inc.php';
 include '../includes/dbconnect.inc.php';
-mysql_connect("$Host","$User","$Password");
-mysql_select_db($DBName) or die(mysql_error());  
+mysqli_connect("$Host","$User","$Password","$DBName");
 //CHECK LOGIN - PUT THIS CODE ON ALL PROTECTED PAGES
 $session_username = $_SESSION['user_name'];
 $failed = 0;
 $session_temp_var=$_SESSION['sessionID'];
 if ($session_temp_var <> "") {
-$Link = mysql_connect ($Host, $User, $Password);
+$Link = mysqli_connect($Host, $User, $Password, $DBName);
 
 }
 
@@ -29,7 +28,7 @@ echo "<br>";
 
 print_html_add();
 # Do Nothing print_html_add();
-mysql_close ($Link);
+mysqli_close($Link);
 
 }
 if (!$is_logged_in)
@@ -47,7 +46,7 @@ echo '<script language="JavaScript" type="text/javascript">
 $failed = 1;
 }
 
-	  # if(!mysql_db_query($dbname,$query,$link_id)) die(mysql_error());
+	  # if(!mysql_db_query($dbname,$query,$link_id)) die(mysqli_error($Link));
 		# echo "success in database entry.";	
 //END CHECK LOGIN ##################################################################################################
 #print "usernameagain $username\n";
@@ -134,7 +133,7 @@ body {
 <br>
 <h3 align='center'>* = Required </h3>
 
-<?PHP
+<?php
 function print_html_add() {
 print '
 <form name=adform method="POST" onsubmit="return validate_form(this)">
@@ -224,15 +223,14 @@ print '
 		$enter_date=date("Y-m-d h:i:s");
 		
 $session_username = $_SESSION['user_name'];				
-mysql_connect("$Host","$User","$Password");
-mysql_select_db($DBName) or die(mysql_error());  
-$Link = mysql_connect ($Host, $User, $Password);		 
+mysqli_connect("$Host","$User","$Password","$DBName");
+$Link = mysqli_connect($Host, $User, $Password, $DBName);		 
  
 $query ="INSERT INTO cycle_shows(show_name,show_address,show_city,show_state,show_zipcode,comment,start_date,end_date,enter_date,username)
  VALUES ('$show_name','$show_address','$show_city','$show_state','$show_zipcode','$comment','$start_date','$end_date','$enter_date','$session_username')"; 
 			#print "user_var = $user_var\n";  
 		#print " Query $query \n";
-		$result=mysql_query($query) or die ('Insert Query Failed' . mysql_error());
+		$result=mysqli_query($Link, $query) or die ('Insert Query Failed' . mysqli_error($Link));
 			
 		if    ($result) 
 		{ 
@@ -244,7 +242,7 @@ $query ="INSERT INTO cycle_shows(show_name,show_address,show_city,show_state,sho
 		  else 
 		  {
 		  echo "<b>ERROR: unable to post.</b>"; 
-		  mysql_close ($Link);
+		  mysqli_close($Link);
 		  }
 		  
 		  

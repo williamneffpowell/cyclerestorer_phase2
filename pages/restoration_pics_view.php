@@ -90,13 +90,9 @@ if (validate_required(file_name,"You Must Select A File to Upload")==false)
 </p>
 <br>
 <?php
-#$Link = mysql_connect ($Host, $User, $Password);
+#$Link = mysqli_connect($Host, $User, $Password, $DBName);
 #$host_server_link= "localhost:8080/redbug/_no_task/cyclerestorer";
-#mysql_select_db("$DBName") or die(mysql_error());
-
-
-
-if ($sort_field_url == "")
+#if ($sort_field_url == "")
 {
 $sort_field_in =  "order by username" ;}
 
@@ -228,7 +224,7 @@ $td_backward--;
 <map id="_Image-Maps_4201112270945232" name="Image-Maps_4201112270945232">
     
 <area shape="rect" coords="49,3,95,86" href="https://www.cyclerestorer.com/pages/restoration_pics_view.php?bef_aft_row=<?php echo htmlspecialchars($bef_aft_row); ?>&td_var=<?php echo htmlspecialchars($td_forward); ?>" alt="right" title="right" onMouseOver="if(document.images) document.getElementById('Image-Maps_4201112270945232').src= 'https://www.cyclerestorer.com/Images/cropped_turn_right.jpg';" onMouseOut="if(document.images) document.getElementById('Image-Maps_4201112270945232').src= 'https://www.cyclerestorer.com/Images/cropped_turn.jpg';" />    
- <area shape="rect" coords="2,3,52,86" href="http://www.cyclerestorer.com/pages/restoration_pics_view.php? bef_aft_row=<?php echo htmlspecialchars($bef_aft_row); ?>&td_var=<?echo htmlspecialchars($td_backward);?>" alt="left" title="left" onMouseOver="if(document.images) document.getElementById('Image-Maps_4201112270945232').src= 'http://www.cyclerestorer.com/Images/cropped_turn_left.jpg';" onMouseOut="if(document.images) document.getElementById('Image-Maps_4201112270945232').src= 'http://www.cyclerestorer.com/Images/cropped_turn.jpg';"  />
+ <area shape="rect" coords="2,3,52,86" href="http://www.cyclerestorer.com/pages/restoration_pics_view.php? bef_aft_row=<?php echo htmlspecialchars($bef_aft_row); ?>&td_var=<?php echo htmlspecialchars($td_backward);?>" alt="left" title="left" onMouseOver="if(document.images) document.getElementById('Image-Maps_4201112270945232').src= 'http://www.cyclerestorer.com/Images/cropped_turn_left.jpg';" onMouseOut="if(document.images) document.getElementById('Image-Maps_4201112270945232').src= 'http://www.cyclerestorer.com/Images/cropped_turn.jpg';"  />
 <!--<area shape="rect" coords="96,87,98,89" href="http://www.image-maps.com/index.php?aff=mapped_users_4201112270945232" alt="Image Map" title="Image Map" />-->
 </map>
 <!-- </div> -->

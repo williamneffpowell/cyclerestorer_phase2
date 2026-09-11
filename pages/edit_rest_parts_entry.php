@@ -1,4 +1,4 @@
-<?PHP
+<?php
 //CHECK LOGIN - PUT THIS CODE ON ALL PROTECTED PAGES
 require '../includes/auth_check.inc.php';
 //CHECK LOGIN - PUT THIS CODE ON ALL PROTECTED PAGES
@@ -21,12 +21,11 @@ echo '<script language="JavaScript" type="text/javascript">
 ##########################################################################################################################################
 $edit_row = $_REQUEST['edit_row'];
 $before_after_rowID=$_REQUEST['before_after_rowID'];
-mysql_connect("$Host","$User","$Password");
-mysql_select_db("$DBName") or die(mysql_error());
+mysqli_connect("$Host","$User","$Password","$DBName");
 // Performing SQL query
 $query = "SELECT * FROM tb_restoration_parts where (row_ID ='$edit_row')";
-$result = mysql_query($query) or die('Query failed: ' . mysql_error());
-$Row = mysql_fetch_array($result);
+$result = mysqli_query($Link, $query) or die('Query failed: ' . mysqli_error($Link));
+$Row = mysqli_fetch_array($result);
 #$user_tab = $Row[3];
 #$model_tab = $Row[6];
 ?>
@@ -124,7 +123,7 @@ tinyMCE_GZ.init({
 		   <tr>
           <td class="wh_tnr_12"><div align="left">Part Category:</div></td>
           <td><div align="left">
-            <input type="text" name="part_category_fd" value="<?PHP echo $Row[7]; ?>">
+            <input type="text" name="part_category_fd" value="<?php echo $Row[7]; ?>">
 			 <input type="hidden" name="editrowID" value= "<?php echo $edit_row;?> ">
 			 <input type="hidden" name="bfore_aftr_row_id" value="<?php echo $before_after_rowID;?>">
 			 
@@ -134,13 +133,13 @@ tinyMCE_GZ.init({
 				<tr>
           <td class="wh_tnr_12"><div align="left">Part Name:</div></td>
           <td><div align="left">
-            <input type="text" name="part_name_fd" value="<?PHP echo $Row[2]; ?>">
+            <input type="text" name="part_name_fd" value="<?php echo $Row[2]; ?>">
           </div></td>
           <td>&nbsp;</td>
         </tr>
 		<tr>
           <td width="210" class="wh_tnr_12"><div align="center">Part Description:</div></td>
-		  <td align="center" width="50" height="5"><textarea  name="part_description_fd" rows="10" cols="40"><?PHP echo $Row[6]; ?></textarea >
+		  <td align="center" width="50" height="5"><textarea  name="part_description_fd" rows="10" cols="40"><?php echo $Row[6]; ?></textarea >
            </td>
 		   <br>
           </div></td>
@@ -160,7 +159,7 @@ tinyMCE_GZ.init({
          <tr>
           <td width="210" class="wh_tnr_12"><div align="left">Desired/Actual Cost:</div></td>
            <td >
-          <input type="text" name="desired_cost_fd" value ="<?PHP echo $Row[1]; ?>">
+          <input type="text" name="desired_cost_fd" value ="<?php echo $Row[1]; ?>">
         </td>
             <br>
           </div></td>
@@ -183,7 +182,7 @@ tinyMCE_GZ.init({
 
 
 
-<?PHP
+<?php
 
 
  if ($_REQUEST['submit']) {
@@ -200,11 +199,11 @@ $editrowID = $_REQUEST['editrowID'];
 	 $Query = "UPDATE tb_restoration_parts  SET  part_name = '$part_name', part_description = '$part_description',part_category = '$part_category', desired_cost = '$desired_cost',enter_date = '$enter_date', wanted_purchased = '$wanted_purchased'  WHERE row_ID = '$editrowID' ";
 
 		#print " Query $query \n";
-		$result=mysql_query($Query) or die ('Insert Query Failed' . mysql_error());
+		$result=mysqli_query($Link, $Query) or die ('Insert Query Failed' . mysqli_error($Link));
 
 		if    ($result)
 		{
-			#mysql_close ($Link);
+			#mysqli_close($Link);
 		$bfore_aftr_row_id=$_REQUEST['bfore_aftr_row_id'];
 			  echo '<script language="JavaScript" type="text/javascript">
 				window.location.href="http://www.cyclerestorer.com/pages/restoration_pics.php?edit_row='.$bfore_aftr_row_id.'"</script>';
@@ -213,7 +212,7 @@ $editrowID = $_REQUEST['editrowID'];
 		  {
 		  echo "<b>ERROR: unable to post.</b>";
 		 print "<h2>ERROR IN UPDATE QUERY \n</h2>";
-		  mysql_close ($Link);
+		  mysqli_close($Link);
 		  }
 	}
 
@@ -228,12 +227,12 @@ $editrowID = $_REQUEST['editrowID'];
 	     $Query2 = "Delete from tb_restoration_parts WHERE row_ID = '$editrowID'";
 
 
-		$result=mysql_query($Query2) or die ('Update Query Failed $Query2');
+		$result=mysqli_query($Link, $Query2) or die ('Update Query Failed $Query2');
 
 
 		if  ($result)
 			{
-		    	mysql_close ($Link);
+		    	mysqli_close($Link);
 				$edit_row=$_REQUEST['bfore_aftr_row_id'];
 				echo '<script language="JavaScript" type="text/javascript">
 				window.location.href="http://www.cyclerestorer.com/pages/restoration_pics.php?edit_row='.$bfore_aftr_row_id.'"</script>';

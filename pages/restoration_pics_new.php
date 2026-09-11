@@ -1,7 +1,7 @@
  <?php
 require '../includes/auth_check.inc.php';
 include '../includes/dbconnect.inc.php';
-	mysql_connect("$Host","$User","$Password");
+	mysqli_connect("$Host","$User","$Password","$DBName");
 $session_username = $session_username;
 
 
@@ -9,8 +9,8 @@ if ($is_logged_in){
 
 include '../includes/dbconnect.inc.php';
 
-$Link = mysql_connect ($Host, $User, $Password);
-$Result = mysql_db_query ($DBName, $Query, $Link);
+$Link = mysqli_connect($Host, $User, $Password, $DBName);
+$Result = mysqli_query($Link, $Query);
 
 
 $logged_in = "yes";
@@ -98,21 +98,18 @@ if (validate_required(file_name,"You Must Select A File to Upload")==false)
 
 </p>
 <br>
-<?
-#$Link = mysql_connect ($Host, $User, $Password);
+<?php
+#$Link = mysqli_connect($Host, $User, $Password, $DBName);
 #$host_server_link= "localhost:8080/redbug/_no_task/cyclerestorer";
-#mysql_select_db("$DBName") or die(mysql_error());
-if ($sort_field_url == "")
+#if ($sort_field_url == "")
 {
 $sort_field_in =  "order by username" ;}
 
 #print "ID TEMP TEMP VAR $id_temp_var \n";
-mysql_connect("$Host","$User","$Password");
-mysql_select_db("$DBName") or die(mysql_error());
-
+mysqli_connect("$Host","$User","$Password","$DBName");
 $query = ("SELECT b.restoration_title, b.username from before_after as b  where b.row_id = '$id_temp_var' ");
-$result = mysql_query($query) or die('Query failed: ' . mysql_error());
-$Row = mysql_fetch_array($result);
+$result = mysqli_query($Link, $query) or die('Query failed: ' . mysqli_error($Link));
+$Row = mysqli_fetch_array($result);
 $restoration_title = $Row[0];
 $username = $Row[1];
 
@@ -136,10 +133,10 @@ $username = $Row[1];
 
 
 
-<?
+<?php
 $query = ("SELECT  filename,pic_comment,pic_enter_date from before_after_pics  where before_after_row_id ='$id_temp_var' order by pic_display_order");
-$result = mysql_query($query) or die('Query failed: ' . mysql_error());
- $Link = mysql_connect ($Host, $User, $Password);
+$result = mysqli_query($Link, $query) or die('Query failed: ' . mysqli_error($Link));
+ $Link = mysqli_connect($Host, $User, $Password, $DBName);
 // Printing results in HTML
 echo "<table align='left' width=80% >\n";
 echo '<table align=center>';
@@ -149,7 +146,7 @@ echo '<table align=center>';
 
 echo '<br>';
 $td_var = 1;
-while ($Row = mysql_fetch_array($result))
+while ($Row = mysqli_fetch_array($result))
 {
 if ($bgcolor == "BBBBBB") {$bgcolor = "777777";}
 else {$bgcolor = "BBBBBB";}
@@ -197,7 +194,7 @@ echo '<br>';
 <tr align="center">
 <td >
 
-<?
+<?php
 //echo "<h5> Username = $username Session_username= $session_username </h5>";
 
 if ($username == $session_username)
@@ -226,11 +223,11 @@ print '<form align="center">
 <table align="center" class='journal'  >
 
 	</table>
-<?
+<?php
 $query = ("SELECT r.log_title, r.work_description, r.hours_spent, r.cost, r.work_end_date, r.row_ID, r.username,r.work_start_date from tb_restoration_work as r where r.before_after_row_id = '$id_temp_var' and r.category = 'log'");
-$result = mysql_query($query) or die('Query failed: ' . mysql_error());
+$result = mysqli_query($Link, $query) or die('Query failed: ' . mysqli_error($Link));
 
-while ($Row = mysql_fetch_array($result))     #BEGINNING OF WHILE##################################################################
+while ($Row = mysqli_fetch_array($result))     #BEGINNING OF WHILE##################################################################
 {
 	$log_title = $Row[0];
 	$work_description = $Row[1];
@@ -253,25 +250,25 @@ while ($Row = mysql_fetch_array($result))     #BEGINNING OF WHILE###############
 	<hr size="10" noshade >
 	<tr><TD><H5 align="center"> Log Entries </h5></TD></tr>
 	</table>
-	<?
+	<?php
 		}
 	$cost_temp_var = $cost_temp_var + $cost;
 	$hours_spent_temp_var = $hours_spent_temp_var + $hours_spent;
 	?>
 	<br>
 	<table align="center" class='journal'  >
-	<?
+	<?php
 	if ( $work_start_date <> 0000-00-00 and $work_end_date <> 0000-00-00 )
 	{
 	?>
 
 	<tr><TD><b>Work Start Date: </b><?php print "$work_start_date"?>&nbsp;&nbsp;<b>Work End Date </b><?php print "$work_end_date"?></TD></tr>
-	<?
+	<?php
 	}
 	?>
 
 	<tr><TD><b>Title:   </b><?php print "$log_title"?></TD><td align="right"><b>Hours:   </b><?php print "$hours_spent"?>  <b>Cost:   </b><?php print "$".number_format($cost, 2, '.', ',')?> </td>
-	<?
+	<?php
     if ($work_username == $session_username and ($Row[0] <> ""))
        {
       echo "<td align='right'><strong><a href=edit_rest_log_entry.php?edit_row=$work_rowID>Edit</a></strong></td>";
@@ -281,7 +278,7 @@ while ($Row = mysql_fetch_array($result))     #BEGINNING OF WHILE###############
 	<hr>
 	</table>
 
-<?
+<?php
 }    ################################################## End of the while #
 
 
@@ -291,7 +288,7 @@ while ($Row = mysql_fetch_array($result))     #BEGINNING OF WHILE###############
 <tr align="center">
 <td >
 
-<?
+<?php
 if ($username == $session_username)
 {
 print '<form align="center"><input type=button value="Add a Log entry" onClick="goToAddLogURL()">
@@ -311,12 +308,12 @@ echo '</td>';
 	<hr size="10" noshade >
 	<tr><TD><H5 align="center"> To Do Entries </h5></TD></tr>
 	</table>
-<?
+<?php
 ######################### BEGINNING OF TODO SECTION Below ###########################################3
 $query = ("SELECT r.log_title, r.work_description, r.hours_spent, r.cost, r.work_end_date, r.row_ID, r.username,r.work_start_date from tb_restoration_work as r where r.before_after_row_id = '$id_temp_var' and r.category = 'todo' ");
-$result = mysql_query($query) or die('Query failed: ' . mysql_error());
+$result = mysqli_query($Link, $query) or die('Query failed: ' . mysqli_error($Link));
 
-while ($Row = mysql_fetch_array($result))     #BEGINNING OF WHILE##################################################################
+while ($Row = mysqli_fetch_array($result))     #BEGINNING OF WHILE##################################################################
 {
 	$log_title = $Row[0];
 	$work_description = $Row[1];
@@ -339,27 +336,27 @@ while ($Row = mysql_fetch_array($result))     #BEGINNING OF WHILE###############
 	<hr size="10" noshade >
 	<tr><TD><H5 align="center"> Log Entries </h5></TD></tr>
 	</table>
-	<?
+	<?php
 		}
 	$cost_temp_var = $cost_temp_var + $cost;
 	$hours_spent_temp_var = $hours_spent_temp_var + $hours_spent;
 	?>
 	<br>
 	<table align="center" class='journal'  >
-	<?
+	<?php
 	if ( $work_start_date <> 0000-00-00 and $work_end_date <> 0000-00-00 )
 	{
 	?>
 
 	<tr><TD><b>Work Start Date: </b><?php print "$work_start_date"?>&nbsp;&nbsp;<b>Work End Date </b><?php print "$work_end_date"?></TD></tr>
-	<?
+	<?php
 	}
 	?>
 
 	<tr><TD><b>Title:   </b><?php print "$log_title"?></TD><td align="right"><b>Hours:   </b><?php print "$hours_spent"?>  <b>Cost:   </b><?php print "$".number_format($cost, 2, '.', ',')?> </td>
 	
 	
-	<?
+	<?php
     if ($work_username == $session_username) 
        {
       echo "<td align='right'><strong><a href=edit_rest_log_entry.php?edit_row=$work_rowID>Edit</a></strong></td>";
@@ -368,7 +365,7 @@ while ($Row = mysql_fetch_array($result))     #BEGINNING OF WHILE###############
 	<TR><td><b>Work Descrption:   </b><?php print "$work_description"?>  </TD></tr>
 	<hr>
 	</table>
-<?
+<?php
 
 }    ################################################## End of the while #
 
@@ -388,7 +385,7 @@ while ($Row = mysql_fetch_array($result))     #BEGINNING OF WHILE###############
 <td >
 
 
-<?
+<?php
 if ($username == $session_username)
 {
 print '<form align="center"><input type=button value="Add a To Do  entry" onClick="goToAddToDoURL()">
@@ -398,7 +395,7 @@ echo '</td>';
 ?>
 </tr>
 </table>
-<?
+<?php
 #######################################################################################################################################################
 ##### Parts Section
 #######################################################################################################################################################
@@ -409,7 +406,7 @@ echo '</td>';
 	<tr><TD><H5 align="center"> Parts Wanted </h5></TD></tr>
 	</table>
 <table align="center">
-<?
+<?php
 
 echo "<table align='center' class='journal'  >";
 echo "<TH width='10%'><div align='left'>Name</a></TH>";
@@ -423,10 +420,10 @@ echo "<TH width='5%'><div align='left'>Message</a></TH>";
 }
 
 $query = ("SELECT p.part_name, p.part_description, p.part_category, p.desired_cost, p.enter_date, p.row_ID, p.username, p.wanted_purchased from tb_restoration_parts as p where p.before_after_row_id = '$id_temp_var' ");
-$result = mysql_query($query) or die('Query failed: ' . mysql_error());
+$result = mysqli_query($Link, $query) or die('Query failed: ' . mysqli_error($Link));
 
 
-while ($Row = mysql_fetch_array($result))     #BEGINNING OF WHILE##################################################################
+while ($Row = mysqli_fetch_array($result))     #BEGINNING OF WHILE##################################################################
 {
   	$part_name = $Row[0];
 	$part_description = $Row[1];
@@ -446,7 +443,7 @@ while ($Row = mysql_fetch_array($result))     #BEGINNING OF WHILE###############
 	<br>
 	<tr><TD><?php print "$part_name"?></TD><TD><?php print "$part_category"?></TD><TD><?php print "$".number_format($desired_cost, 2, '.', ',')?> </TD><TD><?php print "$enter_date"?></TD><td><?php print "$part_description"?></td>
 
-	<?
+	<?php
    if ($work_username == $session_username and ($Row[0] <> ""))
        {
 
@@ -475,7 +472,7 @@ while ($Row = mysql_fetch_array($result))     #BEGINNING OF WHILE###############
 	</table>
 	<table align="center">
 
-<?
+<?php
 echo "<table align='center' class='journal'  >";
 echo "<TH width='10%'><div align='left'>Name</a></TH>";
 echo "<TH width='15%'><div align='left'>Category</a></TH>";
@@ -485,10 +482,10 @@ echo "<TH width='40%'><div align='left'>Part Description</a></TH>";
 
 
 $query = ("SELECT p.part_name, p.part_description, p.part_category, p.desired_cost, p.enter_date, p.row_ID,p.username, p.wanted_purchased from tb_restoration_parts as p where p.before_after_row_id = '$id_temp_var' and p.wanted_purchased = 'Purchased' ");
-$result = mysql_query($query) or die('Query failed: ' . mysql_error());
+$result = mysqli_query($Link, $query) or die('Query failed: ' . mysqli_error($Link));
 $actual_cost = 0;
 $cost_temp_var = 0;
-while ($Row = mysql_fetch_array($result))     #BEGINNING OF WHILE##################################################################
+while ($Row = mysqli_fetch_array($result))     #BEGINNING OF WHILE##################################################################
 {
   	$part_name = $Row[0];
 	$part_description = $Row[1];
@@ -509,7 +506,7 @@ If ($wanted_purchased == "Purchased")
 
 	<tr><TD><?php print "$part_name"?></TD><TD><?php print "$part_category"?></TD><TD><?php print "$".number_format($actual_cost, 2, '.', ',')?> </TD><TD><?php print "$enter_date"?></TD><td><?php print "$part_description"?></td>
 
-	<?
+	<?php
 
 
 
@@ -537,7 +534,7 @@ If ($wanted_purchased == "Purchased")
 	</table>
 
 </tr>
-<?
+<?php
 
 
 ?>
@@ -547,7 +544,7 @@ If ($wanted_purchased == "Purchased")
 <tr align="center">
 <td >
 
-<?
+<?php
 
 if ($username == $session_username)
 {

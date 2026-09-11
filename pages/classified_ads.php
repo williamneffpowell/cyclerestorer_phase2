@@ -1,8 +1,7 @@
 <?php
 require '../includes/auth_check.inc.php';
 include '../includes/dbconnect.inc.php';
-mysql_connect("$Host","$User","$Password");
-mysql_select_db($DBName) or die(mysql_error());
+mysqli_connect("$Host","$User","$Password","$DBName");
 //CHECK LOGIN - PUT THIS CODE ON ALL PROTECTED PAGES
 $failed = 0;
 if ($is_logged_in)
@@ -102,9 +101,7 @@ if ($sort_field_order_url == "" or $sort_field_order_url == "ascending")
 }
 
 
-mysql_connect("$Host","$User","$Password");
-mysql_select_db("$DBName") or die(mysql_error());
-
+mysqli_connect("$Host","$User","$Password","$DBName");
 // Performing SQL query
 $query = "(SELECT DISTINCT  f.for_sale_wanted,f.user_name,f.username,f.manufacturer,f.model,f.description,
 f.price,f.date_entered,f.state,f.country, f.item_condition, f.item_row_id, f.parts_bike,f.year,
@@ -122,8 +119,8 @@ LEFT JOIN classified_image_library as c ON a.bike_picture_id = c.img_lib_rowID  
 
 #$query = "SELECT * FROM for_sale_wanted $sort_field_in ";
 #print "$query\n";
-$result = mysql_query($query) or die('Query failed: ' . mysql_error());
- $Link = mysql_connect ($Host, $User, $Password); 
+$result = mysqli_query($Link, $query) or die('Query failed: ' . mysqli_error($Link));
+ $Link = mysqli_connect($Host, $User, $Password, $DBName); 
 // Printing results in HTML
 echo "<table width='100%' align='center'  class='classified' cellspacing='0'>\n";
 echo "<TH width='7%'><div align='left'>For Sale<br>Wanted Condition</TH>";
@@ -145,7 +142,7 @@ echo "<TH width='5%'><div align='Center'>Image</TH>";
 
 
 
-while ($Row = mysql_fetch_array($result))
+while ($Row = mysqli_fetch_array($result))
 {
 	if ($bgcolor == "BBBBBB") 
 	{
@@ -278,10 +275,10 @@ echo "</table>\n";
 echo "<br>";
 print "<table align='center'><tr><td>$loginvar</td></tr></table>";
 
-mysql_free_result($result);
+mysqli_free_result($result);
 
 // Closing connection
-#mysql_close($link);
+#mysqli_close($link);
 include 'bottom_index_table.php';
 include '../includes/analytics.inc.php';
 ?>

@@ -7,11 +7,11 @@ $session_temp_var=$_SESSION['sessionID'];
 $session_username = $_SESSION['user_name'];
 include '../includes/dbconnect.inc.php';
 if ($session_temp_var <> "") {
-$Link = mysql_connect ($Host, $User, $Password);
+$Link = mysqli_connect($Host, $User, $Password, $DBName);
 $Query = "SELECT username FROM auth_user WHERE (sesnID='$session_temp_var');";
 #print $username[0];
-$Result = mysql_db_query ($DBName, $Query, $Link);
-$Row = mysql_fetch_array ($Result);
+$Result = mysqli_query($Link, $Query);
+$Row = mysqli_fetch_array($Result);
 //$username = $Row[0];
 }
 //Session doesn't exist
@@ -41,12 +41,11 @@ echo '<script language="JavaScript" type="text/javascript">
 ####################################  Done Login Test    #################################################################################
 ##########################################################################################################################################
 $id_temp_var = $_REQUEST['edit_row'];
-mysql_connect("$Host","$User","$Password");
-mysql_select_db("$DBName") or die(mysql_error());
+mysqli_connect("$Host","$User","$Password","$DBName");
 // Performing SQL query
 $query = "SELECT * FROM resource_links   where (resource_links_row_id  ='$id_temp_var')";
-$result = mysql_query($query) or die('Query failed: ' . mysql_error());
-$Row = mysql_fetch_array($result);
+$result = mysqli_query($Link, $query) or die('Query failed: ' . mysqli_error($Link));
+$Row = mysqli_fetch_array($result);
 $user_tab = $Row[3];
 #$model_tab = $Row[6];
 
@@ -135,42 +134,42 @@ tinyMCE_GZ.init({
 		   <tr>
           <td class="wh_tnr_12"><div align="left">Link Name:</div></td>
           <td><div align="left">
-            <input type="text" name="link_name_fd" value="<?PHP echo $Row[3]; ?>">
+            <input type="text" name="link_name_fd" value="<?php echo $Row[3]; ?>">
           </div></td>
           <td>&nbsp;</td>
         </tr>
 		<tr>
           <td class="wh_tnr_12"><div align="left">Link Comment:</div></td>
           <td><div align="left">
-            <input type="text" name="link_comment_fd" value="<?PHP echo $Row[5]; ?>">
+            <input type="text" name="link_comment_fd" value="<?php echo $Row[5]; ?>">
           </div></td>
           <td>&nbsp;</td>
         </tr>
 		<tr>
           <td class="wh_tnr_12"><div align="left">Focused Cycle Manufacturer:</div></td>
           <td><div align="left">
-            <input type="text" name="manufacturer_fd" value="<?PHP echo $Row[7]; ?>">
+            <input type="text" name="manufacturer_fd" value="<?php echo $Row[7]; ?>">
           </div></td>
           <td>&nbsp;</td>
         </tr>
 		<tr>
           <td class="wh_tnr_12"><div align="left">Focused Cycle Model:</div></td>
           <td><div align="left">
-            <input type="text" name="model_fd" value="<?PHP echo $Row[8]; ?>">
+            <input type="text" name="model_fd" value="<?php echo $Row[8]; ?>">
           </div></td>
           <td>&nbsp;</td>
         </tr>
 		<tr>
           <td class="wh_tnr_12"><div align="left">Focused Link Type:</div></td>
           <td><div align="left">
-            <input type="text" name="type_fd" value="<?PHP echo $Row[11]; ?>">
+            <input type="text" name="type_fd" value="<?php echo $Row[11]; ?>">
           </div></td>
           <td>&nbsp;</td>
         </tr>
 		<tr>
           <td class="wh_tnr_12"><div align="left">HTML LINK   http://</div></td>
           <td><div align="left">
-            <input type="text" name="html_link_fd" value="<?PHP echo $Row[4]; ?>">
+            <input type="text" name="html_link_fd" value="<?php echo $Row[4]; ?>">
           </div></td>
           <td>&nbsp;</td>
         </tr>
@@ -179,7 +178,7 @@ tinyMCE_GZ.init({
         <tr>
           <td class="wh_tnr_12"><div align="left">Link Rating:</div></td>
           <td><div align="left">
-            <input type="text" name="link_rating_fd" value="<?PHP echo $Row[6]; ?>">
+            <input type="text" name="link_rating_fd" value="<?php echo $Row[6]; ?>">
           </div></td>
           <td>&nbsp;</td>
         </tr>
@@ -202,7 +201,7 @@ tinyMCE_GZ.init({
  
 
 
-<?PHP
+<?php
 
 $today = date("Y-m-d h:i:s");
   if ($_REQUEST['submit']) { 
@@ -218,11 +217,11 @@ $username = $session_username;
 	     $Query2 = "UPDATE resource_links  SET resource_name = '$link_name',link_comment = '$link_comment', manufacturer = '$manufacturer', model = '$model',type = '$type' ,html_link = '$html_link' WHERE resource_links_row_id = '$id_temp_var'";
 		 	  
 		  
-		$result=mysql_query($Query2) or die ( 'Update Query Failed $Query2'. mysql_error());	
+		$result=mysqli_query($Link, $Query2) or die ( 'Update Query Failed $Query2'. mysqli_error($Link));	
 		
 		if  ($result) 
 			{
-		    	mysql_close ($Link);
+		    	mysqli_close($Link);
 				echo '<script language="JavaScript" type="text/javascript">
 				window.location.href="http://www.cyclerestorer.com/pages/links.php" </script>';
 			
@@ -239,12 +238,12 @@ $username = $session_username;
 	     $Query2 = "Delete from resource_links  where resource_links_row_id = '$id_temp_var'";
 		 	  
 		  
-		$result=mysql_query($Query2) or die ('Update Query Failed $Query2');
+		$result=mysqli_query($Link, $Query2) or die ('Update Query Failed $Query2');
 		
 		
 		if  ($result) 
 			{
-		    	mysql_close ($Link);
+		    	mysqli_close($Link);
 				echo '<script language="JavaScript" type="text/javascript">
 				window.location.href="http://www.cyclerestorer.com/pages/links.php" </script>';
 			}

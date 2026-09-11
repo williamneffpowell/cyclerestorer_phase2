@@ -8,7 +8,7 @@ $session_userid= $_SESSION['user_id'];
 
 
 include '../includes/dbconnect.inc.php';
-$Link = mysql_connect ($Host, $User, $Password); 
+$Link = mysqli_connect($Host, $User, $Password, $DBName); 
 
 
 if ($is_logged_in)

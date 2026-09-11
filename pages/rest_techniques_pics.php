@@ -4,7 +4,7 @@ $session_username = $session_username;
 
 include '../includes/dbconnect.inc.php';
 
-$Link = mysql_connect ($Host, $User, $Password); 
+$Link = mysqli_connect($Host, $User, $Password, $DBName); 
 
 if ($is_logged_in)
 {
@@ -27,13 +27,11 @@ $loginvar =   "NO" ;
 $id_temp_var = $_REQUEST['edit_row'];
 #******************************************************************
 #print "ID TEMP TEMP VAR $id_temp_var \n";
-$Link = mysql_connect ($Host, $User, $Password);
+$Link = mysqli_connect($Host, $User, $Password, $DBName);
 #$host_server_link= "localhost:8080/redbug/_no_task/cyclerestorer";
-mysql_select_db("$DBName") or die(mysql_error());
-
 $query = ("SELECT item_title, description from tb_rest_tech where item_row_id = '$id_temp_var'");
-$result = mysql_query($query) or die('Query failed: ' . mysql_error());
-$Row = mysql_fetch_array($result);
+$result = mysqli_query($Link, $query) or die('Query failed: ' . mysqli_error($Link));
+$Row = mysqli_fetch_array($result);
 
 $item_title = $Row[0];
 
@@ -103,12 +101,12 @@ if (validate_required(file_name,"You Must Select A File to Upload")==false)
 
 </table>
 
-<?
+<?php
 
 $query = ("SELECT classified_image_library.filename, classified_image_library.pic_comment,  ad_pictures.bike_row_id FROM classified_image_library LEFT JOIN ad_pictures ON classified_image_library.img_lib_rowID = ad_pictures.bike_picture_id where '$id_temp_var' = ad_pictures.registry_row_id");
 
-$result = mysql_query($query) or die('Query failed: ' . mysql_error());
- $Link = mysql_connect ($Host, $User, $Password); 
+$result = mysqli_query($Link, $query) or die('Query failed: ' . mysqli_error($Link));
+ $Link = mysqli_connect($Host, $User, $Password, $DBName); 
 // Printing results in HTML
 echo "<table align='left' width=100% >\n";
 echo '<table align=center>';
@@ -116,7 +114,7 @@ echo '<tr><td>';
 $target_url_in = 'pages/rest_techniques_pics.php?edit_row='.$id_temp_var.'';
 $_SESSION['target_url'] = "$target_url_in";
 $target_url_goto= $_SESSION['target_url'];
-if ($loginvar == OK)
+if ($loginvar == "OK")
 {
 print '<form align="center">
 <input type=button value="Add More Pictures" onClick="goToURL()">
@@ -131,7 +129,7 @@ print '<form align="center">
 </form>';
 }
 
-while ($Row = mysql_fetch_array($result))
+while ($Row = mysqli_fetch_array($result))
 {
 if ($bgcolor == "BBBBBB") {$bgcolor = "777777";}
 else {$bgcolor = "BBBBBB";}

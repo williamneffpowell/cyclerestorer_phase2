@@ -1,8 +1,7 @@
-<?PHP
+<?php
 //view_collection_info.php
 
 require '../includes/auth_check.inc.php';
-$request->enable_super_globals();
 session_start();
 //$sessionID = $_SESSION['sessionID'];  // Removed direct access, see below
 //$session_username = $_SESSION['user_name'];
@@ -149,16 +148,16 @@ If ($logged_in_var == "yes" and $userID == $reg_userID) { // Changed $userID to 
 ?>
 <TABLE align=center width=300 bgcolor=eeeeee>
 <div class="box">
-  <TR><TH colspan=2 bgcolor=79888E><?echo $alias;?></TH></TR>
+  <TR><TH colspan=2 bgcolor=79888E><?php echo $alias;?></TH></TR>
 <tr>
 <TD align="left"><strong>Owner: </strong><?php echo htmlspecialchars($username, ENT_QUOTES, 'UTF-8');?></TD>
 
-<tr><TD><strong>Manufacturer:</strong> <?echo $manufacturer;?></TD></tr>
-<TR><TD><strong>Model:</strong> <?echo $model;?></TD></TR>
-<TR><TD><strong>Year:</strong> <?echo $year;?></TD></TR>
-<TR><TD><strong>Frame Serial Number:</strong> <?echo $frame_number;?></TD></TR>
-<TR><TD><strong>Engine Serial Number:</strong> <?echo $engine_number;?></TD></TR>
-<TR><TD colspan=3><strong>Comments:</strong> <?echo $comments;?></TD></TR>
+<tr><TD><strong>Manufacturer:</strong> <?php echo $manufacturer;?></TD></tr>
+<TR><TD><strong>Model:</strong> <?php echo $model;?></TD></TR>
+<TR><TD><strong>Year:</strong> <?php echo $year;?></TD></TR>
+<TR><TD><strong>Frame Serial Number:</strong> <?php echo $frame_number;?></TD></TR>
+<TR><TD><strong>Engine Serial Number:</strong> <?php echo $engine_number;?></TD></TR>
+<TR><TD colspan=3><strong>Comments:</strong> <?php echo $comments;?></TD></TR>
 <TR><TD>
 <?php
 ###########################################################
@@ -243,11 +242,11 @@ If (isset($_SESSION['username']) && $username == $_SESSION['username'] ) //chang
 <TABLE width=600 ALIGN=CENTER>
 <TR align="center">
 <TD align="center">
-<IMG align=center SRC="../image_upload/<?echo $mainpic;?>" alt="<?echo $caption;?>">
+<IMG align=center SRC="../image_upload/<?php echo $mainpic;?>" alt="<?php echo $caption;?>">
 </TD>
 </TR>
 <TR>
-<TD align="center">Image Caption: <?echo $caption;?></TD></TR>
+<TD align="center">Image Caption: <?php echo $caption;?></TD></TR>
 
 </TABLE>  
 
@@ -256,7 +255,7 @@ If (isset($_SESSION['username']) && $username == $_SESSION['username'] ) //chang
 
 
 
-<?PHP
+<?php
 
 include 'bottom_index_table.php';
 include '../includes/analytics.inc.php';

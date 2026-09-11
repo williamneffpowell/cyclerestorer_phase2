@@ -1,6 +1,5 @@
 <?php
 require '../includes/auth_check.inc.php';
-$request->enable_super_globals();
 $session_username = $session_username;
 
 
@@ -304,7 +303,7 @@ mysqli_free_result($result);
 mysqli_close($link);
 
 // Closing connection
-#mysql_close($link);
+#mysqli_close($link);
 ?>
 </p><?php 
 include 'bottom_index_table.php';

@@ -19,7 +19,7 @@ $session_username = $_SESSION['user_name'];
 if ($session_username <> "")
 {
 # Do Nothing print_html_add();
-//mysql_close ($Link);
+//mysqli_close($Link);
 
 }
 else 

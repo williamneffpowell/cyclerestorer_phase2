@@ -107,9 +107,8 @@ print '
 
 
 }
-mysql_connect("$Host","$User","$Password");
-mysql_select_db($DBName) or die(mysql_error());  
-$Link = mysql_connect ($Host, $User, $Password);	
+mysqli_connect("$Host","$User","$Password","$DBName");
+$Link = mysqli_connect($Host, $User, $Password, $DBName);	
 
 $today = date("Y-m-d h:i:s");
  if ($_REQUEST['submit']) { 
@@ -126,7 +125,7 @@ $today = date("Y-m-d h:i:s");
 		 $query.= " VALUES ('$session_username','$manufacturer','$model','$year','$type_of_entry','$today')"; 
 		  
 		#print " Query $query \n";
-		$result=mysql_query($query) or die ('Query failed: ' . mysql_error());
+		$result=mysqli_query($Link, $query) or die ('Query failed: ' . mysqli_error($Link));
 		
 		if    ($result)  echo "<h3 align = 'center'> Successfully Entered </h3>" ;
 		  else echo "<b>ERROR: unable to post.</b>"; 

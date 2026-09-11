@@ -4,7 +4,7 @@ $session_username = $session_username;
 
 include '../includes/dbconnect.inc.php';
 
-$Link = mysql_connect ($Host, $User, $Password); 
+$Link = mysqli_connect($Host, $User, $Password, $DBName); 
 if ($is_logged_in)
 {
 $loginvar =  "OK" ;
@@ -26,13 +26,11 @@ $loginvar =   "NO" ;
 $id_temp_var = $_GET['edit_row'];
 #******************************************************************
 #print "ID TEMP TEMP VAR $id_temp_var \n";
-$Link = mysql_connect ($Host, $User, $Password);
+$Link = mysqli_connect($Host, $User, $Password, $DBName);
 #$host_server_link= "localhost:8080/redbug/_no_task/cyclerestorer";
-mysql_select_db("$DBName") or die(mysql_error());
-
 $query = ("SELECT manufacturer, year, model from image_library_registry where row_id = '$id_temp_var'");
-$result = mysql_query($query) or die('Query failed: ' . mysql_error());
-$Row = mysql_fetch_array($result);
+$result = mysqli_query($Link, $query) or die('Query failed: ' . mysqli_error($Link));
+$Row = mysqli_fetch_array($result);
 
 $manufacturer = $Row[0];
 $model = $Row[1];
@@ -44,13 +42,13 @@ $query = ("SELECT image_library.filename, image_library.pic_comment,  bike_pictu
 
 
 #print "$query\n";
-$result = mysql_query($query) or die('Query failed: ' . mysql_error());
- $Link = mysql_connect ($Host, $User, $Password); 
+$result = mysqli_query($Link, $query) or die('Query failed: ' . mysqli_error($Link));
+ $Link = mysqli_connect($Host, $User, $Password, $DBName); 
 // Printing results in HTML
 echo "<table align='left' width=100% >\n";
 echo '<table align=center>';
 echo '<tr><td>';
-if ($loginvar == OK)
+if ($loginvar == "OK")
 {
 print '<form align="center">
 <input type=button value="Add More Pictures" onClick="goToURL()">
@@ -68,7 +66,7 @@ print '<form align="center">
 }
 
 echo '<br>';
-while ($Row = mysql_fetch_array($result))
+while ($Row = mysqli_fetch_array($result))
 {
 if ($bgcolor == "BBBBBB") {$bgcolor = "777777";}
 else {$bgcolor = "BBBBBB";}

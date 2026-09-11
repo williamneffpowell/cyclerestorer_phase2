@@ -7,9 +7,7 @@ require_once '../includes/secrets.inc.php';
 use PHPMailer\PHPMailer\PHPMailer;
 use PHPMailer\PHPMailer\Exception;
 
-mysql_connect("$Host","$User","$Password");
-mysql_select_db($DBName) or die(mysql_error());
-
+mysqli_connect("$Host","$User","$Password","$DBName");
 if (!$is_logged_in)
 {
 $target_url_in = '/pages/classified_ads.php';
@@ -59,14 +57,12 @@ $recpid = $_REQUEST['recpid'];
 $ad_id = $_REQUEST['ad_id'];
 $recpnm = $_REQUEST['recpnm'];
 
-mysql_connect("$Host","$User","$Password");
-mysql_select_db("$DBName") or die(mysql_error());
-
+mysqli_connect("$Host","$User","$Password","$DBName");
 // Performing SQL query
 $query = "(SELECT    title FROM for_sale_wanted where item_row_id = '$ad_id')";	
-$result = mysql_query($query) or die('Query failed: ' . mysql_error());
+$result = mysqli_query($Link, $query) or die('Query failed: ' . mysqli_error($Link));
 
-while ($Row = mysql_fetch_array($result))
+while ($Row = mysqli_fetch_array($result))
 {
 $subject = $Row[0];
 }
@@ -118,10 +114,10 @@ if ($_REQUEST['submit']) {
     $message = $_REQUEST['message_fd'];
 
     // Look up the recipient's email address from auth_user
-    $recpid_safe = mysql_real_escape_string($recpid);
+    $recpid_safe = mysqli_real_escape_string($Link, $recpid);
     $email_query = "SELECT email FROM auth_user WHERE userID = '$recpid_safe'";
-    $email_result = mysql_query($email_query) or die('Query failed: ' . mysql_error());
-    $email_row = mysql_fetch_assoc($email_result);
+    $email_result = mysqli_query($Link, $email_query) or die('Query failed: ' . mysqli_error($Link));
+    $email_row = mysqli_fetch_assoc($email_result);
     $recipient_email = $email_row['email'];
 
     if ($recipient_email) {

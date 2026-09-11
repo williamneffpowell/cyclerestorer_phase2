@@ -1,8 +1,7 @@
 <?php
 require '../includes/auth_check.inc.php';
 	include '../includes/dbconnect.inc.php';
-	mysql_connect("$Host","$User","$Password");
-	mysql_select_db("$DBName") or die(mysql_error());
+	mysqli_connect("$Host","$User","$Password","$DBName");
 //CHECK LOGIN - PUT THIS CODE ON ALL PROTECTED PAGES
 $failed = 0;
 $session_temp_var=$_SESSION['sessionID'];
@@ -11,14 +10,14 @@ $session_username  = $session_username;
 
 
 
-$Link = mysql_connect ($Host, $User, $Password);
+$Link = mysqli_connect($Host, $User, $Password, $DBName);
 
 
 //Session doesn't exist
 if ($is_logged_in)
 {
 # Do Nothing print_html_add();
-#mysql_close ($Link);
+#mysqli_close($Link);
 
 }
 if (!$is_logged_in)
@@ -84,7 +83,7 @@ if (validate_required(id_radio_button,"A bike must be selected!")==false)
   <H4>
 </div>
 <form name=add_before_after onSubmit="return validate_form(this)" method="POST" ><div align="Left">
-<?PHP
+<?php
 if ($sort_field_url == "")
 {
 $sort_field_in =  "order by r.manufacturer" ;}
@@ -96,9 +95,8 @@ elseif ( $sort_field_url == 6)
 {$sort_field_in = "order by r.owner DESC";}
 
 
-$Link = mysql_connect ($Host, $User, $Password);
+$Link = mysqli_connect($Host, $User, $Password, $DBName);
 #$host_server_link= "localhost:8080/redbug/_no_task/cyclerestorer";
-mysql_select_db("$DBName") or die(mysql_error());
 // Performing SQL query
 #$query = "SELECT * FROM registry where row_id NOT IN (SELECT registration_row_id FROM before_after)";
 $type_of_entry = "Registry";
@@ -113,8 +111,8 @@ $type_of_entry = "Registry";
 
 $query = "SELECT r.username,r.row_id,r.action,r.manufacturer,r.model,r.year,r.serial_number,r.owner,r.location,r.comments FROM registry as r where r.row_id not in (select registration_row_id from before_after) and r.type_of_entry = '$type_of_entry' ";
 
-$result = mysql_query($query) or die('Query failed: ' . mysql_error());
-$Link = mysql_connect ($Host, $User, $Password);
+$result = mysqli_query($Link, $query) or die('Query failed: ' . mysqli_error($Link));
+$Link = mysqli_connect($Host, $User, $Password, $DBName);
 
 echo "<table align='center' width='60%' border='0'>\n";
 echo "<TR><TH width='5%'><div align='center'>Select Bike</TH>";
@@ -122,7 +120,7 @@ echo "<TH width='5%'><div align='center'>Make</TH>";
 echo "<TH width='5%'><div align='center'>Model</TH>";
 echo "<TH width='5%'><div align='center'>Year</TH>";
 
-while ($Row = mysql_fetch_array($result))
+while ($Row = mysqli_fetch_array($result))
 {
 //if ($bgcolor == "BBBBBB") {$bgcolor = "7777777";}
 //else {$bgcolor = "BBBBBB";}
@@ -178,7 +176,7 @@ echo "        </caption>";
      </table>
 </form>
 
-<?PHP
+<?php
 	  if ($_REQUEST['submit'])
 	{
 		$restoration_title_value=$_REQUEST['restoration_title'];
@@ -186,14 +184,14 @@ echo "        </caption>";
 	//	$session_userID = $_SESSION['user_ID'];
 		 # OLD $query ="INSERT INTO before_after (username,restoration_title,userID) VALUES('$session_username','$restoration_title_value','$radio_button','$session_userID')";
 		$query ="INSERT INTO before_after (username,restoration_title,registration_row_id) VALUES('$session_username','$restoration_title_value','$row_id_tab')";
-		$result=mysql_query($query) or die ('Update Query Failed $Query');
+		$result=mysqli_query($Link, $query) or die ('Update Query Failed $Query');
 		#The HREF location must be changed then the application is ported to production.
 		#This is the production Link: http://www.cyclerestorer.com/pages/library.php
 		#This is the test link: http://localhost:8080/redbug/_no_task/cyclerestorer/pages/library.php
 		print "$result";
 		if  ($result)
 			{
-		    	mysql_close ($Link);
+		    	mysqli_close($Link);
 				echo '<script language="JavaScript" type="text/javascript">
 				window.location.href="http://www.cyclerestorer.com/pages/before_after.php"</script>';
 			}
@@ -205,7 +203,7 @@ echo "        </caption>";
      elseif ($_REQUEST['Register'])
 	    {
 		  print "Register If\n";
-		 mysql_close ($Link);
+		 mysqli_close($Link);
 				echo '<script language="JavaScript" type="text/javascript">
 				window.location.href="http://www.cyclerestorer.com/pages/library.php"</script>';
          }

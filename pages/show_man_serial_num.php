@@ -2,7 +2,6 @@
 <?php
 require '../includes/auth_check.inc.php';
 // disable superglobals again
-$request->disable_super_globals();
 
 include '../includes/dbconnect.inc.php';
 
@@ -50,7 +49,6 @@ $manufacturer_var = "";
 if (isset($_GET['manufacturer']))
 {
     // disable superglobals again
-$request->enable_super_globals();
 
    $manufacturer_var = $_GET['manufacturer'];
 
@@ -290,7 +288,7 @@ mysqli_free_result($result);
 print "<table align='center'><tr><td>$loginvar</td></tr></table>";
 
 // Closing connection
-#mysql_close($link);
+#mysqli_close($link);
 include 'bottom_index_table.php';
 include '../includes/analytics.inc.php';
 ?>

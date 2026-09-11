@@ -7,11 +7,11 @@ $session_temp_var=$_SESSION['sessionID'];
 $session_username = $_SESSION['user_name'];
 include '../includes/dbconnect.inc.php';
 if ($session_temp_var <> "") {
-$Link = mysql_connect ($Host, $User, $Password);
+$Link = mysqli_connect($Host, $User, $Password, $DBName);
 $Query = "SELECT username FROM auth_user WHERE (sesnID='$session_temp_var');";
 #print $username[0];
-$Result = mysql_db_query ($DBName, $Query, $Link);
-$Row = mysql_fetch_array ($Result);
+$Result = mysqli_query($Link, $Query);
+$Row = mysqli_fetch_array($Result);
 $username = $Row[0];
 //Session doesn't exist
 if ($is_logged_in)
@@ -40,12 +40,11 @@ echo '<script language="JavaScript" type="text/javascript">
 ####################################  Done Login Test    #################################################################################
 ##########################################################################################################################################
 $id_temp_var = $_REQUEST['edit_row'];
-mysql_connect("$Host","$User","$Password");
-mysql_select_db("$DBName") or die(mysql_error());
+mysqli_connect("$Host","$User","$Password","$DBName");
 // Performing SQL query
 $query = "SELECT * FROM for_sale_wanted  where (item_row_id ='$id_temp_var')";
-$result = mysql_query($query) or die('Query failed: ' . mysql_error());
-$Row = mysql_fetch_array($result);
+$result = mysqli_query($Link, $query) or die('Query failed: ' . mysqli_error($Link));
+$Row = mysqli_fetch_array($result);
 $user_tab = $Row[3];
 #$model_tab = $Row[6];
 
@@ -152,27 +151,27 @@ tinyMCE_GZ.init({
 		   <tr>
           <td class="wh_tnr_12"><div align="left">Title:</div></td>
           <td><div align="left">
-            <input type="text" name="title_fd" value="<?PHP echo $Row[19]; ?>">
+            <input type="text" name="title_fd" value="<?php echo $Row[19]; ?>">
           </div></td>
           <td>&nbsp;</td>      
 		   <tr>
           <td class="wh_tnr_12"><div align="left">Your Name:</div></td>
           <td><div align="left">
-            <input type="text" name="your_name_fd" value="<?PHP echo $Row[1]; ?>">
+            <input type="text" name="your_name_fd" value="<?php echo $Row[1]; ?>">
           </div></td>
           <td>&nbsp;</td>
         </tr>
 		<tr>
           <td class="wh_tnr_12"><div align="left">Your email (hidden):</div></td>
           <td><div align="left">
-            <input type="text" name="contact_email_fd" value="<?PHP echo $Row[2]; ?>">
+            <input type="text" name="contact_email_fd" value="<?php echo $Row[2]; ?>">
           </div></td>
           <td>&nbsp;</td>
         </tr>
 		<tr>
           <td class="wh_tnr_12"><div align="left">Phone (hidden):</div></td>
           <td><div align="left">
-            <input type="text" name="phone_fd" value="<?PHP echo $Row[4]; ?>">
+            <input type="text" name="phone_fd" value="<?php echo $Row[4]; ?>">
           </div></td>
           <td>&nbsp;</td>
         </tr>
@@ -181,7 +180,7 @@ tinyMCE_GZ.init({
           <tr>
           <td width="210" class="wh_tnr_12"><div align="left">For Sale or Wanted:</div></td>
            <td >
-          <select name="for_sale_wanted_fd" value ="<?PHP echo $Row[0]; ?>" size="1">
+          <select name="for_sale_wanted_fd" value ="<?php echo $Row[0]; ?>" size="1">
          <option value="For Sale">For Sale</option>
          <option value="Wanted">Wanted</option>
           </select></font></td>
@@ -193,7 +192,7 @@ tinyMCE_GZ.init({
 		<tr>
           <td width="210" class="wh_tnr_12"><div align="left">Condition:</div></td>
            <td >
-          <select name="item_condition_fd" value ="<?PHP echo $Row[12]; ?>"  >
+          <select name="item_condition_fd" value ="<?php echo $Row[12]; ?>"  >
          <option value="Poor">Poor</option>
          <option value="Good">Good</option>
 		 <option value="Excellent">Excellent</option>
@@ -207,50 +206,50 @@ tinyMCE_GZ.init({
         <tr>
           <td class="wh_tnr_12"><div align="left">Manufacturer:</div></td>
           <td><div align="left">
-            <input type="text" name="manufacturer_fd" value="<?PHP echo $Row[5]; ?>">
+            <input type="text" name="manufacturer_fd" value="<?php echo $Row[5]; ?>">
           </div></td>
           <td>&nbsp;</td>
         </tr>
         <tr>
           <td class="wh_tnr_12"><div align="left">Model:</div></td>
           <td><div align="left">
-            <input type="text" name="model_fd" value="<?PHP echo $Row[6]; ?>">
+            <input type="text" name="model_fd" value="<?php echo $Row[6]; ?>">
           </div></td>
           <td>&nbsp;</td>
         </tr>
 		       <tr>
           <td class="wh_tnr_12"><div align="left">Year:</div></td>
           <td><div align="left">
-            <input type="text" name="year_fd" value="<?PHP echo $Row[18]; ?>">
+            <input type="text" name="year_fd" value="<?php echo $Row[18]; ?>">
           </div></td>
           <td>&nbsp;</td>
         </tr>
 		 <tr>
           <td class="wh_tnr_12"><div align="left">Description:</div></td>
-		  <TD><textarea  name="description_fd" rows="10" cols="40"><? echo $Row[7];?></TEXTAREA></TD>
+		  <TD><textarea  name="description_fd" rows="10" cols="40"><?php echo $Row[7];?></TEXTAREA></TD>
           <td>&nbsp;</td>
         </tr>
         <tr>
           <td class="wh_tnr_12"><div align="left">Price:</div></td>
-          <td><input type="text" name="price_fd" value="<?PHP echo $Row[8]; ?>"></td>
+          <td><input type="text" name="price_fd" value="<?php echo $Row[8]; ?>"></td>
           <td>&nbsp;</td>
         </tr>
          <tr>
            <td class="wh_tnr_12"><div align="left">State:</div></td>
-          <td><input type="text" name="state_fd" value="<?PHP echo $Row[10]; ?>"></td>
+          <td><input type="text" name="state_fd" value="<?php echo $Row[10]; ?>"></td>
           <td>&nbsp;</td>
         </tr>
          
          <tr>
            <td class="wh_tnr_12"><div align="left">Country:</div></td>
-          <td><input type="text" name="country_fd" value="<?PHP echo $Row[11]; ?>"></td>
+          <td><input type="text" name="country_fd" value="<?php echo $Row[11]; ?>"></td>
           <td>&nbsp;</td>
         </tr>  
 		<tr>
           <td class="wh_tnr_12"><div align="left">This is a Part or Parts Bike:</div></td>
 		  
           <td>
-		  <input type="checkbox" name="parts_bike_fd[]"  <?PHP if ($Row[16] == "YES" )
+		  <input type="checkbox" name="parts_bike_fd[]"  <?php if ($Row[16] == "YES" )
 		  { echo ' value="YES';
 		    
 			 echo '" CHECKED'; }
@@ -277,7 +276,7 @@ tinyMCE_GZ.init({
  
 
 
-<?PHP
+<?php
 
 
  if ($_REQUEST['submit']) { 
@@ -312,11 +311,11 @@ $session_username = $session_username;
 		  $Query2.= "state = '$state', country = '$country' WHERE item_row_id = '$id_temp_var'";
 		 	  
 		  
-		$result=mysql_query($Query2) or die ( 'Update Query Failed $Query2'. mysql_error());	
+		$result=mysqli_query($Link, $Query2) or die ( 'Update Query Failed $Query2'. mysqli_error($Link));	
 		
 		if  ($result) 
 			{
-		    	mysql_close ($Link);
+		    	mysqli_close($Link);
 				echo '<script language="JavaScript" type="text/javascript">
 				window.location.href="http://www.cyclerestorer.com/pages/classified_ads.php" </script>';
 			
@@ -340,12 +339,12 @@ $session_username = $session_username;
 	     $Query2 = "Delete from for_sale_wanted where item_row_id = '$id_temp_var'";
 		 	  
 		  
-		$result=mysql_query($Query2) or die ('Update Query Failed $Query2');
+		$result=mysqli_query($Link, $Query2) or die ('Update Query Failed $Query2');
 		
 		
 		if  ($result) 
 			{
-		    	mysql_close ($Link);
+		    	mysqli_close($Link);
 				echo '<script language="JavaScript" type="text/javascript">
 				window.location.href="http://www.cyclerestorer.com/pages/classified_ads.php" </script>';
 			}

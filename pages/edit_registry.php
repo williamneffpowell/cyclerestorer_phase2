@@ -9,7 +9,7 @@ session_start();
 include '../includes/dbconnect.inc.php';
 
 //if ($session_temp_var <> "") {
-$Link = mysql_connect ($Host, $User, $Password);
+$Link = mysqli_connect($Host, $User, $Password, $DBName);
 $session_username = $session_username;
 $failed = 0;
 $session_temp_var=$_SESSION['sessionID'];
@@ -42,12 +42,11 @@ $id_temp_var = $_REQUEST['edit_row'];
 $_SESSION['PASSED_ROW_ID'] = $id_temp_var;
 #echo "<br> id_temp_var = $id_temp_var ";
 
-mysql_connect("$Host","$User","$Password");
-mysql_select_db("$DBName") or die(mysql_error());
+mysqli_connect("$Host","$User","$Password","$DBName");
 // Performing SQL query
 $query = "SELECT * FROM registry  where (row_id ='$id_temp_var')";
-$result = mysql_query($query) or die('Query failed: ' . mysql_error());
-$Row = mysql_fetch_array($result);
+$result = mysqli_query($Link, $query) or die('Query failed: ' . mysqli_error($Link));
+$Row = mysqli_fetch_array($result);
 $user_tab = $Row[0];
 $reg_rowID = $Row[1];
 $model_tab = $Row[4];
@@ -102,7 +101,7 @@ if (validate_required(message,"The 'Started By' field must be filled out!")==fal
           <tr>
           <td width="210"><div align="center"><strong>Manufacturer:</strong></div></td>
           <td width="148"><div align="center">
-            <input type="text" name="manufacturer" value ="<?PHP echo $Row[3]; ?>"  >
+            <input type="text" name="manufacturer" value ="<?php echo $Row[3]; ?>"  >
             <br>
           </div></td>
           <td width="12">&nbsp;</td>
@@ -110,46 +109,46 @@ if (validate_required(message,"The 'Started By' field must be filled out!")==fal
         <tr>
           <td><div align="center"><strong>Model:</strong></div></td>
           <td><div align="center">
-            <input type="text" name="model" value="<?PHP echo $Row[4]; ?>">
+            <input type="text" name="model" value="<?php echo $Row[4]; ?>">
           </div></td>
           <td>&nbsp;</td>
         </tr>
         <tr>
           <td><div align="center"><strong>Year:</strong></div></td>
           <td><div align="center">
-            <input type="text" name="year" value="<?PHP echo $Row[5]; ?>">
+            <input type="text" name="year" value="<?php echo $Row[5]; ?>">
           </div></td>
           <td>&nbsp;</td>
         </tr>
         <tr>
           <td><div align="center"><strong>Serial Number:</strong></div></td>
-          <td><input type="text" name="serial_number" value="<?PHP echo $Row[6]; ?>"></td>
+          <td><input type="text" name="serial_number" value="<?php echo $Row[6]; ?>"></td>
           <td>&nbsp;</td>
         </tr>
 		<tr>
           <td><div align="center"><strong>Engine Number:</strong></div></td>
-          <td><input type="text" name="engine_number" value="<?PHP echo $Row[12]; ?>"></td>
+          <td><input type="text" name="engine_number" value="<?php echo $Row[12]; ?>"></td>
           <td>&nbsp;</td>
         </tr>
         <tr>
           <td><div align="center"><strong>Owner:</strong></div></td>
-          <td><input type="text" name="owner" value="<?PHP echo $Row[7]; ?>"></td>
+          <td><input type="text" name="owner" value="<?php echo $Row[7]; ?>"></td>
           <td>&nbsp;</td>
         </tr>
          <tr>
            <td><div align="center"><strong>Location:</strong></div></td>
-          <td><input type="text" name="location" value="<?PHP echo $Row[8]; ?>"></td>
+          <td><input type="text" name="location" value="<?php echo $Row[8]; ?>"></td>
           <td>&nbsp;</td>
         </tr>
          <tr>
            <td><div align="center"><strong>Comments (no commas please) :</strong></div></td>
-          <td><input type="text" name="comments" value="<?PHP echo $Row[9]; ?>"></td>
+          <td><input type="text" name="comments" value="<?php echo $Row[9]; ?>"></td>
           <td>&nbsp;</td>
         </tr>
 		 <td class="wh_tnr_12"><div align="left">Switch to "Off" if the bike is sold:</div></td>
 
           <td>
-		  <input type="checkbox" name="registry_fd[]"  <?PHP if ($Row[11] == "Registry" )
+		  <input type="checkbox" name="registry_fd[]"  <?php if ($Row[11] == "Registry" )
 		  { echo ' value="Registry';
 
 			 echo '" CHECKED'; }
@@ -167,13 +166,13 @@ if (validate_required(message,"The 'Started By' field must be filled out!")==fal
 </td>
 <td>
 <table>
-<?
+<?php
 //echo "<h5> Username = $username </h5>";
 echo "<a href='add_video.php?edit_row=$reg_rowID'>Add Video</a>";
 $Query = "SELECT v.videoID, v.title FROM tb_video AS v  WHERE v.username='$username' AND v.reg_rowID = $reg_rowID";
-$Result1 = mysql_db_query ($DBName, $Query, $Link);
+$Result1 = mysqli_query($Link, $Query);
 $results = 0;
-while ($Row = mysql_fetch_array ($Result1)) {
+while ($Row = mysqli_fetch_array($Result1)) {
 	$videotable = $videotable . ("
 	<tr>
 	<TD><A HREF=edit_video.php?videoID=$Row[0]>Edit $Row[14]</A></TD>
@@ -195,7 +194,7 @@ If (logged_in_var == "yes"  ) #Used to have 'and $userID==$reg_userID
 </td>
 	</body>
 </html>
-<?PHP
+<?php
  if ($_REQUEST['submit']) {
 		$manufacturer=$_REQUEST['manufacturer'];
 		$model=$_REQUEST['model'];
@@ -216,7 +215,7 @@ If (logged_in_var == "yes"  ) #Used to have 'and $userID==$reg_userID
 		  $registry_entry= "Sold";
 		  }
 	     $Query2 = "UPDATE registry SET manufacturer = '$manufacturer', type_of_entry = '$registry_entry', model = '$model',year = '$year',serial_number = '$serial_number',owner = '$owner', location = '$location',comments = '$comments',engine_number = '$engine_number' WHERE row_id = '$id_temp_var'";
-		$result=mysql_query($Query2) or die ('Update Query Failed $Query2');
+		$result=mysqli_query($Link, $Query2) or die ('Update Query Failed $Query2');
 
 		#The HREF location must be changed then the application is ported to production.
 		#This is the production Link: http://www.cyclerestorer.com/pages/library.php
@@ -224,7 +223,7 @@ If (logged_in_var == "yes"  ) #Used to have 'and $userID==$reg_userID
 
 		if  ($result)
 			{
-		    	mysql_close ($Link);
+		    	mysqli_close($Link);
 				echo '<script language="JavaScript" type="text/javascript">
 				window.location.href="http://www.cyclerestorer.com/pages/library.php" </script>';
 			}
@@ -244,7 +243,7 @@ If (logged_in_var == "yes"  ) #Used to have 'and $userID==$reg_userID
 		$comments=$_REQUEST['comments'];
 		#print "In the if ";
 	     $Query2 = "Delete from registry where row_id = '$id_temp_var'";
-		$result=mysql_query($Query2) or die ('Update Query Failed $Query2');
+		$result=mysqli_query($Link, $Query2) or die ('Update Query Failed $Query2');
 
 		#The HREF location must be changed then the application is ported to production.
 		#This is the production Link: http://www.cyclerestorer.com/pages/library.php
@@ -252,7 +251,7 @@ If (logged_in_var == "yes"  ) #Used to have 'and $userID==$reg_userID
 
 		if  ($result)
 			{
-		    	mysql_close ($Link);
+		    	mysqli_close($Link);
 				echo '<script language="JavaScript" type="text/javascript">
 				window.location.href="http://www.cyclerestorer.com/pages/library.php" </script>';
 			}
@@ -270,8 +269,8 @@ $picID_var = $_REQUEST['picID'];
 $id_temp_var = $_REQUEST['edit_row'];
 if ($picID_var <> "") {
 $Query = "SELECT  filename, caption FROM  tb_pictures where picID=$picID_var";
-$Result = mysql_db_query ($DBName, $Query, $Link);
-$Row = mysql_fetch_array ($Result);
+$Result = mysqli_query($Link, $Query);
+$Row = mysqli_fetch_array($Result);
 $SESSION['PASSED_ROW_ID'] = $id_temp_var;
 }
 if ($Row[0] <> "") {$mainpic = "image_upload/$Row[0]";
@@ -286,7 +285,7 @@ else {$mainpic = "image_upload/default.jpg";
 Profile Image
 </TD>
 <TD valign=top>
-<IMG SRC="../<?echo $mainpic;?>" alt="<?echo $caption;?>">
+<IMG SRC="../<?php echo $mainpic;?>" alt="<?php echo $caption;?>">
 </TD>
 </TR>
 <TR>
@@ -297,11 +296,11 @@ Profile Image
 <TD valign=top>
 Image Caption
 </TD>
-<TD valign=top><INPUT TYPE=TEXT NAME=caption SIZE=40 VALUE="<?echo $caption;?>"></TD></TR>
+<TD valign=top><INPUT TYPE=TEXT NAME=caption SIZE=40 VALUE="<?php echo $caption;?>"></TD></TR>
 <TR><TD colspan=2><CENTER><INPUT TYPE=SUBMIT VALUE="Update Image"></TD></TR>
 </FORM>
 </TABLE>
-<?
+<?php
 
 
 

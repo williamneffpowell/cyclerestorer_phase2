@@ -1,8 +1,7 @@
 <?php
 require '../includes/auth_check.inc.php';
 include '../includes/dbconnect.inc.php';
-mysql_connect("$Host","$User","$Password");
-mysql_select_db($DBName) or die(mysql_error());  
+mysqli_connect("$Host","$User","$Password","$DBName");
 //CHECK LOGIN - PUT THIS CODE ON ALL PROTECTED PAGES
 
 
@@ -15,7 +14,7 @@ if ($is_logged_in)
 {
 print_html_add();
 # Do Nothing print_html_add();
-#mysql_close ($Link);
+#mysqli_close($Link);
 
 }
 else 
@@ -33,7 +32,7 @@ echo '<script language="JavaScript" type="text/javascript">
 $failed = 1;
 }
 
-	  # if(!mysql_db_query($dbname,$query,$link_id)) die(mysql_error());
+	  # if(!mysql_db_query($dbname,$query,$link_id)) die(mysqli_error($Link));
 		# echo "success in database entry.";	
 //END CHECK LOGIN ##################################################################################################
 ?>
@@ -78,7 +77,7 @@ if (validate_required(end_number_fd,"The Last Number field must be filled out!")
 <body>
 
 
-<?PHP
+<?php
 
 
 
@@ -214,9 +213,8 @@ $today = date("Y-m-d h:i:s");
 		$frame_number=$_REQUEST['frame_number_fd'];
 		$production_run=$_REQUEST['production_run_fd'];
 		$user_var=$_REQUEST["user_form_var"];
-mysql_connect("$Host","$User","$Password");
-mysql_select_db($DBName) or die(mysql_error());  
-$Link = mysql_connect ($Host, $User, $Password);	
+mysqli_connect("$Host","$User","$Password","$DBName");
+$Link = mysqli_connect($Host, $User, $Password, $DBName);	
 
 
 
@@ -224,8 +222,8 @@ $Link = mysql_connect ($Host, $User, $Password);
 #Search the existing table to see if the record is already there. 
 
 $query = "SELECT model, bike_year, manufacturer FROM serial_numbers   where (model ='$model') and (bike_year='$bike_year') and (manufacturer='$manufacturer')";
-$result = mysql_query($query) or die('Query failed: ' . mysql_error());
-$Row = mysql_fetch_array($result);
+$result = mysqli_query($Link, $query) or die('Query failed: ' . mysqli_error($Link));
+$Row = mysqli_fetch_array($result);
 
 if ($Row[0] == "") {
 
@@ -235,13 +233,13 @@ $user_temp = $session_username;
 
 $query ="INSERT INTO serial_numbers(engine_number,frame_number,production_run,enter_date,user_name,bike_year,model,nickname,ccs,num_cyl,fuel_tank_color,manufacturer)
  VALUES ('$engine_number','$frame_number','$production_run','$today','$user_temp','$bike_year','$model','$nickname','$ccs','$num_cyl','$fuel_tank_color','$manufacturer')"; 
-		$result=mysql_query($query) or die ('Insert Query Failed' . mysql_error());
+		$result=mysqli_query($Link, $query) or die ('Insert Query Failed' . mysqli_error($Link));
 			
 		if    ($result) 
 		{ echo "Successfully Entered" ;}
 		  else 
 		  { echo "<b>ERROR: unable to post.</b>"; 
-		  mysql_close ($Link); }
+		  mysqli_close($Link); }
 	    } 
 		include '../includes/analytics.inc.php';
 		

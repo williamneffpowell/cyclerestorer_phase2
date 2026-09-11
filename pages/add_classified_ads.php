@@ -1,8 +1,7 @@
 <?php
 require '../includes/auth_check.inc.php';
 include '../includes/dbconnect.inc.php';
-mysql_connect("$Host","$User","$Password");
-mysql_select_db($DBName) or die(mysql_error());  
+mysqli_connect("$Host","$User","$Password", "$DBName");
 //CHECK LOGIN - PUT THIS CODE ON ALL PROTECTED PAGES
 $failed = 0;
 
@@ -35,7 +34,7 @@ $failed = 1;
 //No Session Variable
 
 
-	  # if(!mysql_db_query($dbname,$query,$link_id)) die(mysql_error());
+	  # if(!mysql_db_query($dbname,$query,$link_id)) die(mysqli_error($Link));
 		# echo "success in database entry.";	
 //END CHECK LOGIN ##################################################################################################
 #print "usernameagain $username\n";
@@ -147,7 +146,7 @@ body {
 
 
 
-<?
+<?php
 
 function print_html_add() {
 print '
@@ -276,15 +275,14 @@ $today = date("Y-m-d h:i:s");
 $user_temp = $session_username;
 $user_id_temp = $_SESSION['user_id'];
 		
-mysql_connect("$Host","$User","$Password");
-mysql_select_db($DBName) or die(mysql_error());  
-$Link = mysql_connect ($Host, $User, $Password);		 
+mysqli_connect("$Host","$User","$Password", "$DBName");
+$Link = mysqli_connect($Host, $User, $Password, $DBName);		 
 		 
 $query ="INSERT INTO for_sale_wanted(title,phone,user_name,for_sale_wanted,date_entered,manufacturer,model,description,price,state,country,item_condition,parts_bike,username,userid)
  VALUES ('$title','$phone','$user_temp','$for_sale_wanted','$today','$manufacturer','$model','$description','$price','$state','$country','$item_condition','$parts_bike','$session_username','$user_id_temp')"; 
 			#print "user_var = $user_var\n";  
 		#print " Query $query \n";
-		$result=mysql_query($query) or die ('Insert Query Failed' . mysql_error());
+		$result=mysqli_query($Link, $query) or die ('Insert Query Failed' . mysqli_error($Link));
 			
 		if    ($result) 
 		{ 
@@ -294,7 +292,7 @@ $query ="INSERT INTO for_sale_wanted(title,phone,user_name,for_sale_wanted,date_
 		  else 
 		  {
 		  echo "<b>ERROR: unable to post.</b>"; 
-		  mysql_close ($Link);
+		  mysqli_close($Link);
 		  }
 		  
 		  if ($parts_bike)

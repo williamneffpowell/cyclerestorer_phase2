@@ -5,7 +5,7 @@ $session_username = $_SESSION['user_name'];
 $userID = $_SESSION['user_ID'];
 include '../includes/dbconnect.inc.php';
 
-$Link = mysql_connect ($Host, $User, $Password); 
+$Link = mysqli_connect($Host, $User, $Password, $DBName); 
 
 
 
@@ -41,14 +41,14 @@ include('functions.php');
 if ($videoID <> "") {
 
 /*$Query = "SELECT viewID FROM tb_views WHERE videoID=$videoID AND userID=$userID AND endtime>CURDATE()";
-$Result = mysql_db_query ($DBName, $Query, $Link);
-$Row = mysql_fetch_array ($Result); */
+$Result = mysqli_query($Link, $Query);
+$Row = mysqli_fetch_array($Result); */
 
 
 $Query = "SELECT v.title, v.description, v.embed, u.userID, u.username, u.bio, p.filename, p.caption, v.videoID, DATE_FORMAT(v.dateadded, '%m/%e/%Y'),  (u.lastlogin>ADDDATE(NOW(), INTERVAL -3 MINUTE)) FROM tb_video AS v, auth_user AS u LEFT JOIN tb_pictures AS p ON u.picID=p.picID WHERE v.userID=u.userID AND v.videoID=$videoID";
 
-$Result = mysql_db_query ($DBName, $Query, $Link);
-$Row = mysql_fetch_array ($Result);
+$Result = mysqli_query($Link, $Query);
+$Row = mysqli_fetch_array($Result);
 
 $title = $Row[0];
 $description = $Row[1];
@@ -92,13 +92,13 @@ echo "$description";
 
 
 <TABLE BGCOLOR=dddddd ALIGN=CENTER cellspacing=0 cellpadding=0>
-<TR><TH bgcolor=79888E><?echo $title;?></TH></TR>
+<TR><TH bgcolor=79888E><?php echo $title;?></TH></TR>
 
 <TR><TD>
 <TABLE WIDTH=100%>
 <TR>
 <TD align=right>
-<a href=# onClick="window.open('abuse.php?vid=<?echo $videoID;?>','newwindow','width=400,height=200');" >Report Abuse</a>
+<a href=# onClick="window.open('abuse.php?vid=<?php echo $videoID;?>','newwindow','width=400,height=200');" >Report Abuse</a>
 </TD></TR></TABLE>
 </TD></TR>
 
@@ -107,7 +107,7 @@ echo "$description";
 
 </TD></TR>
 <TR><TD>
-<?echo $description;?></TD></TR>
+<?php echo $description;?></TD></TR>
 </TABLE>
 <BR>
 <TABLE ALIGN=CENTER>
@@ -115,11 +115,11 @@ echo "$description";
 
 
 <script type="text/javascript">
-digg_url = '<?echo "http://cyclerestorer.com/watchvideo.php?videoID=$videoID";?>';
+digg_url = '<?php echo "http://cyclerestorer.com/watchvideo.php?videoID=$videoID";?>';
 digg_skin = 'compact';
 digg_bgcolor = "transparent";
-digg_title = '<?echo addslashes($title);?>';
-digg_bodytext = '<?echo addslashes($description);?>';
+digg_title = '<?php echo addslashes($title);?>';
+digg_bodytext = '<?php echo addslashes($description);?>';
 digg_topic = '';
 </script>
 
@@ -135,7 +135,7 @@ digg_topic = '';
 </TD></TR>
 </TABLE>
 
-<?
+<?php
 } 
 
 
@@ -154,8 +154,8 @@ digg_topic = '';
 <DIV class="box">
 <TABLE WIDTH=250>
 <TR><TD>
-<A HREF=profile.php?uid=<?echo $uid;?>><?echo $image;?></A>
-<?
+<A HREF=profile.php?uid=<?php echo $uid;?>><?php echo $image;?></A>
+<?php
 
 if ($online > 0) {
 print ("<TABLE><TR><TD valign=middle>
@@ -175,7 +175,7 @@ print ("
 ?>
 
 </TD>
-<TD><?echo $bio;?></TD>
+<TD><?php echo $bio;?></TD>
 </TR></TABLE>
 </DIV>
 </TD></TR>
@@ -192,7 +192,7 @@ print ("
 <?php
 
 $Query = "SELECT  u.username, p.filename, p.caption FROM auth_user AS u LEFT JOIN tb_pictures AS p ON p.picID=u.picID ";
-$Result = mysql_db_query ($DBName, $Query, $Link);
+$Result = mysqli_query($Link, $Query);
 $results = 0;
 
 
@@ -220,7 +220,7 @@ else {
 print ("</CENTER>");
 }
 
-mysql_close ($Link);
+mysqli_close($Link);
 include 'bottom_index_table.php';
 include '../includes/analytics.inc.php';
 

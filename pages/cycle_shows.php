@@ -17,7 +17,6 @@ include '../includes/dbconnect.inc.php';
 //$stmt->execute();
 //$result = $stmt->get_result();
 //$Row = $result->fetch_array(MYSQLI_NUM);
-$request->enable_super_globals();
 if ($is_logged_in)
 {
 # LOGIN OK

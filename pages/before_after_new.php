@@ -1,20 +1,19 @@
 <?php
 require '../includes/auth_check.inc.php';
 	include '../includes/dbconnect.inc.php';
-	mysql_connect("$Host","$User","$Password");
-	mysql_select_db("$DBName") or die(mysql_error());  
+	mysqli_connect("$Host","$User","$Password","$DBName");
 //CHECK LOGIN - PUT THIS CODE ON ALL PROTECTED PAGES
 $failed = 0;
 $session_temp_var=$_SESSION['sessionID'];
 $session_username = $_SESSION['user_name'];
 if ($is_logged_in){
-$Link = mysql_connect ($Host, $User, $Password);
+$Link = mysqli_connect($Host, $User, $Password, $DBName);
 
 $session_username = $_SESSION['user_name'];
 if ($session_username <> "")
 {
 # Do Nothing print_html_add();
-//mysql_close ($Link);
+//mysqli_close($Link);
 
 }
 else 
@@ -46,7 +45,7 @@ eval("page" + id + " = window.open(URL, '" + id + "', 'toolbar=0,scrollbars=1,lo
 </script>
 </HEAD>
 <body>
-<?
+<?php
 if (!$is_logged_in)
 {
 $target_url_in = 'pages/before_after.php';
@@ -66,14 +65,10 @@ echo "<br>";
 if ($sort_field_url == "")
 { 
 $sort_field_in =  "order by username" ;}
-$Link = mysql_connect ($Host, $User, $Password);
-mysql_select_db("$DBName") or die(mysql_error());
-
-
-
+$Link = mysqli_connect($Host, $User, $Password, $DBName);
 $query = ("SELECT b.username, b.restoration_title, b.registration_row_id,b.row_id, r.manufacturer, r.model,r.year, p.pic_row_id,p.filename,p.pic_comment, p.pic_display_order from before_after as b  LEFT JOIN registry as r on  r.row_id=b.registration_row_id LEFT JOIN before_after_pics as p on b.row_id=p.before_after_row_id  order by r.row_id, p.pic_display_order");
-$result = mysql_query($query) or die('Query failed: ' . mysql_error());
- $Link = mysql_connect ($Host, $User, $Password); 
+$result = mysqli_query($Link, $query) or die('Query failed: ' . mysqli_error($Link));
+ $Link = mysqli_connect($Host, $User, $Password, $DBName); 
 // Printing results in HTML
 echo "<table class='registry' width='60%' align='center'>\n";
 echo "<TH width='5%'><div align='Center'>Before</TH>";
@@ -86,7 +81,7 @@ echo "<TH width='5%'><div align='Center'>Year</TH>";
 
 $before_after_row_temp = "";
 
-while ($Row = mysql_fetch_array($result))
+while ($Row = mysqli_fetch_array($result))
 {
 
 if ($bgcolor == "BBBBBB") {$bgcolor = "777777";$fcolor="FFFFFF";}
@@ -153,7 +148,7 @@ if ($session_username <> "")
 <br />
 <br/>
 <br/>
-	<?
+	<?php
 }
 else
 {
@@ -173,7 +168,7 @@ else
 <br />
 <br/>
 <br/>
-	<?
+	<?php
 
 }
 

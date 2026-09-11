@@ -4,8 +4,7 @@ require '../includes/auth_check.inc.php';
 //$session_userID = $_SESSION['user_ID'];
 include '../includes/dbconnect.inc.php';
 
-mysql_connect("$Host","$User","$Password");
-mysql_select_db($DBName) or die(mysql_error());  
+mysqli_connect("$Host","$User","$Password","$DBName");
 //Session doesn't exist
 if ($is_logged_in)
 {
@@ -114,7 +113,7 @@ tinyMCE_GZ.init({
 
 
 <br>
-<?
+<?php
 function print_html_add() {
 print '
 <form method="POST" >
@@ -211,7 +210,7 @@ $today = date("Y-m-d h:i:s");
 		 $query ="INSERT INTO registry (username,manufacturer,model,year,location,comments,type_of_entry,entered,serial_number,engine_number,userID)";
 		 $query.= " VALUES 	('$session_username','$manufacturer','$model','$year','$location','$comments','$type_of_entry','$today','$serial_number','$engine_number','$user_id_temp')"; 		  
 		
-		$result=mysql_query($query) or die('Error: ' . mysql_error());
+		$result=mysqli_query($Link, $query) or die('Error: ' . mysqli_error($Link));
 
 		
 		if    ($result) {
