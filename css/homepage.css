@@ -1,0 +1,294 @@
+/* ==========================================================================
+   Cyclerestorer.com — Homepage & shared nav/footer design system
+   Warm, dim-workshop palette. Loaded alongside (after) cyclerestorer.css
+   on the homepage only, so it never touches the older pages/ templates.
+   ========================================================================== */
+
+:root {
+  /* Color */
+  --cr-charcoal:   #2B2723; /* dominant background, like a dim garage */
+  --cr-saddle:     #4A3226; /* section / card background */
+  --cr-saddle-dark:#3A2A1E;
+  --cr-rust:       #B5502D; /* primary accent — oxidized metal */
+  --cr-rust-bright:#CD6237;
+  --cr-brass:      #C08A3E; /* secondary accent — hardware, hairlines */
+  --cr-parchment:  #EDE3D0; /* light text on dark backgrounds */
+  --cr-parchment-dim: #C9BEA8;
+  --cr-green:      #3A4A3C; /* rare tertiary accent */
+
+  /* Type */
+  --cr-font-display: 'Fraunces', Georgia, 'Times New Roman', serif;
+  --cr-font-body: 'Work Sans', -apple-system, Segoe UI, Helvetica, Arial, sans-serif;
+
+  /* Layout */
+  --cr-max-width: 1180px;
+  --cr-gutter: clamp(1.25rem, 4vw, 3rem);
+}
+
+.cr * { box-sizing: border-box; }
+
+.cr {
+  background: var(--cr-charcoal);
+  color: var(--cr-parchment);
+  font-family: var(--cr-font-body);
+  font-size: 17px;
+  line-height: 1.55;
+}
+
+.cr a { color: var(--cr-brass); text-decoration: none; }
+.cr a:hover { color: var(--cr-rust-bright); text-decoration: underline; }
+
+.cr h1, .cr h2, .cr h3 {
+  font-family: var(--cr-font-display);
+  font-weight: 600;
+  color: var(--cr-parchment);
+  line-height: 1.15;
+  margin: 0 0 0.5em;
+}
+
+.cr-wrap {
+  max-width: var(--cr-max-width);
+  margin: 0 auto;
+  padding: 0 var(--cr-gutter);
+}
+
+/* ---------- Top nav ---------- */
+.cr-nav {
+  background: var(--cr-saddle-dark);
+  border-bottom: 1px solid rgba(192, 138, 62, 0.35);
+}
+.cr-nav-inner {
+  max-width: var(--cr-max-width);
+  margin: 0 auto;
+  padding: 0.9rem var(--cr-gutter);
+  display: flex;
+  align-items: center;
+  justify-content: space-between;
+  gap: 1.5rem;
+  flex-wrap: wrap;
+}
+.cr-brand {
+  display: flex;
+  align-items: center;
+  gap: 0.6rem;
+  font-family: var(--cr-font-display);
+  font-size: 1.4rem;
+  color: var(--cr-parchment);
+}
+.cr-brand img { height: 34px; width: auto; display: block; }
+.cr-brand:hover { text-decoration: none; color: var(--cr-parchment); }
+
+.cr-nav-links {
+  display: flex;
+  gap: 1.5rem;
+  flex-wrap: wrap;
+  font-size: 0.95rem;
+}
+.cr-nav-links a { color: var(--cr-parchment-dim); }
+.cr-nav-links a:hover { color: var(--cr-rust-bright); }
+
+.cr-nav-account {
+  display: flex;
+  gap: 1rem;
+  font-size: 0.9rem;
+  align-items: center;
+}
+.cr-nav-account a.cr-btn-ghost {
+  border: 1px solid var(--cr-brass);
+  padding: 0.35rem 0.9rem;
+  border-radius: 3px;
+  color: var(--cr-parchment);
+}
+.cr-nav-account a.cr-btn-ghost:hover {
+  background: var(--cr-brass);
+  color: var(--cr-charcoal);
+  text-decoration: none;
+}
+
+/* ---------- Hero ---------- */
+.cr-hero {
+  padding: clamp(2.5rem, 6vw, 5rem) 0 clamp(2rem, 5vw, 3.5rem);
+  display: grid;
+  grid-template-columns: 1.1fr 0.9fr;
+  gap: clamp(2rem, 5vw, 4rem);
+  align-items: center;
+}
+@media (max-width: 800px) {
+  .cr-hero { grid-template-columns: 1fr; }
+}
+.cr-hero-eyebrow {
+  color: var(--cr-rust-bright);
+  font-family: var(--cr-font-display);
+  font-style: italic;
+  font-size: 1.05rem;
+  margin-bottom: 0.75rem;
+}
+.cr-hero h1 {
+  font-size: clamp(2.3rem, 4.2vw, 3.4rem);
+  max-width: 14ch;
+}
+.cr-hero p {
+  max-width: 46ch;
+  color: var(--cr-parchment-dim);
+  font-size: 1.05rem;
+}
+.cr-hero-actions {
+  display: flex;
+  gap: 1rem;
+  margin-top: 1.75rem;
+  flex-wrap: wrap;
+}
+.cr-btn {
+  display: inline-block;
+  background: var(--cr-rust);
+  color: var(--cr-parchment);
+  padding: 0.75rem 1.5rem;
+  border-radius: 3px;
+  font-weight: 600;
+  border: 1px solid transparent;
+}
+.cr-btn:hover { background: var(--cr-rust-bright); color: #fff; text-decoration: none; }
+.cr-btn-outline {
+  display: inline-block;
+  border: 1px solid var(--cr-brass);
+  color: var(--cr-parchment);
+  padding: 0.75rem 1.5rem;
+  border-radius: 3px;
+}
+.cr-btn-outline:hover { background: rgba(192,138,62,0.12); text-decoration: none; }
+
+.cr-hero-photo {
+  position: relative;
+  border-radius: 4px;
+  overflow: hidden;
+  border: 1px solid rgba(192,138,62,0.3);
+  box-shadow: 0 20px 50px -20px rgba(0,0,0,0.6);
+}
+.cr-hero-photo img { display: block; width: 100%; height: auto; }
+.cr-hero-photo-caption {
+  position: absolute;
+  bottom: 0; left: 0; right: 0;
+  background: linear-gradient(0deg, rgba(20,16,12,0.85), transparent);
+  color: var(--cr-parchment-dim);
+  font-size: 0.85rem;
+  padding: 1.5rem 1rem 0.75rem;
+}
+
+/* ---------- Section heading ---------- */
+.cr-section { padding: clamp(2.5rem, 5vw, 4rem) 0; }
+.cr-section-head {
+  display: flex;
+  align-items: baseline;
+  justify-content: space-between;
+  gap: 1rem;
+  margin-bottom: 1.75rem;
+  border-bottom: 1px solid rgba(192,138,62,0.25);
+  padding-bottom: 0.75rem;
+}
+.cr-section-head h2 { font-size: 1.6rem; margin: 0; }
+.cr-section-head a { font-size: 0.9rem; white-space: nowrap; }
+
+/* ---------- Asymmetric entry grid ---------- */
+.cr-grid {
+  display: grid;
+  grid-template-columns: repeat(12, 1fr);
+  gap: 1.25rem;
+}
+@media (max-width: 800px) {
+  .cr-grid { grid-template-columns: repeat(2, 1fr); }
+}
+.cr-card {
+  background: var(--cr-saddle);
+  border: 1px solid rgba(192,138,62,0.2);
+  border-radius: 4px;
+  padding: 1.25rem;
+  display: flex;
+  flex-direction: column;
+  gap: 0.5rem;
+  transition: border-color 0.15s ease, transform 0.15s ease;
+}
+.cr-card:hover { border-color: var(--cr-brass); transform: translateY(-2px); }
+.cr-card .cr-card-img-wrap {
+  aspect-ratio: 16 / 10;
+  overflow: hidden;
+  border-radius: 3px;
+  background: var(--cr-saddle-dark);
+}
+.cr-card .cr-card-img-wrap img {
+  width: 100%;
+  height: 100%;
+  object-fit: cover;
+  display: block;
+  transition: transform 0.25s ease;
+}
+.cr-card:hover .cr-card-img-wrap img { transform: scale(1.05); }
+.cr-card h3 { font-size: 1.05rem; margin: 0; }
+.cr-card p { font-size: 0.88rem; color: var(--cr-parchment-dim); margin: 0; }
+.cr-card a.cr-card-link { color: var(--cr-parchment); }
+.cr-card a.cr-card-link:hover { color: var(--cr-rust-bright); text-decoration: none; }
+
+/* Row 1: lg + md side by side, fills 12 exactly */
+.cr-card--lg { grid-column: span 6; }
+.cr-card--row1-md { grid-column: span 6; }
+/* Row 2: three md cards, 4 each, fills 12 exactly */
+.cr-card--md { grid-column: span 4; }
+/* Row 3: four sm cards, 3 each, fills 12 exactly */
+.cr-card--sm { grid-column: span 3; padding: 1rem 1.25rem; }
+.cr-card--sm h3 { font-size: 0.95rem; }
+
+@media (max-width: 800px) {
+  .cr-card--lg, .cr-card--row1-md, .cr-card--md, .cr-card--sm { grid-column: span 2; }
+}
+
+/* ---------- Speedometer visitor counter ---------- */
+.cr-speedo {
+  position: relative;
+  width: 260px;
+  max-width: 100%;
+  margin: 0 auto;
+}
+.cr-speedo-face-wrap {
+  border-radius: 50%;
+  overflow: hidden;
+  box-shadow: 0 15px 40px -15px rgba(0,0,0,0.7);
+}
+.cr-speedo img.cr-speedo-face { display: block; width: 100%; height: auto; }
+.cr-speedo-reading {
+  position: absolute;
+  top: 63.1%;
+  left: 48%;
+  transform: translate(-50%, -50%);
+  display: flex;
+  gap: 0.5px;
+  z-index: 2;
+}
+.cr-speedo-reading img { height: 14px; width: auto; display: block; }
+.cr-speedo-label {
+  text-align: center;
+  font-size: 0.8rem;
+  color: var(--cr-parchment-dim);
+  margin-top: 0.75rem;
+  font-style: italic;
+}
+
+/* ---------- Footer ---------- */
+.cr-footer {
+  background: var(--cr-saddle-dark);
+  border-top: 1px solid rgba(192,138,62,0.25);
+  margin-top: 2rem;
+  padding: 2.5rem 0;
+  font-size: 0.9rem;
+  color: var(--cr-parchment-dim);
+}
+.cr-footer-inner {
+  max-width: var(--cr-max-width);
+  margin: 0 auto;
+  padding: 0 var(--cr-gutter);
+  display: flex;
+  justify-content: space-between;
+  gap: 2rem;
+  flex-wrap: wrap;
+}
+.cr-footer-links { display: flex; gap: 1.5rem; flex-wrap: wrap; }
+.cr-footer-links a { color: var(--cr-parchment-dim); }
+.cr-footer-links a:hover { color: var(--cr-rust-bright); }
