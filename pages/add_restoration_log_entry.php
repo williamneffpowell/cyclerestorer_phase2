@@ -1,290 +1,98 @@
 <?php
 require '../includes/auth_check.inc.php';
-include '../includes/dbconnect.inc.php';
-mysqli_connect("$Host","$User","$Password","$DBName");
-//CHECK LOGIN - PUT THIS CODE ON ALL PROTECTED PAGES
-$session_username = $_SESSION['user_name'];
-
-$edit_row = $_REQUEST['edit_row'];
-
-$failed = 0;
-$session_temp_var=$_SESSION['sessionID'];
-if ($is_logged_in) {
+require '../includes/dbconnect.inc.php';
+if (session_status() !== PHP_SESSION_ACTIVE) session_start();
+if (empty($is_logged_in)) {
+    $_SESSION['target_url'] = $_SERVER['REQUEST_URI'] ?? '/pages/restoration_pics.php';
+    header('Location: /login.php'); exit;
+}
 $Link = mysqli_connect($Host, $User, $Password, $DBName);
-$Query = "SELECT username, userID FROM auth_user WHERE (sesnID='$session_temp_var');";
-#print $username[0];
-$Result = mysqli_query($Link, $Query);
-$Row = mysqli_fetch_array($Result);
-$username = $Row[0];
-$userID = $Row[2];
-#print "usernerm $username\n";
-//Session doesn't exist
-
+if (!$Link) { http_response_code(500); exit('Database unavailable.'); }
+mysqli_set_charset($Link, 'utf8mb4');
+function e($v) { return htmlspecialchars((string)($v ?? ''), ENT_QUOTES | ENT_SUBSTITUTE, 'UTF-8'); }
+function field($key, $default='') { return (string)($_POST[$key] ?? $default); }
+function getrow($db, $sql, $types, ...$params) {
+    $s = mysqli_prepare($db,$sql); if (!$s) return null;
+    if ($params) mysqli_stmt_bind_param($s,$types,...$params);
+    mysqli_stmt_execute($s); $r=mysqli_stmt_get_result($s);
+    $v=$r?mysqli_fetch_assoc($r):null; mysqli_stmt_close($s); return $v;
 }
-
-If ($is_logged_in)
-{
-
-echo "<br>";
-echo "<br>";
-echo "<table align='center'>";
-echo "<tr>&nbsp;</tr>";
-echo "<tr>&nbsp;</tr>";
-echo "</table align='center'>";
-echo "<br>";
-//$todo_or_log = $_REQUEST['todo_or_log'];
-
-
-print_html_add($_REQUEST['bfore_aftr_row_id'],$_REQUEST['todo_or_log']);
-# Do Nothing print_html_add();
-mysqli_close($Link);
-
+function metadata_split($description) {
+    $meta=['supplier'=>'','parts'=>'','problems'=>'','solutions'=>'','measurements'=>'','next_steps'=>'','resource_url'=>''];
+    $pattern='~\\n?<!-- CR-JOURNAL-V1:(\\{.*?\\}) -->\\s*$~s';
+    if (preg_match($pattern,$description,$m)) {
+        $json=json_decode($m[1],true);
+        if (is_array($json)) foreach ($meta as $k=>$v) if(isset($json[$k]) && is_string($json[$k])) $meta[$k]=$json[$k];
+        $description=preg_replace($pattern,'',$description);
+    }
+    return [$description,$meta];
 }
-If (!$is_logged_in)
-{
-$logged_on = "no";
-
-$target_url_in = 'pages/add_restoration_log_entry.php';
-$_SESSION['target_url'] = "$target_url_in";
-$target_url_goto= $_SESSION['target_url'];
-
-
-echo '<script language="JavaScript" type="text/javascript">
-				window.location.href="http://www.cyclerestorer.com/pages/login.php"</script>';
-//No Session Variable
-$failed = 1;
+function metadata_join($description,$meta) {
+    $data=[]; foreach (['supplier','parts','problems','solutions','measurements','next_steps','resource_url'] as $k) {
+        $v=trim((string)($meta[$k]??'')); if ($v!=='') $data[$k]=$v;
+    }
+    if (!$data) return $description;
+    return rtrim($description)."\n<!-- CR-JOURNAL-V1:".json_encode($data,JSON_UNESCAPED_UNICODE|JSON_UNESCAPED_SLASHES|JSON_HEX_TAG)." -->";
 }
-
-
-//END CHECK LOGIN ##################################################################################################
-
-#**************************************************************************
-# The row to select from the Before_after Page selection
-//$id_temp_add_var = $_REQUEST['bfore_aftr_row_id'];
-//$todo_or_log = $_REQUEST['todo_or_log'];
-
-#print "<h5>LOG VALUE = $target_url_goto </h5>";
-#******************************************************************
-?>
-<!DOCTYPE HTML PUBLIC "-//W3C//DTD HTML 4.0 Transitional//EN">
-
-<html>
-<head>
-   <title>Add Restoration Log Entry </title>
-
-<script language="javascript" type="text/javascript" src="datetimepicker.js">
-
-//Date Time Picker script- by TengYong Ng of http://www.rainforestnet.com
-//Script featured on JavaScript Kit (http://www.javascriptkit.com)
-//For this script, visit http://www.javascriptkit.com
-
-</script>
-<script language="javascript" type="text/javascript" src="javascript/tiny_mce/tiny_mce_gzip.js"></script>
-
-<script type="text/javascript">
-tinyMCE_GZ.init({
-	plugins : 'style,layer,table,save,advhr,advimage,advlink,emotions,iespell,insertdatetime,preview,media,'+
-        'searchreplace,print,contextmenu,paste,directionality,fullscreen,noneditable,visualchars,nonbreaking,xhtmlxtras',
-	themes : 'simple,advanced',
-	languages : 'en',
-	disk_cache : true,
-	debug : false
-});
-</script>
-
-
-<script language="javascript" type="text/javascript">
-	tinyMCE.init ({
-		mode : "textareas",
-		theme : "advanced",
-		plugins : "emotions,preview,zoom,searchreplace,print,contextmenu,paste,directionality,fullscreen",
-		theme_advanced_disable : "image,cleanup,removeformat,formatselect,styleselect,sub,sup,separator,outdent,indent,help,anchor,code,hr,visualaid,charmap",
-		theme_advanced_buttons1_add : "fontselect",
-		theme_advanced_buttons2_add : "preview,zoom,separator,forecolor,backcolor",
-		theme_advanced_buttons2_add_before: "emotions,cut,copy,paste,separator,search,separator",
-		theme_advanced_toolbar_location : "top",
-		theme_advanced_toolbar_align : "left",
-		theme_advanced_statusbar_location : "bottom",
-		content_css : "example_word.css",
-	    plugi2n_insertdate_dateFormat : "%Y-%m-%d",
-	    plugi2n_insertdate_timeFormat : "%H:%M:%S",
-		external_link_list_url : "example_link_list.js",
-		external_image_list_url : "example_image_list.js",
-		media_external_list_url : "example_media_list.js",
-		file_browser_callback : "fileBrowserCallBack",
-		paste_use_dialog : false,
-		theme_advanced_resizing : true,
-		theme_advanced_resize_horizontal : false,
-		theme_advanced_link_targets : "_something=My somthing;_something2=My somthing2;_something3=My somthing3;",
-		paste_auto_cleanup_on_paste : true,
-		paste_convert_headers_to_strong : false,
-		paste_strip_class_attributes : "all",
-		paste_remove_spans : false,
-		paste_remove_styles : false,
-		theme_advanced_statusbar_location : "none"
-
-	});
-
-	function fileBrowserCallBack(field_name, url, type, win) {
-		// This is where you insert your custom filebrowser logic
-		alert("Filebrowser callback: field_name: " + field_name + ", url: " + url + ", type: " + type);
-
-		// Insert new URL, this would normaly be done in a popup
-		win.document.forms[0].elements[field_name].value = "someurl.htm";
-	}
-</script>
-<meta http-equiv="Content-Type" content="text/html; charset=iso-8859-1"><style type="text/css">
-<!--
-body {
-	background-color: #CC0033;
+function display_form($heading,$action,$row,$meta,$errors,$csrf,$parent,$category,$edit_id=0) { ?>
+<!doctype html><html lang="en"><head><meta charset="utf-8"><meta name="viewport" content="width=device-width,initial-scale=1">
+<title><?=e($heading)?> | CycleRestorer</title>
+<link rel="stylesheet" href="../css/cyclerestorer.css">
+<style>
+body{background:#f5f0e6;color:#352d22;font:17px/1.5 Arial,sans-serif;margin:0}main{max-width:820px;margin:22px auto;padding:22px;background:#fffdf8;border:1px solid #d8cbb7;border-radius:12px;box-sizing:border-box}
+h1{font-size:1.65rem;margin:0 0 8px;color:#48321e}.hint{color:#635746;font-size:.94rem;margin:4px 0 18px}.fields{display:grid;grid-template-columns:1fr 1fr;gap:16px}.full{grid-column:1/-1}label{display:block;font-weight:700;margin-bottom:5px}input,textarea,select{width:100%;max-width:100%;box-sizing:border-box;padding:10px;border:1px solid #a99a85;border-radius:6px;background:white;color:#2d281f;font:inherit}textarea{min-height:90px}textarea.large{min-height:170px}section{margin-top:24px;padding-top:16px;border-top:1px solid #e5d8c6}h2{font-size:1.15rem;color:#513c28}button,.button{display:inline-block;padding:11px 17px;border-radius:6px;background:#675036;color:white;border:0;text-decoration:none;font:700 16px Arial,sans-serif;cursor:pointer}.button{background:#e9dfd0;color:#3a2c1f}.actions{display:flex;flex-wrap:wrap;gap:12px;margin-top:25px}.error{background:#fff0e8;border:1px solid #ad553e;padding:12px;border-radius:6px}small{display:block;font-weight:400;color:#645b50;margin-top:4px}@media(max-width:620px){main{margin:8px;padding:16px}.fields{grid-template-columns:1fr}.full{grid-column:1}h1{font-size:1.4rem}}
+</style></head><body><main><h1><?=e($heading)?></h1><p class="hint">Keep a useful record of work completed. Only the title is required; everything else is optional.</p>
+<?php if ($errors): ?><div class="error"><?=e(implode(' ', $errors))?></div><?php endif; ?>
+<form method="post" action="<?=e($action)?>">
+<input type="hidden" name="csrf" value="<?=e($csrf)?>"><input type="hidden" name="parent_id" value="<?=e($parent)?>"><input type="hidden" name="edit_id" value="<?=e($edit_id)?>">
+<div class="fields"><div class="full"><label for="log_title">Log title *</label><input id="log_title" name="log_title" maxlength="255" required value="<?=e($row['log_title']??'')?>"></div>
+<div class="full"><label for="description">Work performed / description</label><textarea class="large" id="description" name="description"><?=e($row['work_description']??'')?></textarea></div>
+<div><label for="start">Work start date</label><input id="start" name="start_date" type="date" value="<?=e($row['work_start_date']??'')?>"></div>
+<div><label for="end">Work end date</label><input id="end" name="end_date" type="date" value="<?=e($row['work_end_date']??'')?>"></div>
+<div><label for="hours">Hours spent</label><input id="hours" name="hours" type="number" min="0" step="0.25" value="<?=e($row['hours_spent']??'')?>"></div>
+<div><label for="cost">Cost ($)</label><input id="cost" name="cost" type="number" min="0" step="0.01" value="<?=e($row['cost']??'')?>"></div>
+<div class="full"><label for="category">Entry type</label><select name="category" id="category"><option value="log" <?=$category==='log'?'selected':''?>>Restoration log</option><option value="todo" <?=$category==='todo'?'selected':''?>>To-do item</option></select></div></div>
+<section><h2>Parts and suppliers</h2><div class="fields"><div><label for="supplier">Supplier / source</label><input id="supplier" name="supplier" value="<?=e($meta['supplier'])?>"></div><div><label for="parts">Parts obtained or used</label><input id="parts" name="parts" value="<?=e($meta['parts'])?>"></div><div class="full"><label for="resource_url">Supplier or resource link</label><input id="resource_url" name="resource_url" type="url" placeholder="https://" value="<?=e($meta['resource_url'])?>"></div></div></section>
+<section><h2>Technical restoration notes</h2><div class="fields"><div class="full"><label for="problems">Problems encountered</label><textarea id="problems" name="problems"><?=e($meta['problems'])?></textarea></div><div class="full"><label for="solutions">Solutions / techniques</label><textarea id="solutions" name="solutions"><?=e($meta['solutions'])?></textarea></div><div class="full"><label for="measurements">Measurements / specifications</label><textarea id="measurements" name="measurements"><?=e($meta['measurements'])?></textarea></div><div class="full"><label for="next_steps">Next steps</label><textarea id="next_steps" name="next_steps"><?=e($meta['next_steps'])?></textarea></div></div></section>
+<div class="actions"><button type="submit" name="save" value="1">Save entry</button><a class="button" href="restoration_pics.php?edit_row=<?=e($parent)?>">Cancel / return to restoration</a></div></form></main></body></html>
+<?php }
+function form_values() {
+    $row=['log_title'=>trim(field('log_title')),'work_description'=>field('description'),'work_start_date'=>field('start_date'),'work_end_date'=>field('end_date'),'hours_spent'=>field('hours'),'cost'=>field('cost')];
+    $meta=[];foreach(['supplier','parts','problems','solutions','measurements','next_steps','resource_url'] as $k) $meta[$k]=field($k);
+    return [$row,$meta];
 }
--->
-</style>
-<link href="../css/cyclerestorer.css" rel="stylesheet" type="text/css">
-</head>
-<body>
-
-
-<br>
-<h3 align='center'>* = Required </h3>
-
-
-
-
-
-<?php
-function print_html_add($bfore_aftr_row_id,$todo_or_log) {
-print ("
-
-<form name=adform method=\"POST\" onsubmit=\"return validate_form(this)\" action=\"add_restoration_log_entry.php\">
-<input type=\"hidden\" name=\"bfore_aftr_row_id\" value=\"$bfore_aftr_row_id\">
-<input type=\"hidden\" name=\"todo_or_log\" value=\"$todo_or_log\">
-     <div align=\"center\"><h1><b>Add Restoration Log Entry</h1></b> </div>
-  <div align=\"center\">
-     <table  align=\"center\" width=\"600\" border=\"0\">
-        <caption>&nbsp;
-        </caption>
-		<tr>
-          <td width=\"550\"><div align=\"center\"><strong>* Log Title:</strong></div></td>
-          <td width=\"148\"><div align=\"center\"><input type=\"text\" name=\"log_title_fd\">
-            <br>
-          </div></td>
-          <td width=\"12\">&nbsp;</td>
-        </tr>
-	     <tr>
-          <td><div align=\"center\"><strong>Description</strong></div></td>
- 		  <td align=\"center\" width=\"50\" height=\"5\"><textarea name=\"description_fd\" cols=\"40\" rows=\"10\"></textarea> </td>
-           <td>&nbsp;</td>
-        </tr>
-
-		<tr>
-		<td>
-		<strong><span>Work Start Date</span></strong>
-		</td>
-		<td>
-		<input id=\"demo1\" type=\"text\" size=\"25\" name=\"start_date_fd\"><a href=\"javascript:NewCal(\'demo1\',\'YYYYMMDD\')\"><img src=\"../Images/cal.gif\" width=\"16\" height=\"16\" border=\"0\" alt=\"Pick a Start date\"></a>
-	  	</td>
-		</tr>
-          	<tr>
-			<td>
-			<strong><span>Work End Date</span></strong>
-			</td>
-			<td>
-		<input id=\"demo2\" type=\"text\" size=\"25\" name=\"end_date_fd\"><a href=\"javascript:NewCal(\'demo2\',\'YYYYMMDD\')\"><img src=\"../Images/cal.gif\" width=\"16\" height=\"16\" border=\"0\" alt=\"Pick a End date\"></a>
-	  	</td>
-        </tr>
-		<tr>
-          <td width=\"550\"><div align=\"center\"><strong>Hours Spent:</strong></div></td>
-          <td width=\"148\"><div align=\"center\"><input type=\"text\" name=\"hours_spent_fd\">
-            <br>
-          </div></td>
-          <td width=\"12\">&nbsp;</td>
-        </tr>
-
-		<tr>
-          <td width=\"550\"><div align=\"center\"><strong>Cost:</strong></div></td>
-          <td width=\"148\"><div align=\"center\"><input type=\"text\" name=\"cost_fd\">
-            <br>
-          </div></td>
-          <td width=\"12\">&nbsp;</td>
-        </tr>
- 	 </table>
-       <br>
-       <input type=\"submit\" name=\"submit\" value=\"Submit\">
-	    <input type=\"reset\" name=\"Clear\" value=\"Clear Form and Start Over\">
-       <br>
-       <br>
-       <table width=\"200\">
-         <tr>
-           </tr>
-       </table>
-       <br>
-       </textarea>
-       <br>
-     </div>
-</form>
-
-
-
-
-	</body>
-</html>
-");
+function validation_errors($row,$meta) {
+    $errors=[]; if($row['log_title']==='')$errors[]='A log title is required.';
+    foreach(['work_start_date','work_end_date'] as $k) if($row[$k]!=='' && !preg_match('/^\\d{4}-\\d{2}-\\d{2}$/',$row[$k]))$errors[]='Please enter valid dates.';
+    foreach(['hours_spent','cost'] as $k) if($row[$k]!=='' && (!is_numeric($row[$k]) || (float)$row[$k]<0))$errors[]='Hours and cost must be positive numbers.';
+    if($meta['resource_url']!=='' && (!filter_var($meta['resource_url'],FILTER_VALIDATE_URL) || !in_array(strtolower((string)parse_url($meta['resource_url'],PHP_URL_SCHEME)),['https','http'],true)))$errors[]='Supplier link must be an http or https URL.';
+    return $errors;
 }
-
- if ($_REQUEST['log_title_fd'] <> "") {
-        $log_title=$_REQUEST['log_title_fd'];
-		$description=$_REQUEST['description_fd'];
-		$work_start_date=$_REQUEST['start_date_fd'];
-		$work_end_date=$_REQUEST['end_date_fd'];
-		$hours_spent=$_REQUEST['hours_spent_fd'];
-		$cost=$_REQUEST['cost_fd'];
-		$enter_date=date("Y-m-d h:i:s");
-		$user_var=$_REQUEST["user_form_var"];
-		
-
-		//$log_or_goto_var=$_REQUEST["user_log_or_goto_var"];
-
-		//$log_or_goto_var = $_REQUEST['todo_or_log'];
-
-$todo_or_log = $_REQUEST['todo_or_log'];
-$bfore_aftr_row_id = $_REQUEST['bfore_aftr_row_id'];
-$username = $session_username;
-//print "<h2>from the form user_var = $username\n</h2>";
-//print "<h2>from the request var todo_or_log = $todo_or_log \n</h2>";
-//print "<h2>From the header  edit_row = $bfore_aftr_row_id \n</h2>";
-
-
-
-
-mysqli_connect("$Host","$User","$Password","$DBName");
-$Link = mysqli_connect($Host, $User, $Password, $DBName);
-
-$query ="INSERT INTO tb_restoration_work(log_title,work_description,work_start_date,work_end_date,enter_date,hours_spent,username,before_after_row_id,cost,category)
- VALUES ('$log_title','$description','$work_start_date','$work_end_date','$enter_date','$hours_spent','$username','$bfore_aftr_row_id','$cost','$todo_or_log')";
-			#print "user_var = $user_var\n";
-		//print " Query $query \n";
-		$result=mysqli_query($Link, $query) or die ('Insert Query Failed' . mysqli_error($Link));
-
-		if    ($result)
-		{
-					  $edit_row = $_REQUEST['bfore_aftr_row_id'];
-			//	echo '<script language="JavaScript" type="text/javascript">
-			//	window.location.href="http://www.cyclerestorer.com/pages/restoration_pics.php?edit_row='.$edit_row.'"</script>';
-		  }
-		  else
-		  {
-		  echo "<b>ERROR: unable to post.</b>";
-		  mysqli_close($Link);
-		  }
-
-
-	 }
-
-
-include 'bottom_index_table.php';
-include '../includes/analytics.inc.php';
-?>
-</body>
-
-</html>
+function owner($db,$parent,$username) {
+    return getrow($db,'SELECT row_ID FROM before_after WHERE row_ID=? AND username=?','is',$parent,$username)!==null;
+}
+$session_username=(string)($_SESSION['username'] ?? '');
+if ($session_username==='') { http_response_code(403); exit('Your login session is missing a username.'); }
+if (empty($_SESSION['restoration_csrf'])) $_SESSION['restoration_csrf']=bin2hex(random_bytes(24));
+$csrf=$_SESSION['restoration_csrf'];
+$parent=(int)($_POST['parent_id']??$_GET['bfore_aftr_row_id']??0);
+$category=(string)($_POST['category']??$_GET['todo_or_log']??'log');
+if(!in_array($category,['log','todo'],true))$category='log';
+if($parent<1 || !owner($Link,$parent,$session_username)){http_response_code(403);exit('Restoration not found or access denied.');}
+$row=['log_title'=>'','work_description'=>'','work_start_date'=>'','work_end_date'=>'','hours_spent'=>'','cost'=>''];
+$meta=array_fill_keys(['supplier','parts','problems','solutions','measurements','next_steps','resource_url'],'');
+$errors=[];
+if($_SERVER['REQUEST_METHOD']==='POST') {
+ if(!hash_equals($csrf,(string)($_POST['csrf']??''))) {http_response_code(403);exit('Form expired. Please reload.');}
+ [$row,$meta]=form_values();$errors=validation_errors($row,$meta);
+ if(!$errors){
+ $description=metadata_join($row['work_description'],$meta);
+ $start=$row['work_start_date']?:null;$end=$row['work_end_date']?:null;
+ $hours=$row['hours_spent']!==''?(float)$row['hours_spent']:0.0;$cost=$row['cost']!==''?(float)$row['cost']:0.0;
+ $stmt=mysqli_prepare($Link,'INSERT INTO tb_restoration_work (log_title,work_description,work_start_date,work_end_date,enter_date,hours_spent,username,before_after_row_id,cost,category) VALUES (?,?,?,?,NOW(),?,?,?,?,?)');
+ if($stmt){mysqli_stmt_bind_param($stmt,'ssssdsids',$row['log_title'],$description,$start,$end,$hours,$session_username,$parent,$cost,$category);}
+ if(!$stmt || !mysqli_stmt_execute($stmt))$errors[]='Unable to save this entry. Please try again.';
+ else {header('Location: restoration_pics.php?edit_row='.$parent);exit;}
+ }
+}
+display_form('Add Restoration Journal Entry','add_restoration_log_entry.php',$row,$meta,$errors,$csrf,$parent,$category);

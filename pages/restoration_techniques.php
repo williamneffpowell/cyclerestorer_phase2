@@ -1,7 +1,7 @@
 <?php
 require '../includes/auth_check.inc.php';
 $session_username = $session_username;
-
+require_once __DIR__ . '/../includes/track_visit.inc.php';
 include '../includes/dbconnect.inc.php';
 
 $Link = mysqli_connect($Host, $User, $Password, $DBName); 

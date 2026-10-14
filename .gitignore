@@ -43,3 +43,12 @@ error_log
 
 # Scratch files created during cleanup
 password_check.txt
+# Additional CycleRestorer security exclusions
+**/analytics_secret.key
+**/.env
+**/.env.*
+**/*credentials*.json
+**/*secret*.key
+**/*private*.pem
+**/error_log*
+cgi-bin/

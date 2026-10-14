@@ -2,6 +2,7 @@
  //restoration_pics_view.php
 require '../includes/auth_check.inc.php';
 include '../includes/dbconnect.inc.php';
+require_once __DIR__ . '/../includes/track_visit.inc.php';
 	$link = mysqli_connect($Host, $User, $Password, $DBName) or die("Database connection failed");
 $session_username = $session_username ?? '0';
 
